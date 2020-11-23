@@ -7,6 +7,9 @@
     "example": "examples",
     "test": "test"
   },
+  "scripts": {
+    "start": "webpack-dev-server --mode development"
+  },
   "preferGlobal": true,
   "repository": {
     "type": "git",
