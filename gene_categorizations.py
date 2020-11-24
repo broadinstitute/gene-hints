@@ -1,21 +1,22 @@
 '''
-Get gene associations for a pubmed ID or list of pubmed IDs
-https://www.ebi.ac.uk/gwas/rest/docs/api#resources-associations
+Get gene disease associations using the disgenet API
+https://www.disgenet.org/api/
 '''
 
 import requests
 import json
 import sys
 
-base_url = "https://www.ebi.ac.uk/gwas/rest/api/"
+from collections import Counter
 
-studies = "studies/"
-associations = "associations/"
+base_url = "https://www.disgenet.org/api"
+
+# gene-disease associations
+gda = "gda/gene/"
 
 pubmed_id_search = "search/findByPubmedId?pubmedId="
-study_associations = "associations?projection=associationsByStudySummary"
 
-def make_gwas_request(endpoint, params=None):
+def make_request(endpoint, params=None):
     """ 
     Makes a request to GWAS API with specified endpoint and parameters.
     Returns the response in json.
@@ -36,29 +37,31 @@ def make_gwas_request(endpoint, params=None):
     ) as e:
         raise RuntimeError(f"Failed to connect to GWAS API: {e}")
 
-def get_associations(pubmed_ids):
-    # wrap single pubmed IDs in a list so we can handle single and list input types
-    if not isinstance(pubmed_ids, list):
-        pubmed_ids = [pubmed_ids]
+def get_diseases():
+    make_request(endpoint=f"{gda}")
 
-    # compile dictionary of pubmed IDs to associations
-    PM_associations = {}
-    for pubmed_id in pubmed_ids: 
-        data = make_gwas_request(endpoint=studies, params=f"{pubmed_id_search}{pubmed_id}{study_associations}")["_embedded"]["studies"]
-        print(data)
-        #PM_associations = data['association']
-        #PM_associations[pubmed_id] = association
-    
-    #return PM_associations
+def get_gene_disease_associations(genes):
+    # wrap single gene in a list so we can handle single and list input types
+    if not isinstance(genes, list):
+        genes = [genes]
 
+    # compile dictionary of pubmed IDs to EFO traits
+    GDA = {}
+    for gene in genes: 
+        gene_related_diseases = make_request(endpoint=f"{gda}{gene}")
+        GDA[gene] = Counter([disease['disease_semantic_type'] for disease in gene_related_diseases])
+        
+    print(GDA)
+    return GDA
+   
 if len(sys.argv) < 1:
     sys.exit("USAGE: "
              "python3 gene_categorizations.py pubmedID"
              "where pubmedID can be a single ID or a list of IDs")
 
-pubmed_ids = sys.argv[1]
+genes = sys.argv[1]
 
-get_associations(pubmed_ids)
+get_gene_disease_associations(genes)
 
 '''
 HTTP/1.1 200 OK
