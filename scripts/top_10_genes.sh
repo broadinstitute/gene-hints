@@ -11,8 +11,7 @@ mkdir -p all_species_tsv
 #To get an idea of how citation counts have changed over the years, 
 #we need a list of which citations were published when. 
 # This script queries Entrez gene for citation lists for each day.
-python3 scripts/pmids_by_date.py 
-
+python3 scripts/pmids_by_date.py
 
 #Consolidate the publications from each day into one complete list
 #For easier processing, we'll collapse the per-day list of files into one file
@@ -28,17 +27,7 @@ rmdir data/tmp-ssv
 wget -N -P data/genbank-data/ ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2pubmed.gz
 gunzip data/genbank-data/gene2pubmed.gz
 mkdir -p data/ucsc-data
-
-# And then filter out the human genes:
-# elephants = 9779 24234
-# Bacteria = 1386 55087
-# Turtles = 	8459
-# mice = 10090
-# And then filter out the human genes:
-cat data/genbank-data/gene2pubmed | awk '{if ($1 == 9606) print;}' > data/genbank-data/hg19/gene2pubmed
-cat data/genbank-data/gene2pubmed  | python3 scripts/genes_by_species.py  - | sort -nk 2 > data/genes_by_species.tsv
-
-
+ 
 # We'll get a list of chromosome sizes from the UCSC genome browser for plotting purposes:
 wget -N -P data/ucsc-data/ http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/chromInfo.txt.gz
 
@@ -70,7 +59,7 @@ gunzip data/genbank-data/gene2refseq.gz
 # instal install psutil 
 python3 scripts/summarize_gene_citations_all_species.py
 
-rm data/genbank-data/*
-rm data/ucsc-data/*
-rmdir data/ucsc-data
-rmdir data/genbank-data
+# rm data/genbank-data/*
+# rm data/ucsc-data/*
+# rmdir data/ucsc-data
+# rmdir data/genbank-data
