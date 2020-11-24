@@ -17,7 +17,7 @@ def main():
     parser = OptionParser(usage=usage)
 
     today = date.today().strftime("%Y/%m/%d")
-    month_ago = (datetime.today() - timedelta(days=31)).strftime("%Y/%m/%d")
+    month_ago = (datetime.today() - timedelta(days=155)).strftime("%Y/%m/%d")
 
     #parser.add_option('-o', '--options', dest='some_option', default='yo', help="Place holder for a real option", type='str')
     #parser.add_option('-u', '--useless', dest='uselesss', default=False, action='store_true', help='Another useless option')
