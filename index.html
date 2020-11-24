@@ -280,7 +280,12 @@
     if ('q' in urlParams) {
       ideogram = Ideogram.initRelatedGenes(config);
     } else {
-      config.annotationsPath = 'homo-sapiens-cited-genes.tsv';
+      if ('default-hints' in urlParams) {
+        config.annotationsPath = urlParams['default-hints'];
+      } else {
+        config.annotationsPath = 'homo-sapiens-cited-genes.tsv';
+      }
+
       ideogram = Ideogram.initGeneHints(config);
     }
   </script>
