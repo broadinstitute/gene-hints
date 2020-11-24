@@ -270,7 +270,6 @@
       annotationHeight: 7,
       onLoad: plotGeneFromUrl,
       onPlotRelatedGenes: reportRelatedGenes,
-      annotationsPath: 'homo-sapiens-cited-genes.tsv',
       showAnnotLabels: true,
       onClickAnnot
     }
@@ -281,6 +280,7 @@
     if ('q' in urlParams) {
       ideogram = Ideogram.initRelatedGenes(config);
     } else {
+      config.annotationsPath = 'homo-sapiens-cited-genes.tsv';
       ideogram = Ideogram.initGeneHints(config);
     }
   </script>
