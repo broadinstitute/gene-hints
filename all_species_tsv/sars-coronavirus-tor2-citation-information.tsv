@@ -1,0 +1,4 @@
+#name	chromosome	start	length	color	full_name	citations_from_2020/06/22_to_2020/11/24	significance
+S	13	95364969	3230	#73af42	spike glycoprotein	2	n/a
+M	16	67051	68	#73af42	membrane glycoprotein M	1	n/a
+E	1	11126675	33251	#73af42	small envelope protein	1	n/a

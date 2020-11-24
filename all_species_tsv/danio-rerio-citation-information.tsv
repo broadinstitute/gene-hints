@@ -1,0 +1,9 @@
+#name	chromosome	start	length	color	full_name	citations_from_2020/06/22_to_2020/11/24	significance
+tp53	17	27895718	4457	#73af42	tumor protein p53	2	n/a
+gsc	14	95236978	2966	#73af42	goosecoid	1	n/a
+cyp11a1	15	74630102	28433	#73af42	cytochrome P450, family 11, subfamily A, polypeptide 1	1	n/a
+adh5	4	99992129	17810	#73af42	alcohol dehydrogenase 5	1	n/a
+mlxip	12	122516661	115228	#73af42	MLX interacting protein	1	n/a
+cfl1	10	89578069	27300	#73af42	cofilin 1	1	n/a
+aurkaip1	1	1309115	1472	#73af42	aurora kinase A interacting protein 1	1	n/a
+ctnnb1	3	41240995	40939	#73af42	catenin (cadherin-associated protein), beta 1	1	n/a
