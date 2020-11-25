@@ -10,12 +10,20 @@ month_ago = (datetime.today() - timedelta(days=155)).strftime("%Y/%m/%d")
 f = open("data/ucsc-data/refGene.txt", "r")
 list_append = {}
 for lines in f.readlines():
+    # if 'transcript' in lines.split("\t")[2]:
+        # gene_name = (lines.split("\t")[8].split(";")[0].replace("gene_id ", "").replace('"', '')).upper()
+        # chr_id = lines.split("\t")[0].replace("chr","")
+        # start = lines.split("\t")[3]
+        # lenght = abs(int(lines.split("\t")[3])-int(lines.split("\t")[4]))
+        # list_append[gene_name] = [gene_name, chr_id, start, lenght]
     list_append[(lines.split("\t")[12]).upper()] = [(lines.split("\t")[12]).upper(), lines.split("\t")[2].replace("chr",""), lines.split("\t")[4],abs(int(lines.split("\t")[4])-int(lines.split("\t")[5])) ]
 
-directory = 'all_species_tsv'
+
+directory = 'all_species_tsvs'
 name = []
 top_ten_citation = {}
-for filename in os.listdir(directory):
+# os.listdir(directory)
+for filename in ['homo-sapiens-citation-information.tsv']:
     if filename.endswith(".tsv"):
         new_rows = []
         tsv_file = open(os.path.join(directory, filename), encoding = "ISO-8859-1")
@@ -33,13 +41,13 @@ for filename in os.listdir(directory):
                 row[2] = list_append[result[0]][2]
                 row[3] = list_append[result[0]][3]
                 new_rows.append(row)
-        with open(os.path.join(directory, filename.replace("_","-").lower()), 'wt') as out_file:
+        with open(filename, 'wt') as out_file:
             tsv_writer = csv.writer(out_file, delimiter='\t')
             for new_row in new_rows:
                 tsv_writer.writerow(new_row)
             
         top_ten_citation[filename.replace("_citation_information.tsv","")] = new_rows
-
+exit(1)
 with open('top_ten_citation_per_species.html', 'w') as f:
     html_text = "<h1> The Top Ten Citation Per Species</h1><br>"
     for tile_name in top_ten_citation.keys():

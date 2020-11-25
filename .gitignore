@@ -106,5 +106,5 @@ typings/
 data/
 
 # data folder
-all_species_tsv/
+all_species_tsvs/
 .DS_Store
