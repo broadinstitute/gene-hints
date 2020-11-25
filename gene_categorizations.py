@@ -27,23 +27,20 @@ def translate_disease(disease):
     'Otorhinolaryngologic Diseases' : 'Ears, Throat and Nose Diseases',
     'Nervous System Diseases' : 'Nervous System Diseases',
     'Eye Diseases' : 'Eye Diseases',
-    'Male Urogenital Diseases' : 'Male Urinary and Genital Organ Diseases',
-    'Female Urogenital Diseases and Pregnancy Complications' : 'Female Urinary and Genital Organ Diseases and Pregnancy Complications',
+    'Male Urogenital Diseases' : 'Male Genital Organ Diseases',
+    'Female Urogenital Diseases and Pregnancy Complications' : 'Female Genital Organ and Pregnancy Diseases',
     'Cardiovascular Diseases' : 'Heart and Blood Diseases',
     'Hemic and Lymphatic Diseases' : 'Blood Diseases',
-    'Congenital, Hereditary, and Neonatal Diseases and Abnormalities' : 'At Birth, Inherited and Newborn Diseases and Abnormalities',
+    'Congenital, Hereditary, and Neonatal Diseases and Abnormalities' : 'Inherited and Newborn Diseases',
     'Skin and Connective Tissue Diseases' : 'Skin Diseases',
     'Nutritional and Metabolic Diseases' : 'Nutrition and Metabolism Related Diseases',
     'Endocrine System Diseases' : 'Hormone Related Diseases',
     'Immune System Diseases' : 'Immune System Diseases',
-    'Disorders of Environmental Origin' : 'Disorders of External Cause',
-    'Animal Diseases' : 'Animal Diseases',
-    'Pathological Conditions, Signs and Symptoms' : 'Symptoms',
+    'Disorders of Environmental Origin' : 'Environmental Disorders',
     'Occupational Diseases' : 'Work-Related Diseases',
     'Substance-Related Disorders' : 'Substance-Related Disorders',
     'Wounds and Injuries' : 'Wounds and Injuries',
     'Behavior and Behavior Mechanisms' : 'Behavior',
-    'Psychological Phenomena' : 'Phenomena Relating to the Mind',
   }
   try: 
     return disease_translations[disease]
@@ -90,8 +87,7 @@ def get_significance(gene, num_diseases):
   top_disease_associations = [translate_disease(disease) for disease in top_disease_associations]
   
   # format and return
-  diseases = ", ".join(top_disease_associations).lower()
-  return f"Involved in: {diseases}"
+  return f"Involved in {'; '.join(top_disease_associations).lower()}"
 
 
 def add_significance_to_TSVs():
