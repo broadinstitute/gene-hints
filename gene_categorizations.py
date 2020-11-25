@@ -109,20 +109,24 @@ def add_significance_to_TSVs():
         # set up file writer
         with open(f"{processed_dir}/{filename}", 'wt') as write_file:
           writer = csv.writer(write_file, delimiter='\t')
-
+          writer.writerow()
           for row in reader:
             gene_name = row[0]
-            # skip the header
-            if '#name' not in gene_name:
+            
+            if '#name' in gene_name:
+              # copy over the header 
+              processed_row = row
+            else:
               try:
+                # get each gene's significance
                 significance = get_significance(gene_name, num_diseases)
                 row[7] = significance
                 processed_row = row
-                # write to the new file with significance
-                writer.writerow(processed_row) 
               except:
                 print(f"Failed to retrieve significance, skipping {gene_name}.")
                 continue
+            # write to the processed file
+            writer.writerow(processed_row) 
               
 # run the script! 
 add_significance_to_TSVs()
