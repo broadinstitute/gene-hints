@@ -113,10 +113,10 @@ def add_significance_to_TSVs():
           with open(f"{processed_dir}/{filename}", 'wt') as write_file:
             writer = csv.writer(write_file, delimiter='\t')
             for row in reader:
-              gene_name = row[0].upper()
+              gene_name = row[0]
               
               # skip significance search for header
-              if '#NAME' not in gene_name:
+              if '#name' not in gene_name:
                 try:
                   # get each gene's significance
                   significance = get_significance(gene_name, SOURCES[source], num_diseases)
