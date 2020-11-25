@@ -7,23 +7,23 @@ from datetime import date, timedelta, datetime
 today = date.today().strftime("%Y/%m/%d")
 month_ago = (datetime.today() - timedelta(days=155)).strftime("%Y/%m/%d")
 
-f = open("data/ucsc-data/refGene.txt", "r")
+f = open("data/ucsc-data/rn6.refGene.gtf", "r")
 list_append = {}
 for lines in f.readlines():
-    # if 'transcript' in lines.split("\t")[2]:
-        # gene_name = (lines.split("\t")[8].split(";")[0].replace("gene_id ", "").replace('"', '')).upper()
-        # chr_id = lines.split("\t")[0].replace("chr","")
-        # start = lines.split("\t")[3]
-        # lenght = abs(int(lines.split("\t")[3])-int(lines.split("\t")[4]))
-        # list_append[gene_name] = [gene_name, chr_id, start, lenght]
-    list_append[(lines.split("\t")[12]).upper()] = [(lines.split("\t")[12]).upper(), lines.split("\t")[2].replace("chr",""), lines.split("\t")[4],abs(int(lines.split("\t")[4])-int(lines.split("\t")[5])) ]
+    if 'transcript' in lines.split("\t")[2]:
+        gene_name = (lines.split("\t")[8].split(";")[0].replace("gene_id ", "").replace('"', '')).upper()
+        chr_id = lines.split("\t")[0].replace("chr","")
+        start = lines.split("\t")[3]
+        lenght = abs(int(lines.split("\t")[3])-int(lines.split("\t")[4]))
+        list_append[gene_name] = [gene_name, chr_id, start, lenght]
+    #list_append[(lines.split("\t")[12]).upper()] = [(lines.split("\t")[12]).upper(), lines.split("\t")[2].replace("chr",""), lines.split("\t")[4],abs(int(lines.split("\t")[4])-int(lines.split("\t")[5])) ]
 
 
 directory = 'all_species_tsvs'
 name = []
 top_ten_citation = {}
 # os.listdir(directory)
-for filename in ['homo-sapiens-citation-information.tsv']:
+for filename in ['rattus-norvegicus-citation-information.tsv']:
     if filename.endswith(".tsv"):
         new_rows = []
         tsv_file = open(os.path.join(directory, filename), encoding = "ISO-8859-1")
