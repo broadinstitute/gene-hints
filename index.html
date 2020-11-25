@@ -4,13 +4,15 @@
   <title>Gene Hints</title>
   <style>
     body {
-      font: 16px Arial;
+      font: 14px Arial;
       line-height: 19.6px;
       padding: 0 15px;
     }
-    h1 {
+    h1, .control-container, .wrapper, .why, .by {
       display: flex;
-      justify-content: center;
+      justify-content: center
+    }
+    h1 {
       margin: 140px auto 60px auto;
     }
     h1 small {
@@ -23,16 +25,28 @@
       margin: 0 auto;
     }
     .control-container {
-      display: flex;
-      justify-content: center;
+      font-size: 14px;
       margin-left: 130px;
     }
     .wrapper {
-      display: flex;
-      justify-content: center;
       margin-left: -160px;
+      height: 250px;
       margin-top: 40px;
     }
+    .why h3 {
+      color: #333;
+    }
+    .why div {
+      font-size: 16px;
+      text-align: center;
+      color: #6f6f6f;
+      margin: 0 60px;
+    }
+    .by {
+      text-align: center;
+      color: #6f6f6f;
+    }
+
     a, a:visited {text-decoration: none;}
     a:hover {text-decoration: underline;}
     a, a:hover, a:visited, a:active {color: #0366d6;}
@@ -41,8 +55,6 @@
       float: left;
       font-size: 14px;
     }
-
-    #ideogram-container {z-index: -1}
 
     #search-container {
       height: 26px;
@@ -56,9 +68,9 @@
       padding-left: 3px;
       width: 200px;
       height: 20px;
-      font-size: 14px;
       border-radius: 3px;
       border: 1px solid #888;
+      font-size: 14px;
     }
 
     #search-button {
@@ -142,6 +154,15 @@
     </div>
     <div class="wrapper">
       <div id="ideogram-container" style="visibility: hidden;"></div>
+    </div>
+    <div class="why">
+      <div><h3>Easy</h3> Provide an effortless way to discover interesting genes to search.  Show related genes to foster exploration.  Describe with human-friendly terms.</div>
+      <div><h3>Visual</h3> Engage users with interactive, graphical landmarks across the genome.  Complement existing gene search in any web application.</div>
+      <div><h3>Robust</h3> Build atop <a href="https://github.com/eweitz/ideogram" target="_blank">Ideogram.js</a>, a reusable genomic UI component.  Use genomic data processed from <a href="https://ncbi.nlm.nih.gov/pubmed" target="_blank">PubMed</a> and other databases, without&nbsp;managing a backend.</div>
+    </div>
+    <div style="margin-top: 80px;">
+      <p class="by">Gene Hints is developed by&nbsp;<a href="https://github.com/eweitz" target="_blank">Eric Weitz</a>,&nbsp;<a href="https://github.com/Marianie-Simeon" target="_blank">Marianie Simeon</a>,&nbsp;and&nbsp;<a href="https://github.com/MarianneRay" target="_blank">Marianne Ray</a>&nbsp;at the Broad Institute of MIT and Harvard.</p>
+      <p class="by">Source code is&nbsp;<a href="https://github.com/broadinstitute/gene-hints" target="_blank">freely available in GitHub</a>&nbsp;under the BSD-3 license.  For help, bug reports, or feature requests, please&nbsp;<a href="https://github.com/broadinstitute/gene-hints/issues" target="_blank">open an issue</a>&nbsp;there!</p>
     </div>
   </div>
   <script type="text/javascript">
