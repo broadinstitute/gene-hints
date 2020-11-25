@@ -103,6 +103,10 @@ def get_significance(gene, source, num_diseases):
       if disease != 'Other' or 'Other' not in top_disease_associations:
         top_disease_associations.append(disease)
 
+  if 'Other' in top_disease_associations:
+    # move Other to the back of the list
+    top_disease_associations.append(top_disease_associations.pop(top_disease_associations.index('Other')))
+
   # format and return
   return f"Involved in {'; '.join(top_disease_associations).lower()}"
 
