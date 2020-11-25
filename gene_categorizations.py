@@ -109,7 +109,6 @@ def add_significance_to_TSVs():
         # set up file writer
         with open(f"{processed_dir}/{filename}", 'wt') as write_file:
           writer = csv.writer(write_file, delimiter='\t')
-          writer.writerow()
           for row in reader:
             gene_name = row[0]
             
