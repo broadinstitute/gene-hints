@@ -9,6 +9,7 @@ import csv
 import sys
 import os 
 
+from itertools import takewhile
 from collections import Counter
 
 base_url = "https://www.disgenet.org/api"
@@ -16,6 +17,13 @@ base_url = "https://www.disgenet.org/api"
 # gene-disease associations
 gda = "gda/gene/"
 disease = "disease/"
+
+SOURCES = {
+  'homo-sapiens': 'CTD_human' , 
+  'mus-musculus': 'MGD',
+  'rattus-norvegicus': 'RGD',
+}
+
 
 def translate_disease(disease):
   disease_translations = {
@@ -46,6 +54,7 @@ def translate_disease(disease):
     return disease_translations[disease]
   except:
     return 'Other'
+
 
 def make_request(endpoint, params=None):
     """ 
@@ -80,20 +89,23 @@ def get_significance(gene, source, num_diseases):
   # tally disease class names
   tallied_disease_associations = Counter(disease_associations)
   
-  # get top n gene disease associations
-  top_disease_associations = [association for (association, _) in tallied_disease_associations.most_common(num_diseases)]
+  # get top n + 3 gene disease associations
+  # + 3 to account for multiple 'other' disease classes (update to n-related variable)
+  disease_associations = [association for (association, _) in tallied_disease_associations.most_common(num_diseases + 3)]
 
-  # overwrite with layperson understandable terms
-  top_disease_associations = [translate_disease(disease) for disease in top_disease_associations]
-  
+  top_disease_associations = []
+  for disease in disease_associations: 
+    # limit top disease associations
+    if len(top_disease_associations) < num_diseases: 
+      # overwrite with layperson understandable terms 
+      disease = translate_disease(disease) 
+      # only allow single other association
+      if disease != 'Other' or 'Other' not in top_disease_associations:
+        top_disease_associations.append(disease)
+
   # format and return
   return f"Involved in {'; '.join(top_disease_associations).lower()}"
 
-SOURCES = {
-  'homo-sapiens': 'CTD_human' , 
-  'mus-musculus': 'MGD',
-  'rattus-norvegicus': 'RGD',
-}
 
 def add_significance_to_TSVs():
   num_diseases = 3
