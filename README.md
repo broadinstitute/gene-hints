@@ -5,7 +5,7 @@ Discoverability for gene search
 
 Gene Hints complements existing gene search in any web application, and requires no backend to operate.
 
-# Explore gene search visually
+# User interface
 ## Show interesting genes by default
 Here, a manually curated set of gene hints -- based on the most cited genes -- is shown for human.
 ![Gene Hints](https://raw.githubusercontent.com/broadinstitute/gene-hints/main/img/01-gene-hints.png)
