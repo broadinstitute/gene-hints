@@ -13,6 +13,7 @@
       justify-content: center
     }
     h1 {
+      font-size: 32px;
       margin: 140px auto 60px auto;
     }
     h1 small {
@@ -304,7 +305,13 @@
       if ('default-hints' in urlParams) {
         config.annotationsPath = urlParams['default-hints'];
       } else {
-        config.annotationsPath = 'homo-sapiens-cited-genes.tsv';
+        if (organism !== 'homo-sapiens') {
+          const baseUrl = 'https://raw.githubusercontent.com/broadinstitute/gene-hints/marianne/all_species_tsv/';
+          const fileName = `${organism}-citation-information.tsv`;
+          config.annotationsPath = baseUrl + fileName;
+        } else {
+          config.annotationsPath = 'homo-sapiens-cited-genes.tsv';
+        }
       }
 
       ideogram = Ideogram.initGeneHints(config);
