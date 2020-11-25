@@ -1,0 +1,4 @@
+#name	chromosome	start	length	color	full_name	citations_from_2020/06/22_to_2020/11/24	significance
+atpA	1	47098410	35705	#73af42	ATP synthase CF1 alpha subunit	1	n/a
+rpl23	17	37004112	5862	#73af42	ribosomal protein L23	1	n/a
+rpl14	3	40498829	11249	#73af42	ribosomal protein L14	1	n/a
