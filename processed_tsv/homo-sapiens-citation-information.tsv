@@ -1,10 +1,10 @@
-#name	chromosome	start	length	color	full_name	citations_from_2020/06/22_to_2020/11/24	significance
-MTOR	1	11203954	5641	#73af42	mechanistic target of rapamycin kinase	9	Involved in cancer; other; inherited and newborn diseases
-KRAS	12	25358179	45684	#73af42	KRAS proto-oncogene, GTPase	9	Involved in cancer; gastrointestinal diseases; other
-CRP	1	159682078	2301	#73af42	C-reactive protein	9	Involved in other; other; gastrointestinal diseases
-MYC	17	48585799	23063	#73af42	MYC proto-oncogene, bHLH transcription factor	8	Involved in cancer; gastrointestinal diseases; other
-PTEN	9	33673501	3917	#73af42	phosphatase and tensin homolog	8	Involved in cancer; other; inherited and newborn diseases
-EGFR	7	55086709	152021	#73af42	epidermal growth factor receptor	8	Involved in cancer; gastrointestinal diseases; other
-MMP9	20	44637546	7654	#73af42	matrix metallopeptidase 9	7	Involved in cancer; other; gastrointestinal diseases
-NLRP3	1	247579474	32645	#73af42	NLR family pyrin domain containing 3	7	Involved in other; other; cancer
-CDKN2A	4	184365788	4429	#73af42	cyclin dependent kinase inhibitor 2A	7	Involved in cancer; gastrointestinal diseases; other
+#name	chromosome	start	length	color	full_name	citations_from_2020-06-22_to_2020-11-24	significance
+MTOR	1	11143897	5641	#73af42	mechanistic target of rapamycin kinase	9	Involved in cancer; inherited and newborn diseases; gastrointestinal diseases
+KRAS	12	25205245	45684	#73af42	KRAS proto-oncogene, GTPase	9	Involved in cancer; gastrointestinal diseases; inherited and newborn diseases
+CRP	1	159712288	2301	#73af42	C-reactive protein	9	Involved in heart and blood diseases; gastrointestinal diseases; nutrition and metabolism related diseases
+MYC	8	127735433	7518	#73af42	MYC proto-oncogene, bHLH transcription factor	8	Involved in cancer; gastrointestinal diseases; other
+PTEN	9	33673503	3917	#73af42	phosphatase and tensin homolog	8	Involved in cancer; other; inherited and newborn diseases
+EGFR	7	55019016	149619	#73af42	epidermal growth factor receptor	8	Involved in cancer; gastrointestinal diseases; female genital organ and pregnancy diseases
+MMP9	20	46008907	7654	#73af42	matrix metallopeptidase 9	7	Involved in cancer; other; nervous system diseases
+NLRP3	1	247416172	32645	#73af42	NLR family pyrin domain containing 3	7	Involved in inherited and newborn diseases; gastrointestinal diseases; immune system diseases
+CDKN2A	4	183444635	4429	#73af42	cyclin dependent kinase inhibitor 2A	7	Involved in cancer; gastrointestinal diseases; other

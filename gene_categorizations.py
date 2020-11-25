@@ -68,9 +68,9 @@ def make_request(endpoint, params=None):
     ) as e:
         raise RuntimeError(f"Request failed: {e}")
 
-def get_significance(gene, num_diseases): 
+def get_significance(gene, source, num_diseases): 
   # get all diseases associated to gene
-  gene_related_diseases = make_request(endpoint=f"{gda}{gene}")
+  gene_related_diseases = make_request(endpoint=f"{gda}{gene}", params=f"source={source}&format=json")
   disease_associations = []
   for disease in gene_related_diseases:
     # skip instances with no disease class name
@@ -89,6 +89,11 @@ def get_significance(gene, num_diseases):
   # format and return
   return f"Involved in {'; '.join(top_disease_associations).lower()}"
 
+SOURCES = {
+  'homo-sapiens': 'CTD_human' , 
+  'mus-musculus': 'MGD',
+  'rattus-norvegicus': 'RGD',
+}
 
 def add_significance_to_TSVs():
   num_diseases = 3
@@ -96,33 +101,35 @@ def add_significance_to_TSVs():
   processed_dir = 'processed_tsv'
 
   for filename in os.listdir(original_dir):
-    # only process human-related TSV files
-    if filename.startswith('homo-sapiens') and filename.endswith(".tsv"):
-      # set up file reader
-      with open(f"{original_dir}/{filename}", encoding = "ISO-8859-1") as read_file:
-        reader = csv.reader(read_file, delimiter="\t")
-        
-        # set up file writer
-        with open(f"{processed_dir}/{filename}", 'wt') as write_file:
-          writer = csv.writer(write_file, delimiter='\t')
-          for row in reader:
-            gene_name = row[0]
-            
-            if '#name' in gene_name:
-              # copy over the header 
-              processed_row = row
-            else:
-              try:
-                # get each gene's significance
-                significance = get_significance(gene_name, num_diseases)
-                row[7] = significance
-                processed_row = row
-              except:
-                print(f"Failed to retrieve significance, skipping {gene_name}.")
-                continue
-            # write to the processed file
-            writer.writerow(processed_row) 
+    # only process human, rat and mouse TSV files
+    for source in SOURCES.keys():
+      if filename.startswith(source) and filename.endswith(".tsv"): 
+        print(f"Processing {source} file.")
+        # set up file reader
+        with open(f"{original_dir}/{filename}", encoding = "ISO-8859-1") as read_file:
+          reader = csv.reader(read_file, delimiter="\t")
+          
+          # set up file writer
+          with open(f"{processed_dir}/{filename}", 'wt') as write_file:
+            writer = csv.writer(write_file, delimiter='\t')
+            for row in reader:
+              gene_name = row[0].upper()
               
+              if '#NAME' in gene_name:
+                # copy over the header 
+                processed_row = row
+              else:
+                try:
+                  # get each gene's significance
+                  significance = get_significance(gene_name, SOURCES[source], num_diseases)
+                  row[7] = significance
+                  processed_row = row
+                except:
+                  print(f"Failed to retrieve significance, skipping {gene_name}.")
+                  continue
+              # write to the processed file
+              writer.writerow(processed_row) 
+                
 # run the script! 
 add_significance_to_TSVs()
 

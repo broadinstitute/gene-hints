@@ -1,0 +1,7 @@
+#name	chromosome	start	length	color	full_name	citations_from_2020/06/22_to_2020/11/24	significance
+Hmgb1	16	37500017	2222	#73af42	high mobility group box 1	3	Involved in other; heart and blood diseases; cancer
+Fos	6	109300433	2866	#73af42	Fos proto-oncogene, AP-1 transcription factor subunit	2	Involved in other; heart and blood diseases; cancer
+Nlrp3	10	45893018	24269	#73af42	NLR family, pyrin domain containing 3	2	Involved in gastrointestinal diseases
+Ccl2	19	10674189	6956	#73af42	C-C motif chemokine ligand 2	2	Involved in other; heart and blood diseases; respiratory system diseases
+Aqp4	18	6766009	15832	#73af42	aquaporin 4	1	Involved in other; nervous system diseases; eye diseases
+Mmp2	3	151307317	48084	#73af42	matrix metallopeptidase 2	1	Involved in other; heart and blood diseases; gastrointestinal diseases
