@@ -101,3 +101,10 @@ typings/
 
 # TernJS port file
 .tern-port
+
+# data folder
+data/
+
+# data folder
+all_species_tsv/
+.DS_Store
