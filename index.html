@@ -100,16 +100,16 @@
     <div class="control-container">
       <div>
         <select>
-          <optgroup label="Model organisms">
+          <!-- <optgroup label="Model organisms"></optgroup> -->
             <option value="homo-sapiens" selected>Human (Homo sapiens)</option>
             <option value="mus-musculus">Mouse (Mus musculus)</option>
             <option value="rattus-norvegicus">Rat (Rattus norvegicus)</option>
             <!-- <option value="drosophila-melanogaster">Fly (Drosophila melanogaster)</option> -->
             <!-- <option value="caenorhabditis-elegans">Worm (Caenorhabditis elegans)</option> -->
-            <option value="danio-rerio">Zebrafish (Danio rerio)</option>
+            <!-- <option value="danio-rerio">Zebrafish (Danio rerio)</option> -->
             <!-- <option value="arabidopsis-thaliana">Thale cress (Arabidopsis thaliana)</option> -->
             <!-- <option value="saccharomyces-cerevisiae">Yeast (Saccharomyces cerevisiae)</option> -->
-          </optgroup>
+          <!-- </optgroup>
           <optgroup label="Vertebrates">
             <option value="pan-troglodytes">Chimpanzee (Pan troglodytes)</option>
             <option value="macaca-mulatta">Macaque (Macaca mulatta)</option>
@@ -118,9 +118,9 @@
             <option value="canis-lupus-familiaris">Dog (Canis lupus familiaris)</option>
             <option value="equus-caballus">Horse (Equus caballus)</option>
             <option value="bos-taurus">Cow (Bos taurus)</option>
-            <option value="sus-scrofa">Pig (Sus scrofa)</option>
+            <option value="sus-scrofa">Pig (Sus scrofa)</option> -->
             <!-- <option value="petromyzon-marinus">Lamprey (Petromyzon marinus)</option> -->
-          </optgroup>
+          <!-- </optgroup> -->
           <!-- <optgroup label="Plants">
             <option value="zea-mays">Maize (Zea mays)</option>
             <option value="oryza-sativa">Rice (Oryza sativa)</option>
@@ -216,14 +216,16 @@
     }
     async function handleOrganism() {
       urlParams.org = getOrganism();
-      urlParams.q = getGene();
+      delete urlParams
       updateUrl();
 
       config.organism = urlParams.org;
       // const banded = !['homo sapiens', 'mus musculus'].includes(selectedOrg);
       // config.showFullyBanded = banded;
+      config.annotationsPath = getAnnotsPath(config.organism)
       delete ideogram;
-      ideogram = Ideogram.initRelatedGenes(config);
+
+      ideogram = Ideogram.initGeneHints(config);
     }
 
     function getGene() {
@@ -260,6 +262,20 @@
 
     function reportRelatedGenes() {
       console.log(this.relatedGenesAnalytics)
+    }
+
+    function getAnnotsPath(organism) {
+      let annotsPath
+      if (organism !== 'homo-sapiens') {
+        const baseUrl = 'https://raw.githubusercontent.com/broadinstitute/gene-hints/marianne/processed_tsv/';
+        const fileName = `${organism}-citation-information.tsv`;
+        annotsPath = baseUrl + fileName;
+      } else {
+        annotsPath = 'homo-sapiens-cited-genes.tsv';
+      }
+      console.log('annotsPath')
+      console.log(annotsPath)
+      return annotsPath
     }
 
     function onClickAnnot(annot) {
@@ -305,13 +321,7 @@
       if ('default-hints' in urlParams) {
         config.annotationsPath = urlParams['default-hints'];
       } else {
-        if (organism !== 'homo-sapiens') {
-          const baseUrl = 'https://raw.githubusercontent.com/broadinstitute/gene-hints/marianne/all_species_tsv/';
-          const fileName = `${organism}-citation-information.tsv`;
-          config.annotationsPath = baseUrl + fileName;
-        } else {
-          config.annotationsPath = 'homo-sapiens-cited-genes.tsv';
-        }
+        config.annotationsPath = getAnnotsPath(organism)
       }
 
       ideogram = Ideogram.initGeneHints(config);
