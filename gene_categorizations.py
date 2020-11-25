@@ -108,7 +108,7 @@ def get_significance(gene, source, num_diseases):
     top_disease_associations.append(top_disease_associations.pop(top_disease_associations.index('Other')))
 
   # format and return
-  return f"Involved in {'; '.join(top_disease_associations).lower()}"
+  return f"Involved in {'; '.join(top_disease_associations).lower()}" if top_disease_associations else None
 
 
 def add_significance_to_TSVs():
