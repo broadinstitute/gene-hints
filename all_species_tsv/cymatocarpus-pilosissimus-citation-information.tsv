@@ -1,0 +1,4 @@
+#name	chromosome	start	length	color	full_name	citations_from_2020/06/22_to_2020/11/24	significance
+atpA	1	47098410	35705	#73af42	ATPase alpha subunit	1	n/a
+clpP	19	6361541	8712	#73af42	ATP-dependent protease subunit	1	n/a
+rps19	19	42364324	12669	#73af42	ribosomal protein S19	1	n/a

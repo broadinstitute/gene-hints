@@ -1,0 +1,5 @@
+#name	chromosome	start	length	color	full_name	citations_from_2020/06/22_to_2020/11/24	significance
+ATP8	18	55313658	156889	#73af42	ATP synthase F0 subunit 8	1	n/a
+ATP6	17	40610895	63702	#73af42	ATP synthase F0 subunit 6	1	n/a
+COX2	1	244998959	9400	#73af42	cytochrome c oxidase subunit II	1	n/a
+COX1	7	1004487	10698	#73af42	cytochrome c oxidase subunit I	1	n/a
