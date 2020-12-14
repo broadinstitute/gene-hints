@@ -103,8 +103,10 @@ typings/
 .tern-port
 
 # data folder
-data/
+creating_citation_counts_tsv/data
 
-# data folder
-all_species_tsvs/
+# DS_Store folder
 .DS_Store
+
+# DS_Store folder
+creating_citation_counts_tsv/tsv

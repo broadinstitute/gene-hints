@@ -2,238 +2,211 @@ import os
 import findspark
 import pyspark
 import shortuuid
+import requests
+from tqdm import tqdm
+from operator import add
+from datetime import date, timedelta, datetime
 import shutil
 import time
-import os
 import csv
+from itertools import takewhile
+from collections import Counter
+import json
+import sys
 
-# 
-findspark.init()
+def getting_recent_gene2pubmed(species):
+    gene2pubmed = (sc.textFile(f"creating_citation_counts_tsv/data/{species}/gene2pubmed")
+                    .filter(lambda x: x[0] != '#')
+                    .map(lambda x: x.split('\t'))
+                    .map(lambda x: ( str(x[2]), int(x[1]))))
+    print(gene2pubmed.take(1))
+    t1 = time.time()
+    pubmeds_set = set([x[0] for x in gene2pubmed.collect()])
+    t2 = time.time()
 
-# 
-sc = pyspark.SparkContext()
+    print("time taken", t2 - t1)
 
-#
-shortuuid.uuid()
+    year_pmid = (sc.textFile("creating_citation_counts_tsv/data/recent_pmid_year.ssv")
+                    .map(lambda x: x.split())
+                    .map(lambda x: (str(x[1]), int(x[0])))
+                    .filter(lambda x: x[0] in pubmeds_set))
+    print(year_pmid.take(1))
+    
+    gene2pubmed_to_year = gene2pubmed.join(year_pmid).map(lambda x: (x[1][0], x[0]))
+    print(gene2pubmed_to_year.take(1))
+    gene_counts = gene2pubmed.join(year_pmid).map(lambda x: (x[1][0], 1)).reduceByKey(add).join(gene2pubmed_to_year).map(lambda x: ( str(x[0]), (x[1][1] ,x[1][0])))
+    print(gene_counts.take(1))
+    return gene_counts
 
-#
-assembly = ''
+def getting_gene_info(species, gene_counts):
+    gene_info = (sc.textFile(f"creating_citation_counts_tsv/data/{species}/gene_info")
+                    .filter(lambda x: x[0] != '#')
+                    .map(lambda x: x.split('\t'))
+                    .map(lambda x: (str(x[1]), (str(x[0]), str(x[2]), str(x[6]), str(x[8]))))).join(gene_counts).map(lambda x: (x[1][0][1].upper(), (x[0], x[1][0][2], x[1][0][3], x[1][1][1], x[1][0][0])))
+    print(gene_info.take(1))
+    print(gene_info.collect()[0][1][4])
+    tax_id = str(gene_info.collect()[0][1][4])
+    print(tax_id)
 
-#
-op = os.path
-
-#
-data_dir = op.expanduser("data")
-output_dir = op.join(data_dir, assembly)   # where all of the intermediate output will be stored
-base_ucsc_dir = op.join(data_dir, 'ucsc-data/{}'.format(assembly))  # where all of the files downloaded from UCSC will be stored
-
-
-
-# create a directory to store intermediate output files
-def get_outfile(table_name):
-    outfile = op.join(output_dir, 'genbank-output/{}'.format(table_name))
-    if op.exists(outfile):
-        shutil.rmtree(outfile)
-    return outfile
-
-# Loading the refgene data
-base_dir=op.join(op.expanduser("data/genbank-data/"), assembly)
-
-gene2pubmed = (sc.textFile(op.join(base_dir, "gene2pubmed"))
+    taxonomy = (sc.textFile("creating_citation_counts_tsv/taxonomy_name")
                         .filter(lambda x: x[0] != '#')
                         .map(lambda x: x.split('\t'))
-                        .map(lambda x: ((int(x[0]), int(x[1])), int(x[2])))
-                     )
-print(gene2pubmed.take(1))
-
-taxonomy = (sc.textFile(op.join(base_dir, "taxonomy"))
-                        .filter(lambda x: x[0] != '#')
-                        .map(lambda x: x.split('\t'))
+                        .filter(lambda x: int(tax_id) == int(x[0]) )
+                        .filter(lambda x: "scientific name" in x[6] )
                         .map(lambda x: ((str(x[0]), str(x[2]), str(x[6]))))
                      )
-print(taxonomy.take(1))
+    print(taxonomy.collect()[0][1])
+    tax_name = taxonomy.collect()[0][1]
 
-ucsc_refGene = (sc.textFile(op.join(base_ucsc_dir, "refGene.txt"))
-                        .filter(lambda x: x[0] != '#')
-                        .map(lambda x: x.split('\t'))
-                        .map(lambda x: ((str(x[2]).replace("chr",""), abs(int(x[4]) - int(x[5])), str(x[12]))))
-                     )
-print(ucsc_refGene.take(1))
+    return gene_info, tax_name
 
-ucsc_refGene_list = ucsc_refGene.take(ucsc_refGene.count())
-ucsc_refGene_dict = {}
-for ucsc_refGene_pair in ucsc_refGene_list:
-    if ucsc_refGene_pair[2].upper() not in ucsc_refGene_dict.keys():
-        ucsc_refGene_dict[ucsc_refGene_pair[2].upper()] = [ucsc_refGene_pair[0], ucsc_refGene_pair[1]]
+def getting_refGene(species, gene_info):    
+    print(f"Getting gene refGene for {species}")  
+    for refGene_file in os.listdir(f"creating_citation_counts_tsv/data/{species}"):
+        if refGene_file != "gene_info" and "gene2pubmed":
+            refGene = (sc.textFile(f"creating_citation_counts_tsv/data/{species}/{refGene_file}")
+                    .filter(lambda x: x[0] != '#')
+                    .map(lambda x: x.split('\t'))
+                    .filter(lambda x: 'transcript' in x[2])
+                    .map(lambda x: (str(x[8]).split(";")[0].replace("gene_id ", "").replace('"', '').upper(), (int(x[3]), int(abs(int(x[3])-int(x[4])))))).join(gene_info).map(lambda x: (x[0], (x[1][1][1], x[1][0][0], x[1][0][1], "#73af42", x[1][1][2], x[1][1][3]))).reduceByKey(lambda a, b: a).map(lambda x: (x[0], x[1][0], x[1][1], x[1][2], "#73af42", x[1][4], x[1][5])))
+            print(refGene.take(1))
+            return refGene
 
-taxonomy_list = taxonomy.take(taxonomy.count())
-taxonomy_dict = {}
-for taxonomy_pair in taxonomy_list:
-    if taxonomy_pair[0] not in taxonomy_dict.keys():
-        taxonomy_dict[taxonomy_pair[0]] = taxonomy_pair[1]
-    elif "scientific name" in taxonomy_pair[2]:
-        taxonomy_dict[taxonomy_pair[0]] = taxonomy_pair[1]
+def translate_disease(disease):
+  disease_translations = {
+    'Neoplasms' : 'Cancer',
+    'Musculoskeletal Diseases' : 'Muscle and Bone Diseases',
+    'Digestive System Diseases' : 'Gastrointestinal Diseases',
+    'Stomatognathic Diseases' : 'Mouth and Jaw Diseases',
+    'Respiratory Tract Diseases' : 'Respiratory System Diseases',
+    'Otorhinolaryngologic Diseases' : 'Ears, Throat and Nose Diseases',
+    'Nervous System Diseases' : 'Nervous System Diseases',
+    'Eye Diseases' : 'Eye Diseases',
+    'Male Urogenital Diseases' : 'Male Genital Organ Diseases',
+    'Female Urogenital Diseases and Pregnancy Complications' : 'Female Genital Organ and Pregnancy Diseases',
+    'Cardiovascular Diseases' : 'Heart and Blood Diseases',
+    'Hemic and Lymphatic Diseases' : 'Blood Diseases',
+    'Congenital, Hereditary, and Neonatal Diseases and Abnormalities' : 'Inherited and Newborn Diseases',
+    'Skin and Connective Tissue Diseases' : 'Skin Diseases',
+    'Nutritional and Metabolic Diseases' : 'Nutrition and Metabolism Related Diseases',
+    'Endocrine System Diseases' : 'Hormone Related Diseases',
+    'Immune System Diseases' : 'Immune System Diseases',
+    'Disorders of Environmental Origin' : 'Environmental Disorders',
+    'Occupational Diseases' : 'Work-Related Diseases',
+    'Substance-Related Disorders' : 'Substance-Related Disorders',
+    'Wounds and Injuries' : 'Wounds and Injuries',
+    'Behavior and Behavior Mechanisms' : 'Behavior',
+  }
+  try: 
+    return disease_translations[disease]
+  except:
+    return 'Other'
 
-t1 = time.time()
-pubmeds_set = set([x[1] for x in gene2pubmed.collect()])
-t2 = time.time()
-print("time taken", t2 - t1)
+def make_request(endpoint, params=None):
+    """ 
+    Makes a request to GWAS API with specified endpoint and parameters.
+    Returns the response in json.
+    Raises on request failure.
+    """
+    base_url = "https://www.disgenet.org/api"
+    headers = {"content-type": "application/json"}
+    try:
+        response = requests.get(
+            url=f"{base_url}/{endpoint}", params=params, headers=headers
+        )
+        response.raise_for_status()
+        return response.json()
+    except (
+        requests.exceptions.ConnectionError,
+        requests.exceptions.HTTPError,
+        requests.exceptions.Timeout,
+    ) as e:
+        # raise RuntimeError(f"Request failed: {e}")
+        return [{"disease_class_name":[]}]
 
-from pyspark import SparkContext, SparkConf
+def get_significance(gene, source, num_diseases): 
+  # get all diseases associated to gene
+  gda = "gda/gene/"
+  gene_related_diseases = make_request(endpoint=f"{gda}{gene}", params=f"source={source}&format=json")
+  disease_associations = []
+  for disease in gene_related_diseases:
+    # skip instances with no disease class name
+    if disease['disease_class_name']:
+      # get base disease class and strip whitespaces
+      disease_associations.append(disease['disease_class_name'].split(';')[0].strip())
+  
+  if not disease_associations:
+    disease_associations.append("None")
 
-base_dir = op.join(data_dir, 'genbank-data/')
-taxid_gene_info = (sc.textFile(op.join(base_dir, 'gene_info'))
-                   .filter(lambda x: x[0] != '#')
-                   .map(lambda x: x.split('\t'))
-                   .map(lambda x: ((int(x[0]), int(x[1])),(x[2], x[8], x[9])))
-                   )
-print(taxid_gene_info.take(1))
+  # tally disease class names
+  tallied_disease_associations = Counter(disease_associations)
+  
+  # get top n + 3 gene disease associations
+  # + 3 to account for multiple 'other' disease classes (update to n-related variable)
+  disease_associations = [association for (association, _) in tallied_disease_associations.most_common(num_diseases + 3)]
 
-taxid_gene_refseq_id = (sc.textFile(op.join(base_dir, "gene2refseq"))
-                        .filter(lambda x: x[0] != '#')
-                        .map(lambda x: x.split('\t'))
-                        .map(lambda x: ((int(x[0]), int(x[1]), str(x[9]), str(x[10])), (x[3].split('.')[0])))
-                        )
-print(taxid_gene_refseq_id.take(1))
+  top_disease_associations = []
+  for disease in disease_associations: 
+    # limit top disease associations
+    if len(top_disease_associations) < num_diseases: 
+      # overwrite with layperson understandable terms 
+      disease = translate_disease(disease) 
+      # only allow single other association
+      if disease != 'Other' or 'Other' not in top_disease_associations:
+        top_disease_associations.append(disease)
 
-taxid_gene_refseq_id_list = taxid_gene_refseq_id.take(taxid_gene_refseq_id.count())
-taxid_gene_refseq_id_dict = {}
-for taxid_gene_refseq_id_pair in taxid_gene_refseq_id_list:
-    if taxid_gene_refseq_id_pair[0][1] not in taxid_gene_refseq_id_dict.keys():
-        taxid_gene_refseq_id_dict[str(taxid_gene_refseq_id_pair[0][1])] = [taxid_gene_refseq_id_pair[0][2], taxid_gene_refseq_id_pair[0][3]]
-import time
-t1 = time.time()
-taxid_gene_info_refseq = taxid_gene_info.join(taxid_gene_refseq_id)
+  if 'Other' in top_disease_associations:
+    # move Other to the back of the list
+    top_disease_associations.append(top_disease_associations.pop(top_disease_associations.index('Other')))
 
-t2 = time.time()
-print("time taken", t2 - t1)
+  # format and return
+  return f"Involved in {'; '.join(top_disease_associations).lower()}" if top_disease_associations else None
 
-len(pubmeds_set)
-year_pmid = (sc.textFile(op.join(base_dir, 'recent_pmid_year.ssv'))
-                  .map(lambda x: x.split())
-                  .map(lambda x: (int(x[0]), int(x[1])))
-                  .filter(lambda x: x[1] in pubmeds_set))
-year_pmid_collected = year_pmid.collect()
 
-pmid_year = dict([(x[1], x[0]) for x in year_pmid_collected])
-
-print([k for k in list(pmid_year.values())[:10]])
-
-taxid_gene_info_pubmed = (taxid_gene_info.join(gene2pubmed)
-                    .filter(lambda x: x[1][1] in pmid_year)
-                                 .map(lambda x: ((x[0][0], x[0][1], x[1][1]), x[1])))
-print(taxid_gene_info_pubmed.take(1))        
-
-# get total citation counts over all time for each taxid, gene_id combo
-gene_counts = sorted(taxid_gene_info_pubmed.map(lambda x: ((x[0][0], x[0][1]), (x[1][0], 1)))
-.reduceByKey(lambda x1, x2: (x1[0], x1[1] + x2[1]))
-.collect(), key=lambda x: -x[1][1])
-
-gene_counts[:3]
-print(gene_counts[:3])
-
-taxid_gene_info_year = (taxid_gene_info_pubmed.map(lambda x: ((x[0][0], x[0][1], pmid_year[x[1][1]]), x[1]))
-                        .map(lambda x: ((x[0][0], x[0][1], pmid_year[x[1][1]]), (x[1][0], 1)))
-                                 .reduceByKey(lambda x1, x2: (x1[0], x1[1] + x2[1])))
-print(taxid_gene_info_year.take(1))
-print(taxid_gene_info_year.count())
-print(taxid_gene_info_year.filter(lambda x: x[1][0][2] == 'rRNA').take(1))
-
-genes_per_year = dict(taxid_gene_info_pubmed.map(lambda x: ((pmid_year[x[1][1]], x[0][1]), 1))
- .reduceByKey(lambda x1,x2: x1+x2)
- .map(lambda x: (x[0][0], 1))
- .reduceByKey(lambda x1,x2: x1+x2)
- .collect())
-
-citations_per_year = dict((taxid_gene_info_pubmed.map(lambda x: (pmid_year[x[1][1]], 1))
-                      .reduceByKey(lambda x1,x2: x1+x2)
-                      .collect()))
-
-citation_genes = sorted(taxid_gene_info_pubmed.map(lambda x: (x[1][1], 1))
- .reduceByKey(lambda x1, x2: x1 + x2)
- .collect(), key=lambda x: -x[1])
-
-print("citation_genes:", citation_genes[:10])
-
-gene_types_citations = (taxid_gene_info_pubmed.map(lambda x: (x[1][0][2], 1))
- .reduceByKey(lambda x1,x2: x1+x2)
- .collect()
-)
-print("gene_types_citations:", gene_types_citations)
-
-gene_types_counts = (taxid_gene_info_pubmed.map(lambda x: ((x[1][0][2], x[0][1]),1))
- .reduceByKey(lambda x1,x2: x1+x2)
- .map(lambda x: (x[0][0], 1))
- .reduceByKey(lambda x1,x2: x1+x2)
- .collect())
-
-for gtc in gene_types_counts:
-    print(gtc[0], gtc[1])
-string_values = (taxid_gene_info_year.map(lambda x: "\t".join(map(str, 
-                 [x[0][0], x[0][1], x[0][2], x[1][0][0], x[1][0][1], x[1][0][2], x[1][1]
-                 ])))
-                 .collect())
-gene_id_dict = {}
-
-for values in string_values:
-    values_list = values.split("\t")
-    citation = values_list[-1]
-    gene_id = values_list[0]
-    gene_name = values_list[3]
-    gene_full_name = values_list[4]
-    gene_chromosome = "N/a"
-    gene_length = "N/A"
-    gene_start = "N/A"
-    if gene_name.upper() in ucsc_refGene_dict.keys():
-        print("in")
-        gene_chromosome = ucsc_refGene_dict[gene_name][0]
-        gene_length = ucsc_refGene_dict[gene_name][1]
-    if gene_id in taxid_gene_refseq_id_dict.keys(): 
-        print("in in")
-        gene_start = taxid_gene_refseq_id_dict[gene_id][0]
-        gene_length = taxid_gene_refseq_id_dict[gene_id][1]
-        print(gene_start)
+def create_tsv(refGene, tax_name, significance_SOURCES):
+    print("Get Top Ten")
+    top_ten_gene = sorted(refGene.collect(), key=lambda x: x[6])[-10:][::-1]
+    top_ten_gene_list = []
+    for gene_row in top_ten_gene:
+        gene_name = gene_row[0]
+        significance = get_significance(gene_name, significance_SOURCES, 3)
+        gene_row = gene_row + tuple([significance])
+        top_ten_gene_list.append(gene_row)
     
-    new_values = f"{gene_name}\t{gene_chromosome}\t{gene_start}\t{gene_length}\t#73af42\t{gene_full_name}\t{citation}"
-    if gene_id not in gene_id_dict.keys():
-        gene_id_dict[gene_id] = [new_values]
-    else: 
-        gene_id_dict[gene_id].append(new_values)
+    gene_species_name = tax_name.replace(" ", "-").replace("(", "-").replace(")", "-").replace("/", "-").replace("=", "-").lower()
+    print(gene_species_name)
 
-top_ten_citation = {}
-for gene_id_tax_id in gene_id_dict.keys():
-    rows = []
-    if gene_id_tax_id in taxonomy_dict.keys():
-        gene_species_name = taxonomy_dict[gene_id_tax_id].replace(" ", "_").replace("(", "_").replace(")", "_").replace("/", "_").replace("=", "_")
-        tsv_name= f'all_species_tsv/{gene_species_name}_citation_information.tsv'
-        print(tsv_name)    
-        for info in gene_id_dict[gene_id_tax_id]:
-            info_list = info.split("\t")
-            rows.append(info_list)
-        rows.sort(key=lambda x: x[-1])
-        top_ten_rows = rows[-10:][::-1]
-        with open(tsv_name, 'wt') as out_file:
-            tsv_writer = csv.writer(out_file, delimiter='\t')
-            tsv_writer.writerow(["#name", "chromosome", "start", "length", "color", "full_name"])
-            for ttr in top_ten_rows[:-1]:
-                tsv_writer.writerow(ttr)
-        top_ten_citation[gene_species_name] = top_ten_rows
-    print("gene_id_tax_id")
-    print(gene_id_tax_id)
+    
+    # Getting today date
+    today = date.today().strftime("%Y_%m_%d")
 
+    # Setting the 5 months time frame
+    days = 155
 
-with open('top_ten_citation_per_species.html', 'w') as f:
-    html_text = "<h1> The Top Ten Citation Per Species</h1><br>"
-    for tile_name in top_ten_citation.keys():
-        title = tile_name.replace("_", " ").upper()
-        html_text = html_text + f"<h2>{title}</h2> <table style='width:100%'>"
-        html_text = html_text + "<tr> <th>name</th> <th>chromosome</th> <th>start</th> <th>length</th> <th>color</th> <th>full_name</th> <th>Citations</th></tr>"
-        for line in top_ten_citation[tile_name]:
-            html_text = html_text + "<tr>"
-            for column in line:
-                html_text = html_text + f"<td>{column}</td>"
-            html_text = html_text + "</tr>"
-        html_text = html_text + "</table>"
-    f.write(html_text)
+    # Getting the date 5 months ago
+    month_ago = (datetime.today() - timedelta(days=155)).strftime("%Y_%m_%d")
+    citations = f"citations_from_{month_ago}_to_{today}"
+    tsv_name= f'tsv/{gene_species_name}-citation-information.tsv'
+    with open(tsv_name, 'wt') as out_file:
+        tsv_writer = csv.writer(out_file, delimiter='\t')
+        tsv_writer.writerow(["#name", "chromosome", "start", "length", "color", "full_name", citations, "significance"])
+        for gene in top_ten_gene_list:
+            tsv_writer.writerow(gene)
+    
 
+if __name__ == "__main__":
+    list_of_species = ["human", "mouse", "rat"]
+    significance_SOURCES = {
+        "human": 'CTD_human' , 
+        "mouse": 'MGD',
+        "rat": 'RGD',
+    }
+    sc = pyspark.SparkContext()
+    for species in list_of_species:
+        print(species)
+        gene_counts = getting_recent_gene2pubmed(species)
+        gene_info, tax_name = getting_gene_info(species, gene_counts)
+        refGene = getting_refGene(species, gene_info)
+        create_tsv(refGene, tax_name, significance_SOURCES[species])
 
+        

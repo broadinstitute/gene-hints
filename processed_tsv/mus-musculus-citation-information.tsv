@@ -1,0 +1,9 @@
+#name	chromosome	start	length	color	full_name	citations_from_2020-06-22_to_2020-11-24	significance
+Cx3cr1	9	119877749	19613	#73af42	chemokine (C-X3-C motif) receptor 1	8	
+Ifng	10	19467697	18278	#73af42	interferon gamma	7	Involved in gastrointestinal diseases; cancer; heart and blood diseases
+Casp3	8	47070326	22407	#73af42	caspase 3	7	n/a
+Ifnar1	16	91282103	25307	#73af42	interferon (alpha and beta) receptor 1	7	n/a
+Slc6a3	13	73684866	41925	#73af42	solute carrier family 6 (neurotransmitter transporter, dopamine), member 3	7	Involved in inherited and newborn diseases; other
+Pvalb	15	78075312	15288	#73af42	parvalbumin	7	n/a
+Pten	19	32734977	68583	#73af42	phosphatase and tensin homolog	7	Involved in cancer; gastrointestinal diseases; inherited and newborn diseases
+Lepr	4	101504980	11575	#73af42	leptin receptor	6	Involved in nutrition and metabolism related diseases; other
