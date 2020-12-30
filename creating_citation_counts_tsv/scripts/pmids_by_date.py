@@ -9,8 +9,10 @@ from tqdm import tqdm
 from optparse import OptionParser
 from datetime import date, timedelta, datetime
 
-# TODO: ADD progress bar
 def main():
+    """
+    Getting the gene for citation lists for each day
+    """
     usage = """
     python pmids_by_date.py 
     """
