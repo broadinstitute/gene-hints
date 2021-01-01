@@ -2,20 +2,15 @@
 Creating TSVs containing the 10 most-cited genes per species and their gene information.
 """
 import os
-import findspark
+import sys
+import json
 import pyspark
-import shortuuid
 import requests
-from tqdm import tqdm
 from operator import add
 from datetime import date, timedelta, datetime
-import shutil
-import time
 import csv
-from itertools import takewhile
 from collections import Counter
-import json
-import sys
+
 
 def getting_recent_gene2pubmed(species):
     """ 
