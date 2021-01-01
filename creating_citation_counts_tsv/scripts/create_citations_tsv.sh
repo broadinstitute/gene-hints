@@ -29,6 +29,14 @@ rmdir creating_citation_counts_tsv/data/tmp-ssv
 mkdir creating_citation_counts_tsv/data/human
 mkdir creating_citation_counts_tsv/data/mouse
 mkdir creating_citation_counts_tsv/data/rat
+mkdir creating_citation_counts_tsv/taxonomy
+
+# Getting taxonomy names
+wget -N -P dcreating_citation_counts_tsv/taxonomy/ https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/new_taxdump/new_taxdump.tar.Z 
+zcat dcreating_citation_counts_tsv/taxonomy/new_taxdump.tar.Z > creating_citation_counts_tsv/taxonomy/new_taxdump.tar; /
+tar -C creating_citation_counts_tsv/taxonomy/ -xvf creating_citation_counts_tsv/taxonomy/new_taxdump.tar
+mv creating_citation_counts_tsv/taxonomy/names.dmp creating_citation_counts_tsv/taxonomy_name
+rm creating_citation_counts_tsv/taxonomy/*
 
 # The NCBI maintains a list of citations that mention each gene in its database. We'll download it.
 wget -N -P creating_citation_counts_tsv/data ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2pubmed.gz
@@ -74,6 +82,5 @@ cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 10114 || $1 ==
 rm creating_citation_counts_tsv/data/gene_info
 
 # Lastly create the tsv with the total citations per gene along with the gene's information
-# TODO install shortuuid https://www.apache.org/dyn/closer.lua/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz     https://stackoverflow.com/questions/30518362/how-do-i-set-the-drivers-python-version-in-spark
 python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py
 
