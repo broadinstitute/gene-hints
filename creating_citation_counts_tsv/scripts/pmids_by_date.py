@@ -28,31 +28,37 @@ def main():
     # Getting the date 5 months ago
     month_ago = (datetime.today() - timedelta(days=155)).strftime("%Y/%m/%d")
 
-    #parser.add_option('-o', '--options', dest='some_option', default='yo', help="Place holder for a real option", type='str')
-    #parser.add_option('-u', '--useless', dest='uselesss', default=False, action='store_true', help='Another useless option')
+    # Setting the time frame from today to 5 months ago
     parser.add_option('-s', '--startdate', dest='start_date', default=month_ago, help='The lower end of the date range to search (YYYY/MM/DD)', type='str')
     parser.add_option('-e', '--enddate', dest='end_date', default=today, help='The upper range of the date range to search (YYYY/MM/DD)', type='str')
+    
+    # Setting File location for the file
     parser.add_option('-o', '--output-dir', dest='output_dir', default='./data/pmid_by_date', help='The directory to dump all the files')
 
+    # Getting all the arguments (Start time, End time, and Output file)
     (options, args) = parser.parse_args()
 
+    # Formatting start and end date
     start_date = datetime.strptime(options.start_date, '%Y/%m/%d')
     end_date = datetime.strptime(options.end_date, '%Y/%m/%d')
 
+    # Checking for errors with setting the date and output file 
     if len(args) < num_args:
         parser.print_help()
         sys.exit(1)
 
+    # Getting the start date    
     curr_date = start_date
+    
+    # Going through each day
     for i in tqdm(range(days)):
         # Going through each date for 5 months
         curr_date_str = datetime.strftime(curr_date, '%Y/%m/%d')
         curr_date += timedelta(days=1)
 
-        # Creating the citation lists for each day
+        # Creating the citation lists per each day
         # Calling the entrez API
         output_file = "creating_citation_counts_tsv/data/tmp-ssv/{}.ssv".format(datetime.strftime(curr_date, '%Y_%m_%d'))
-        # print(output_file)
         link = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&mindate={0}&maxdate={0}&retmax=100000".format(curr_date_str)
         time.sleep(1)
         fin = ur.urlopen(link)
@@ -64,11 +70,12 @@ def main():
         for pmid_match in all_pmids:
             out_str += curr_date_str.replace('/','-') + " " + pmid_match.group('pmid') + "\n"
 
+        # Saving the file if there was no gene publications on a day
         if len(out_str) > 0:
             with open(output_file, 'w') as fout:
                 fout.write(out_str)
-                # print(output_file)
 
+# Main function
 if __name__ == '__main__':
     main()
 
