@@ -32,8 +32,8 @@ mkdir creating_citation_counts_tsv/data/rat
 mkdir creating_citation_counts_tsv/taxonomy
 
 # Getting taxonomy names
-wget -N -P dcreating_citation_counts_tsv/taxonomy/ https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/new_taxdump/new_taxdump.tar.Z 
-zcat dcreating_citation_counts_tsv/taxonomy/new_taxdump.tar.Z > creating_citation_counts_tsv/taxonomy/new_taxdump.tar; /
+wget -N -P creating_citation_counts_tsv/taxonomy/ https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/new_taxdump/new_taxdump.tar.Z 
+zcat creating_citation_counts_tsv/taxonomy/new_taxdump.tar.Z > creating_citation_counts_tsv/taxonomy/new_taxdump.tar; /
 tar -C creating_citation_counts_tsv/taxonomy/ -xvf creating_citation_counts_tsv/taxonomy/new_taxdump.tar
 mv creating_citation_counts_tsv/taxonomy/names.dmp creating_citation_counts_tsv/taxonomy_name
 rm creating_citation_counts_tsv/taxonomy/*
