@@ -7,7 +7,7 @@ pip3 install -r creating_citation_counts_tsv/requirements.txt
 
 # Create a data, tsv, and tmp-ssv folder
 mkdir creating_citation_counts_tsv/data
-mkdir creating_citation_counts_tsv/tsv
+mkdir tsv
 mkdir creating_citation_counts_tsv/data/tmp-ssv
 
 #To get an idea of how citation counts have changed over the years, 
