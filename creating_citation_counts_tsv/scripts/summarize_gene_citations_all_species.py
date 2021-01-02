@@ -143,13 +143,13 @@ def translate_disease(disease):
     'Wounds and Injuries' : 'Wounds and Injuries',
     'Behavior and Behavior Mechanisms' : 'Behavior',
   }
-  try: 
-    # Check to see if the disease is disease_translations Dictionary
-    # Return common translated disease (If found)
-    return disease_translations[disease]
-  except:
-    # Return 'Other' (If not found)
-    return 'Other'
+    try: 
+        # Check to see if the disease is disease_translations Dictionary
+        # Return common translated disease (If found)
+        return disease_translations[disease]
+    except:
+        # Return 'Other' (If not found)
+        return 'Other'
 
 def make_request(endpoint, params=None):
     """ 
