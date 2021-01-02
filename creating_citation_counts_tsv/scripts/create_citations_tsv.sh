@@ -25,11 +25,14 @@ done
 rm creating_citation_counts_tsv/data/tmp-ssv/*
 rmdir creating_citation_counts_tsv/data/tmp-ssv
 
-# Creating human, mouse, rat folders
+# Creating taxonomy folder 
+mkdir creating_citation_counts_tsv/taxonomy
+
+# Creating Species folders (human, mouse, rat)
 mkdir creating_citation_counts_tsv/data/human
 mkdir creating_citation_counts_tsv/data/mouse
 mkdir creating_citation_counts_tsv/data/rat
-mkdir creating_citation_counts_tsv/taxonomy
+# ADD Extra Species folders
 
 # Getting taxonomy names
 wget -N -P creating_citation_counts_tsv/taxonomy/ https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/new_taxdump/new_taxdump.tar.Z 
@@ -49,6 +52,7 @@ cat creating_citation_counts_tsv/data/gene2pubmed | awk '{if ($1 == 9606 || $1 =
 cat creating_citation_counts_tsv/data/gene2pubmed | awk '{if (10088 || $1 == 10089 || $1 == 10090 || $1 == 10091 || $1 == 10091 || $1 == 10092 || $1 == 10093) print;}' > creating_citation_counts_tsv/data/mouse/gene2pubmed
 # Getting Rat gene2pubmed
 cat creating_citation_counts_tsv/data/gene2pubmed | awk '{if ($1 == 10114 || $1 == 10115 || $1 == 10116 || $1 == 10117 || $1 == 10118 || $1 == 10119 || $1 == 10121 || $1 == 10122 || $1 == 10127) print;}' > creating_citation_counts_tsv/data/rat/gene2pubmed
+# ADD Extra Species gene2pubmed
 
 # Remove main file to save space
 rm creating_citation_counts_tsv/data/gene2pubmed
@@ -64,7 +68,7 @@ gunzip creating_citation_counts_tsv/data/mouse/refGene.gtf.gz
 # Getting Rat refences file
 wget -N -P creating_citation_counts_tsv/data/rat https://hgdownload.soe.ucsc.edu/goldenPath/rn6/bigZips/genes/rn6.refGene.gtf.gz
 gunzip creating_citation_counts_tsv/data/rat/rn6.refGene.gtf.gz
-## Feel free to add more species
+# ADD Extra Species refences file
 
 # We need a mapping of gene IDs, which are just numbers, to more meaningful names and descriptions.
 wget -N -P creating_citation_counts_tsv/data ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz
@@ -77,6 +81,7 @@ cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 9606 || $1 == 
 cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 10088 || $1 == 10089 || $1 == 10090 || $1 == 10091 || $1 == 10091 || $1 == 10092) print;}' > creating_citation_counts_tsv/data/mouse/gene_info
 # Getting Rat gene_info
 cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 10114 || $1 == 10115 || $1 == 10116 || $1 == 10117 || $1 == 10118 || $1 == 10119 || $1 == 10121 || $1 == 10122 || $1 == 10127) print;}' > creating_citation_counts_tsv/data/rat/gene_info
+# ADD Extra Species gene_info
 
 # Remove main file to save space
 rm creating_citation_counts_tsv/data/gene_info
