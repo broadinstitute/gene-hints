@@ -108,5 +108,6 @@ creating_citation_counts_tsv/data
 # DS_Store folder
 .DS_Store
 
-# DS_Store folder
+# Extra folder
 creating_citation_counts_tsv/tsv
+creating_citation_counts_tsv/taxonomy_name
