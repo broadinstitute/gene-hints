@@ -187,7 +187,7 @@ def get_significance(gene, source, num_diseases):
     """
     Getting all diseases associated to gene.
     """
-    # Create gda variable to input in the Disgenet API
+    # Create gda (gene-disease association) variable to input in the Disgenet API
     gda = "gda/gene/"
     
     # API call to Disgenet database to get a list of diseases for the gene
