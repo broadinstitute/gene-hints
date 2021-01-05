@@ -12,7 +12,7 @@ import csv
 from collections import Counter
 
 
-def getting_recent_gene2pubmed(species):
+def get_recent_gene2pubmed(species):
     """ 
     Getting a list of the gene ID, gene publication citation ID, and count of how frequently the gene is cited over the past 5 months for each gene.
     """
@@ -58,7 +58,7 @@ def getting_gene_info(species, gene_counts):
     Getting a list of the gene information per gene and species' taxonomy name.
     """
     
-    # Adding gene's information to the list created from getting_recent_gene2pubmed per gene and saving it to the gene_info variable
+    # Adding gene's information to the list created from get_recent_gene2pubmed per gene and saving it to the gene_info variable
     gene_info = (sc.textFile(f"creating_citation_counts_tsv/data/{species}/gene_info")
                     .filter(lambda x: x[0] != '#')
                     .map(lambda x: x.split('\t'))
@@ -91,7 +91,7 @@ def getting_gene_info(species, gene_counts):
     # Returning the gene_info and tax_name variable
     return gene_info, tax_name
 
-def getting_refGene(species, gene_info): 
+def get_ref_gene(species, gene_info): 
     """ 
     Getting a list of the gene reference information per gene.
     """
@@ -151,7 +151,7 @@ def translate_disease(disease):
         # Return 'Other' (If not found)
         return 'Other'
 
-def make_request(endpoint, params=None):
+def request_disgenet(endpoint, params=None):
     """ 
     Makes a request to GWAS API with specified endpoint and parameters.
     Returns the response in json.
@@ -191,7 +191,7 @@ def get_significance(gene, source, num_diseases):
     gda = "gda/gene/"
     
     # API call to Disgenet database to get a list of diseases for the gene
-    gene_related_diseases = make_request(endpoint=f"{gda}{gene}", params=f"source={source}&format=json")
+    gene_related_diseases = request_disgenet(endpoint=f"{gda}{gene}", params=f"source={source}&format=json")
     
     # Creating the disease_associations variable
     disease_associations = []
@@ -246,7 +246,7 @@ def create_tsv(refGene, tax_name, significance_SOURCES):
     # Outputing the start of the Getting Top Ten TSVs process
     print("Getting Top Ten TSVs")
     
-    # Getting the list of the top ten most cited genes from the list created from getting_refGene
+    # Getting the list of the top ten most cited genes from the list created from get_ref_gene
     top_ten_gene = sorted(refGene.collect(), key=lambda x: x[6])[-10:][::-1]
     
     # Creating the top_ten_gene_list variable
@@ -321,13 +321,13 @@ if __name__ == "__main__":
         print(species)
         
         # Getting a list of the gene ID, gene publication citation ID, and count of how frequently the gene is cited over the past 5 months for each gene
-        gene_counts = getting_recent_gene2pubmed(species)
+        gene_counts = get_recent_gene2pubmed(species)
         
         # Getting a list of the gene information per gene and species' taxonomy name.
         gene_info, tax_name = getting_gene_info(species, gene_counts)
         
         # Getting a list of the gene reference information per gene
-        refGene = getting_refGene(species, gene_info)
+        refGene = get_ref_gene(species, gene_info)
         
         # Creating TSVs containing the 10 most-cited genes per species and their gene information
         create_tsv(refGene, tax_name, significance_SOURCES[species])
