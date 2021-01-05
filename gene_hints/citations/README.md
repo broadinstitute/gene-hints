@@ -1,6 +1,6 @@
 # Creating Citation Count TSV 
 
-![TSV_snapshot](https://github.com/broadinstitute/gene-hints/blob/getting_tsv/images/07-TSV-snapshot.png)
+![TSV_snapshot](https://github.com/broadinstitute/gene-hints/blob/main/images/07-TSV-snapshot.png)
 
 ## Background: 
 The Gene Hint UI uses data from generated TSVs to calculate the current top genes per species. This code will use the Entrez database to collect all the gene's publication citations over the course of five months. Next, the code will use NCBI's database to match the gene IDs to their gene publication. The code will then use the UCSC and GenBank-data database to match the gene IDs to all the gene's information (ex. Chromosome and position). The code will then use the DisGeNet database to match the gene ID to the gene's disease associations (ex. cancer or heart disease). Lastly, the code will output TSVs, of the 10 most cited genes and their gene information.
