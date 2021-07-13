@@ -12,14 +12,18 @@ import csv
 from collections import Counter
 
 
-def get_recent_gene2pubmed(species):
+def get_recent_gene_citation_count(species_genes2pubmed, recent_citations):
     """ 
-    Getting a list of the gene ID, gene publication citation ID, and count of how frequently the gene is cited over the past 5 months for each gene.
+    Input:
+        species_genes2pubmed: list of genes and associated publication citation ID for a species
+        recent_citations: list of all recent citations
+    Output:
+        Count of publication citations for each gene ID.
     """
 
     # Create a dict mapping pubmed_id to gene_id
     pubmed_gene_dict = {}
-    with open(f"creating_citation_counts_tsv/data/{species}/gene2pubmed") as fd:
+    with open(species_genes2pubmed) as fd:
         rd = csv.reader(fd, delimiter="\t", quotechar='"')
         for row in rd:
             if row[0][0] == '#':
@@ -37,7 +41,7 @@ def get_recent_gene2pubmed(species):
     
     # Figure out which pubmed_ids in pubmed_gene_dict were published recently
     recent_pubmed_array = []
-    with open("creating_citation_counts_tsv/data/recent_pmid_year.ssv") as fd:
+    with open(recent_citations) as fd:
         rd = csv.reader(fd, delimiter=' ')
         for row in rd:
             if row[0][0] == '#':
@@ -76,7 +80,7 @@ def getting_gene_info(species, gene_counts):
     Getting a list of the gene information per gene and species' taxonomy name.
     """
     
-    # Adding gene's information to the list created from get_recent_gene2pubmed per gene and saving it to the gene_info variable
+    # Adding gene's information to the list created from get_recent_gene_citation_count per gene and saving it to the gene_info variable
     gene_info = (sc.textFile(f"creating_citation_counts_tsv/data/{species}/gene_info")
                     .filter(lambda x: x[0] != '#')
                     .map(lambda x: x.split('\t'))
@@ -336,7 +340,7 @@ if __name__ == "__main__":
         print(species)
         
         # Getting a list of the gene ID, gene publication citation ID, and count of how frequently the gene is cited over the past 5 months for each gene
-        gene_counts = get_recent_gene2pubmed(species)
+        gene_counts = get_recent_gene_citation_count(f"creating_citation_counts_tsv/data/{species}/gene2pubmed", "creating_citation_counts_tsv/data/recent_pmid_year.ssv")
         
         # Getting a list of the gene information per gene and species' taxonomy name.
         gene_info, tax_name = getting_gene_info(species, gene_counts)
