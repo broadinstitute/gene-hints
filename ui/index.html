@@ -265,14 +265,13 @@
     }
 
     function getAnnotsPath(organism) {
-      let annotsPath
-      if (organism !== 'homo-sapiens') {
-        const baseUrl = 'https://raw.githubusercontent.com/broadinstitute/gene-hints/marianne/processed_tsv/';
-        const fileName = `${organism}-citation-information.tsv`;
-        annotsPath = baseUrl + fileName;
-      } else {
-        annotsPath = 'homo-sapiens-cited-genes.tsv';
+
+      let fileName = `${organism}-citation-information.tsv`
+      if (organism === 'homo-sapiens') {
+        fileName = 'homo-sapiens-cited-genes.tsv'
       }
+      const annotsPath = `../processed_tsv/${fileName}`;
+
       console.log('annotsPath')
       console.log(annotsPath)
       return annotsPath
