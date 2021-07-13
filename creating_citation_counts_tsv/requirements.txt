@@ -1,0 +1,6 @@
+findspark==1.4.2
+psutil==5.7.3
+py4j==0.10.9
+pyspark==3.0.1
+shortuuid==1.0.1
+tqdm==4.54.0

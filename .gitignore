@@ -101,3 +101,13 @@ typings/
 
 # TernJS port file
 .tern-port
+
+# data folder
+creating_citation_counts_tsv/data
+
+# DS_Store folder
+.DS_Store
+
+# Extra folder
+creating_citation_counts_tsv/tsv
+creating_citation_counts_tsv/taxonomy_name
