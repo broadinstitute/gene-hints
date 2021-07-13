@@ -261,7 +261,7 @@
       // const banded = !['homo sapiens', 'mus musculus'].includes(selectedOrg);
       // config.showFullyBanded = banded;
       delete ideogram;
-      ideogram = Ideogram.initGeneHints(config);
+      ideogram = Ideogram.initRelatedGenes(config);
     }
 
     function getGene() {
@@ -302,7 +302,7 @@
       if (organism === 'homo-sapiens') {
         fileName = 'homo-sapiens-cited-genes.tsv'
       }
-      const annotsPath = `processed_tsv/${fileName}`;
+      const annotsPath = `../processed_tsv/${fileName}`;
 
       console.log('annotsPath')
       console.log(annotsPath)
