@@ -17,38 +17,56 @@ def get_recent_gene2pubmed(species):
     Getting a list of the gene ID, gene publication citation ID, and count of how frequently the gene is cited over the past 5 months for each gene.
     """
 
-    # Getting a list of the gene ID and gene publication citation ID pairs and saving it to the gene2pubmed variable 
-    gene2pubmed = (sc.textFile(f"creating_citation_counts_tsv/data/{species}/gene2pubmed")
-                    .filter(lambda x: x[0] != '#')
-                    .map(lambda x: x.split('\t'))
-                    .map(lambda x: ( str(x[2]), int(x[1]))))
-    
-    # Outputing the first element in the gene2pubmed variable
-    print(gene2pubmed.take(1))
-    
-    # Getting the list of unique gene publication citation IDs
-    pubmeds_set = set([x[0] for x in gene2pubmed.collect()])
+    # Create a dict mapping pubmed_id to gene_id
+    pubmed_gene_dict = {}
+    with open(f"creating_citation_counts_tsv/data/{species}/gene2pubmed") as fd:
+        rd = csv.reader(fd, delimiter="\t", quotechar='"')
+        for row in rd:
+            if row[0][0] == '#':
+                continue
+            gene_id = row[1]
+            pubmed_id = row[2]
+            if pubmed_id in pubmed_gene_dict.keys():
+                gene_set = pubmed_gene_dict[pubmed_id]
+                gene_set.add(gene_id)
+            else:
+                pubmed_gene_dict[pubmed_id] = set([gene_id])
 
-    # Getting the list of over gene publication citation IDs the past five months and saving it to the year_pmid variable 
-    year_pmid = (sc.textFile("creating_citation_counts_tsv/data/recent_pmid_year.ssv")
-                    .map(lambda x: x.split())
-                    .map(lambda x: (str(x[1]), int(x[0])))
-                    .filter(lambda x: x[0] in pubmeds_set))
+    # Outputing the first element in pubmed_gene_dict
+    print( next(iter( pubmed_gene_dict.items() )) )
     
-    # Outputing the first element in the year_pmid variable
-    print(year_pmid.take(1))
+    # Figure out which pubmed_ids in pubmed_gene_dict were published recently
+    recent_pubmed_array = []
+    with open("creating_citation_counts_tsv/data/recent_pmid_year.ssv") as fd:
+        rd = csv.reader(fd, delimiter=' ')
+        for row in rd:
+            if row[0][0] == '#':
+                continue
+            pubmed_id = str(row[1])
+            if pubmed_id in pubmed_gene_dict.keys():
+                recent_pubmed_array.append((pubmed_id))
     
-    # Getting a list of the gene ID and gene publication citation ID pairs over the past 5 months and saving it to the gene2pubmed_to_year variable
-    gene2pubmed_to_year = gene2pubmed.join(year_pmid).map(lambda x: (x[1][0], x[0]))
+    # Outputing the first element in the recent_pubmed_array variable
+    print(recent_pubmed_array[0])
+
+    # reverse pubmed_gene_dict so that we have a mapping of gene_id to pubmed_id
+    recent_gene_pubmed_dict = {}
+    for pubmed_id in recent_pubmed_array:
+        gene_set = pubmed_gene_dict[pubmed_id]
+        for gene_id in gene_set:
+            if gene_id in recent_gene_pubmed_dict.keys():
+                pubmed_set = recent_gene_pubmed_dict[gene_id]
+                pubmed_set.add(pubmed_id)
+            else:
+                recent_gene_pubmed_dict[gene_id] = set(pubmed_id)
     
-    # Outputing the first element in the gene2pubmed_to_year variable
-    print(gene2pubmed_to_year.take(1))
-    
-    # Getting a list of the gene ID, gene publication citation ID, count of how frequently the gene is cited over the past 5 months and saving it to the gene_counts variable
-    gene_counts = gene2pubmed.join(year_pmid).map(lambda x: (x[1][0], 1)).reduceByKey(add).join(gene2pubmed_to_year).map(lambda x: ( str(x[0]), (x[1][1] ,x[1][0])))
-    
+    # Dict mapping gene_id to pubmed_id citation count
+    gene_counts = {}
+    for gene_id in recent_gene_pubmed_dict:
+        gene_counts[gene_id] = len(recent_gene_pubmed_dict[gene_id])
+
     # Outputing the first element in the gene_counts variable
-    print(gene_counts.take(1))
+    print( next(iter( gene_counts.items() )) )
     
     # Returning the gene_counts variable
     return gene_counts
@@ -311,9 +329,6 @@ if __name__ == "__main__":
         "mouse": 'MGD',
         "rat": 'RGD',
     }
-    
-    # Creating pyspark object to do fast reading of large files
-    sc = pyspark.SparkContext()
     
     # Going through each species
     for species in list_of_species:
