@@ -12,18 +12,18 @@ import csv
 from collections import Counter
 
 
-def get_recent_gene_citation_count(species_genes2pubmed, recent_citations):
+def get_recent_gene_citation_count(species_gene2pubmed_tsv, recent_citations_ssv):
     """ 
     Input:
-        species_genes2pubmed: list of genes and associated publication citation ID for a species
-        recent_citations: list of all recent citations
+        species_gene2pubmed_tsv: tsv of genes and associated publication citation ID for a species
+        recent_citations_ssv: ssv of all recent citations
     Output:
-        Count of publication citations for each gene ID.
+        Count of recent publication citations for each gene ID.
     """
 
     # Create a dict mapping pubmed_id to gene_id
     pubmed_gene_dict = {}
-    with open(species_genes2pubmed) as fd:
+    with open(species_gene2pubmed_tsv) as fd:
         rd = csv.reader(fd, delimiter="\t", quotechar='"')
         for row in rd:
             if row[0][0] == '#':
@@ -41,7 +41,7 @@ def get_recent_gene_citation_count(species_genes2pubmed, recent_citations):
     
     # Figure out which pubmed_ids in pubmed_gene_dict were published recently
     recent_pubmed_array = []
-    with open(recent_citations) as fd:
+    with open(recent_citations_ssv) as fd:
         rd = csv.reader(fd, delimiter=' ')
         for row in rd:
             if row[0][0] == '#':
@@ -65,55 +65,71 @@ def get_recent_gene_citation_count(species_genes2pubmed, recent_citations):
                 recent_gene_pubmed_dict[gene_id] = set(pubmed_id)
     
     # Dict mapping gene_id to pubmed_id citation count
-    gene_counts = {}
+    gene_citation_counts = {}
     for gene_id in recent_gene_pubmed_dict:
-        gene_counts[gene_id] = len(recent_gene_pubmed_dict[gene_id])
+        gene_citation_counts[gene_id] = len(recent_gene_pubmed_dict[gene_id])
 
-    # Outputing the first element in the gene_counts variable
-    print( next(iter( gene_counts.items() )) )
+    # Outputing the first element in the gene_citation_counts variable
+    print( next(iter( gene_citation_counts.items() )) )
     
-    # Returning the gene_counts variable
-    return gene_counts
+    # Returning the gene_citation_counts variable
+    return gene_citation_counts
 
-def getting_gene_info(species, gene_counts):
+def getting_gene_info(species_gene_info_tsv, gene_citation_counts, taxonomy_name_tsv):
     """ 
     Getting a list of the gene information per gene and species' taxonomy name.
     """
     
     # Adding gene's information to the list created from get_recent_gene_citation_count per gene and saving it to the gene_info variable
-    gene_info = (sc.textFile(f"creating_citation_counts_tsv/data/{species}/gene_info")
-                    .filter(lambda x: x[0] != '#')
-                    .map(lambda x: x.split('\t'))
-                    .map(lambda x: (str(x[1]), (str(x[0]), str(x[2]), str(x[6]), str(x[8]))))).join(gene_counts).map(lambda x: (x[1][0][1].upper(), (x[0], x[1][0][2], x[1][0][3], x[1][1][1], x[1][0][0])))
+    gene_symbol__gene_info__dict = {}
+    with open(species_gene_info_tsv) as fd:
+        rd = csv.reader(fd, delimiter='\t')
+        for row in rd:
+            if row[0][0] == '#':
+                continue
+            gene_id = str(row[1])
+            tax_id = str(row[0])
+            symbol = str(row[2]).upper()
+            chromosome = str(row[6])
+            description = str(row[8])
+            gene_symbol__gene_info__dict[symbol] = {
+                "symbol": symbol,
+                "gene_id": gene_id,
+                "chromosome": chromosome,
+                "description": description,
+                "count": gene_citation_counts.get(gene_id, 0),
+                "tax_id": tax_id
+            }
     
     # Outputing the first element in the gene_info variable
-    print(gene_info.take(1))
+    first_dict_entry = gene_symbol__gene_info__dict[list(gene_symbol__gene_info__dict.keys())[0]]
+    print(first_dict_entry)
     
-    # Getting the taxonomy ID for the species and saving it to the tax_id variable
-    tax_id = str(gene_info.collect()[0][1][4])
-    
-    # Outputing the first element in the tax_id variable
-    print(tax_id)
+    # Getting the taxonomy ID for the species and saving it to the species_tax_id variable
+    species_tax_id = first_dict_entry["tax_id"]
 
-    # Getting the taxonomy information for the taxonomy ID given and saving it to the taxonomy variable
-    taxonomy = (sc.textFile("creating_citation_counts_tsv/taxonomy_name")
-                        .filter(lambda x: x[0] != '#')
-                        .map(lambda x: x.split('\t'))
-                        .filter(lambda x: int(tax_id) == int(x[0]) )
-                        .filter(lambda x: "scientific name" in x[6] )
-                        .map(lambda x: ((str(x[0]), str(x[2]), str(x[6]))))
-                     )
-    
-    # Getting the taxonomy name from the taxonomy information and saving it to the tax_name variable
-    tax_name = taxonomy.collect()[0][1]
-    
-    # Outputing the tax_name variable
-    print(tax_name)
+    # Outputing the species_tax_id variable
+    print(species_tax_id)
 
-    # Returning the gene_info and tax_name variable
-    return gene_info, tax_name
+    # Getting the taxonomy scientific name for the taxonomy ID given and saving it to the taxonomy_scientific_name variable
+    taxonomy_scientific_name = ""
+    with open(taxonomy_name_tsv) as fd:
+        rd = csv.reader(fd, delimiter='\t')
+        for row in rd:
+            row_tax_id = int(row[0])
+            name = str(row[2]) # taxonomy_name_tsv does not include column headers so these are guesses based on the data
+            name_type = str(row[6])
+            if row_tax_id==species_tax_id and name_type=="scientific name":
+                taxonomy_scientific_name = name
+                break
 
-def get_ref_gene(species, gene_info): 
+    # Outputing the taxonomy_scientific_name variable
+    print(taxonomy_scientific_name)
+
+    # Returning the gene_info and taxonomy_scientific_name variable
+    return gene_symbol__gene_info__dict, taxonomy_scientific_name
+
+def get_ref_gene(species, gene_symbol__gene_info__dict): 
     """ 
     Getting a list of the gene reference information per gene.
     """
@@ -127,7 +143,15 @@ def get_ref_gene(species, gene_info):
                     .filter(lambda x: x[0] != '#')
                     .map(lambda x: x.split('\t'))
                     .filter(lambda x: 'transcript' in x[2])
-                    .map(lambda x: (str(x[8]).split(";")[0].replace("gene_id ", "").replace('"', '').upper(), (int(x[3]), int(abs(int(x[3])-int(x[4])))))).join(gene_info).map(lambda x: (x[0], (x[1][1][1], x[1][0][0], x[1][0][1], "#73af42", x[1][1][2], x[1][1][3]))).reduceByKey(lambda a, b: a).map(lambda x: (x[0], x[1][0], x[1][1], x[1][2], "#73af42", x[1][4], x[1][5])))
+                    .map(lambda x: (str(x[8])
+                    .split(";")[0]
+                    .replace("gene_id ", "")
+                    .replace('"', '')
+                    .upper(), (int(x[3]), int(abs(int(x[3])-int(x[4]))))))
+                    .join(gene_symbol__gene_info__dict)
+                    .map(lambda x: (x[0], (x[1][1][1], x[1][0][0], x[1][0][1], "#73af42", x[1][1][2], x[1][1][3])))
+                    .reduceByKey(lambda a, b: a)
+                    .map(lambda x: (x[0], x[1][0], x[1][1], x[1][2], "#73af42", x[1][4], x[1][5])))
             
             # Outputing the refGene variable
             print(refGene.take(1))
@@ -339,11 +363,10 @@ if __name__ == "__main__":
         # Outputing species name
         print(species)
         
-        # Getting a list of the gene ID, gene publication citation ID, and count of how frequently the gene is cited over the past 5 months for each gene
-        gene_counts = get_recent_gene_citation_count(f"creating_citation_counts_tsv/data/{species}/gene2pubmed", "creating_citation_counts_tsv/data/recent_pmid_year.ssv")
+        gene_citation_counts = get_recent_gene_citation_count(f"creating_citation_counts_tsv/data/{species}/gene2pubmed", "creating_citation_counts_tsv/data/recent_pmid_year.ssv")
         
         # Getting a list of the gene information per gene and species' taxonomy name.
-        gene_info, tax_name = getting_gene_info(species, gene_counts)
+        gene_info, tax_name = getting_gene_info(f"creating_citation_counts_tsv/data/{species}/gene_info", gene_citation_counts, "creating_citation_counts_tsv/taxonomy_name")
         
         # Getting a list of the gene reference information per gene
         refGene = get_ref_gene(species, gene_info)
