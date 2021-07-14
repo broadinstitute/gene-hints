@@ -9,12 +9,18 @@ custom_disambiguation = { # override for pages that don't automatically lead to 
     "BTD": "PageDoesNotExist", # no page for the gene, but BTD has it's own page
     "BOC": "BOC_(gene)",
     "CBS": "Cystathionine_beta_synthase",
+    "CTSH": "Cathepsin_H",
     "DST": "Dystonin",
+    "ESPN": "Espin_(protein)",
+    "GBA": "Glucocerebrosidase",
+    "GIF": "Intrinsic_factor",
     "MCU": "PageDoesNotExist", # no page for the gene, but MCU has it's own page
     "MDK": "Midkine",
     "MVP": "Major_vault_protein",
     "NRL": "NRL_(gene)",
     "PDF": "PDF_(gene)",
+    "REST": "RE1-silencing_transcription_factor",
+    "RFK": "PageDoesNotExist", # no page for the gene, but RFK has it's own page
     "RDX": "Radixin",
     "SPARC": "Osteonectin",
     "T": "Brachyury",
@@ -37,11 +43,20 @@ def get_gene_symbols():
     print("Found", len(genes), "genes.")
     return genes
 
+
 def get_page_name_from_symbol(symbol):
+    gene_suffix = "_(gene)"
     r = requests.get(wiki_base_url + symbol)
     soup = BeautifulSoup(r.content, 'html.parser') 
-    return soup.find(id="firstHeading").text.replace(" ", "_")
 
+    # when there is a disambiguation, we need to look for the specific gene page
+    has_disambiguation = soup.find("a", {"class": "mw-disambig"}) is not None
+    has_link_to_gene_page = soup.find("a", {"href": "/wiki/" + symbol + "_(gene)"}) is not None
+    if (has_disambiguation or has_link_to_gene_page) and not (gene_suffix in symbol):
+        # recursively call this with the _gene suffix
+        return get_page_name_from_symbol(symbol + gene_suffix)
+    else: 
+        return soup.find(id="firstHeading").text.replace(" ", "_")
 
 
 # Load the wikipedia page for each gene and see what the actual page name is. 
