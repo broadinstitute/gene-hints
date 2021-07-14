@@ -39,6 +39,6 @@ jobs:
         uses: test-room-7/action-update-file@v1
         with:
           file-path: |
-              wikipedia_trends/wikipedia_top_viewed_genes.tsv # TODO update this 
+              wikipedia_trends/wikipedia_top_viewed_genes.tsv
           commit-msg: Automatically update trends data
           github-token: ${{ secrets.GITHUB_TOKEN }}
