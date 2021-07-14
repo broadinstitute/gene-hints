@@ -75,7 +75,7 @@ def get_recent_gene_citation_count(species_gene2pubmed_tsv, recent_citations_ssv
     # Returning the gene_citation_counts variable
     return gene_citation_counts
 
-def getting_gene_info(species_gene_info_tsv, gene_citation_counts, taxonomy_name_tsv):
+def get_gene_info(species_gene_info_tsv, gene_citation_counts, taxonomy_name_tsv):
     """ 
     Getting a list of the gene information per gene and species' taxonomy name.
     """
@@ -152,7 +152,7 @@ def get_ref_gene(species, gene_symbol__gene_info__dict):
     for file in os.listdir(f"creating_citation_counts_tsv/data/{species}"):
         #Since the reference file is uniquely named and could not be hard-coded, this will filter out files that are not .gtf files to read the reference file
         if file.endswith(".gtf"):
-            # Adding gene's reference information to the list created from getting_gene_info per gene and saving it to the refGene variable
+            # Adding gene's reference information to the list created from get_gene_info per gene and saving it to the refGene variable
             # This file has no headers so here's an example instead:
             #chr6    refGene transcript      26086290        26091034        .       -       .       gene_id "LOC108783645"; transcript_id "NR_144383";  gene_name "LOC108783645";
             # which parses to:
@@ -176,7 +176,14 @@ def get_ref_gene(species, gene_symbol__gene_info__dict):
                             chromosome = ""
                             description = ""
                             citation_count = 0
-                        ref_gene[gene_symbol] = {chromosome, start_coordinate, coordinate_length, color, description, citation_count}
+                        ref_gene[gene_symbol] = {
+                            "chromosome": chromosome,
+                            "start_coordinate": start_coordinate,
+                            "coordinate_length": coordinate_length,
+                            "color": color,
+                            "description": description,
+                            "citation_count": citation_count,
+                            }
 
     # Outputing the ref_gene variable
     print( next(iter( ref_gene.items() )) )
@@ -309,33 +316,34 @@ def get_significance(gene, source, num_diseases):
     return f"Involved in {'; '.join(top_disease_associations).lower()}" if top_disease_associations else None
 
 
-def create_tsv_for_top(refGene, tax_name, significance_SOURCES, top_count):
+def create_tsv_for_most_cited_genes(ref_gene, tax_name, significance_SOURCES, top_count):
     """
     Creating TSVs containing the `top_count` most-cited genes per species and their gene information.
     """
     
-    # Outputing the start of the Getting Top Ten TSVs process
-    print("Getting Top Ten TSVs")
+    print("Getting Top " + str(top_count) + " most-cited Genes")
     
     # Getting the list of the top ten most cited genes from the list created from get_ref_gene
-    top_ten_gene = sorted(refGene.collect(), key=lambda x: x[6])[-top_count:][::-1]
+    top_genes_list = sorted(ref_gene.items(), key=lambda x: x[1]['citation_count'], reverse=True)[:top_count]
     
-    # Creating the top_ten_gene_list variable
-    top_ten_gene_list = []
+    print("Gene with the most citations:")
+    print(str(top_genes_list[0]))
     
-    # Going through each gene in the top_ten_gene list 
-    for gene_row in top_ten_gene:
-        # Getting the gene name and saving it to the gene_name variable
-        gene_name = gene_row[0]
-        
+    # Creating the top_genes_with_significance_list variable
+    top_genes_with_significance_list = []
+    
+    # Going through each gene in the top_genes_list 
+    for gene_row in top_genes_list:
+                
         # Getting the top three name disease and saving it to the significance variable
+        gene_name = gene_row[0]
         significance = get_significance(gene_name, significance_SOURCES, 3)
         
         # Add the significance information to the gene_row list
         gene_row = gene_row + tuple([significance])
         
-        # Adding the updated gene_row to the top_ten_gene_list
-        top_ten_gene_list.append(gene_row)
+        # Adding the updated gene_row to the top_genes_with_significance_list
+        top_genes_with_significance_list.append(gene_row)
     
     # Getting the species' scientific taxonomy name and saving it to the gene_species_name variable
     gene_species_name = tax_name.replace(" ", "-").replace("(", "-").replace(")", "-").replace("/", "-").replace("=", "-").lower()
@@ -366,8 +374,8 @@ def create_tsv_for_top(refGene, tax_name, significance_SOURCES, top_count):
         # Add the header row to the TSV
         tsv_writer.writerow(["#name", "chromosome", "start", "length", "color", "full_name", citations, "significance"])
         
-        # Going through each gene in the top_ten_gene_list 
-        for gene in top_ten_gene_list:
+        # Going through each gene in the top_genes_with_significance_list 
+        for gene in top_genes_with_significance_list:
             # Adding the gene information to the TSV
             tsv_writer.writerow(gene)
     
@@ -390,10 +398,12 @@ if __name__ == "__main__":
         
         gene_citation_counts = get_recent_gene_citation_count(f"creating_citation_counts_tsv/data/{species}/gene2pubmed", "creating_citation_counts_tsv/data/recent_pmid_year.ssv")
         
-        gene_info, tax_name = getting_gene_info(f"creating_citation_counts_tsv/data/{species}/gene_info", gene_citation_counts, "creating_citation_counts_tsv/taxonomy_name")
+        gene_info, tax_name = get_gene_info(f"creating_citation_counts_tsv/data/{species}/gene_info", gene_citation_counts, "creating_citation_counts_tsv/taxonomy_name")
         
         ref_gene = get_ref_gene(species, gene_info)
-        
-        create_tsv_for_top(ref_gene, tax_name, significance_SOURCES[species], 10)
+
+        create_tsv_for_most_cited_genes(ref_gene, tax_name, significance_SOURCES[species], 10)
+        #todo: remove citations counts == 0
 
         
+#todo -- add csv comments to each file open
