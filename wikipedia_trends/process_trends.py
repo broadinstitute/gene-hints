@@ -1,5 +1,5 @@
 import csv
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import gzip
 import os
 import requests
@@ -17,7 +17,7 @@ pageviews_download_location = downloads_dir + "pageviews{count}.gz"
 output_location = "./wikipedia_trends/wikipedia_top_viewed_genes.tsv"
 
 num_pageviews_files = 12 # The number of hours of data to process (should eventually be set to 48)
-start_datetime = datetime.now()
+start_datetime = datetime.now(timezone.utc) - timedelta(hours=1) # One hour before the current time in UTC
 
 csv.field_size_limit(sys.maxsize) # TODO: decide whether this is needed 
 
@@ -69,8 +69,10 @@ def download_trends_file(file_num):
     # Ensure that the downloads directory exists
     if not os.path.exists(downloads_dir):
         os.makedirs(downloads_dir)
-    trends_datetime = start_datetime + timedelta(hours=file_num)
+    # Generate the hourly trends filename and URL
+    trends_datetime = start_datetime + timedelta(hours=-file_num)
     pageviews_url = get_pageviews_download_url(trends_datetime)
+    # Download the file 
     print("Downloading wikipedia trends hourly data...")
     with requests.Session() as s:
         response = s.get(pageviews_url)
