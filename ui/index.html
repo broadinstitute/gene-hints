@@ -258,10 +258,14 @@
       updateExamples(newOrganism);
 
       config.organism = urlParams.org;
+      config.annotationsPath = getAnnotsPath(newOrganism)
+
+      window.organism = config.organism;
+
       // const banded = !['homo sapiens', 'mus musculus'].includes(selectedOrg);
       // config.showFullyBanded = banded;
       delete ideogram;
-      ideogram = Ideogram.initRelatedGenes(config);
+      ideogram = Ideogram.initGeneHints(config);
     }
 
     function getGene() {
@@ -304,8 +308,6 @@
       }
       const annotsPath = `../processed_tsv/${fileName}`;
 
-      console.log('annotsPath')
-      console.log(annotsPath)
       return annotsPath
     }
 
