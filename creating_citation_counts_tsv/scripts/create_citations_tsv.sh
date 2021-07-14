@@ -5,6 +5,9 @@
 # First install 
 pip3 install -r creating_citation_counts_tsv/requirements.txt 
 
+# Cleanup existing files
+rm -f creating_citation_counts_tsv/data/recent_pmid_year.ssv
+
 # Create a data, tsv, and tmp-ssv folder
 mkdir creating_citation_counts_tsv/data
 mkdir tsv
@@ -17,7 +20,7 @@ python3 creating_citation_counts_tsv/scripts/pmids_by_date.py
 
 # Consolidate the publications from each day into one complete list
 # For easier processing, we'll collapse the per-day list of files into one file
-for file in $(find . -name "*.ssv"); \
+for file in $(find creating_citation_counts_tsv/data/tmp-ssv/ -name "*.ssv"); \
 do cat $file | awk '{split($1,a,"-"); print a[1], $2}' >> creating_citation_counts_tsv/data/recent_pmid_year.ssv; \
 done
 
@@ -61,13 +64,13 @@ rm creating_citation_counts_tsv/data/gene2pubmed
 # To get a list of genomic positions from UCSC to plot the locations of the genes.
 # Getting Human refences file
 wget -N -P creating_citation_counts_tsv/data/human https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz
-gunzip creating_citation_counts_tsv/data/human/hg38.refGene.gtf.gz
+gunzip -f creating_citation_counts_tsv/data/human/hg38.refGene.gtf.gz
 # Getting Mouse refences file
 wget -N -P creating_citation_counts_tsv/data/mouse https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/genes/refGene.gtf.gz
-gunzip creating_citation_counts_tsv/data/mouse/refGene.gtf.gz 
+gunzip -f creating_citation_counts_tsv/data/mouse/refGene.gtf.gz 
 # Getting Rat refences file
 wget -N -P creating_citation_counts_tsv/data/rat https://hgdownload.soe.ucsc.edu/goldenPath/rn6/bigZips/genes/rn6.refGene.gtf.gz
-gunzip creating_citation_counts_tsv/data/rat/rn6.refGene.gtf.gz
+gunzip -f creating_citation_counts_tsv/data/rat/rn6.refGene.gtf.gz
 # ADD Extra Species refences file
 
 # We need a mapping of gene IDs, which are just numbers, to more meaningful names and descriptions.
