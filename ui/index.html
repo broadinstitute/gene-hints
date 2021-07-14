@@ -164,7 +164,7 @@
   <script type="text/javascript">
 
     const examplesByOrganism = {
-      'homo-sapiens': ['AGT', 'RAD51', 'APOE'],
+      'homo-sapiens': ['AGT', 'RAD51', 'APP'],
       'mus-musculus': ['Rad51', 'Pten', 'Sox2'],
       'rattus-norvegicus': ['Rad51', 'Pten', 'Sox2'],
       'drosophila-melanogaster': ['dpp', 'N', 'Ubx'],
@@ -242,6 +242,10 @@
       return selectedOrg;
     }
 
+    function showIdeogram() {
+      document.querySelector('#ideogram-container').style.visibility = '';
+    }
+
     async function handleOrganism() {
 
       const newOrganism = getOrganism();
@@ -257,15 +261,27 @@
       updateUrl();
       updateExamples(newOrganism);
 
-      config.organism = urlParams.org;
-      config.annotationsPath = getAnnotsPath(newOrganism)
-
-      window.organism = config.organism;
+      window.organism = urlParams.org;
 
       // const banded = !['homo sapiens', 'mus musculus'].includes(selectedOrg);
       // config.showFullyBanded = banded;
       delete ideogram;
-      ideogram = Ideogram.initGeneHints(config);
+
+
+      config.organism = newOrganism
+
+
+      document.querySelector('#ideogram-container').style.visibility = 'hidden';
+
+      if ('q' in urlParams) {
+        delete config.annotationsPath
+        config.onLoad = plotGeneFromUrl
+        config.onPlotRelatedGenes = showIdeogram()
+        ideogram = Ideogram.initRelatedGenes(config);
+      } else {
+        config.annotationsPath = getAnnotsPath(newOrganism)
+        ideogram = Ideogram.initGeneHints(config);
+      }
     }
 
     function getGene() {
@@ -330,7 +346,6 @@
       chrLabelSize: 12,
       annotationHeight: 7,
       onLoad: plotGeneFromUrl,
-      showAnnotLabels: true,
       onClickAnnot
     }
 
