@@ -97,7 +97,7 @@ def getting_gene_info(species_gene_info_tsv, gene_citation_counts, taxonomy_name
                 "gene_id": gene_id,
                 "chromosome": chromosome,
                 "description": description,
-                "count": gene_citation_counts.get(gene_id, 0),
+                "citation_count": gene_citation_counts.get(gene_id, 0),
                 "tax_id": tax_id
             }
     
@@ -113,11 +113,13 @@ def getting_gene_info(species_gene_info_tsv, gene_citation_counts, taxonomy_name
 
     # Getting the taxonomy scientific name for the taxonomy ID given and saving it to the taxonomy_scientific_name variable
     taxonomy_scientific_name = ""
+    # This file has no headers so here's an example instead:
+    #28      |       halophilic eubacterium  |               |       scientific name |
     with open(taxonomy_name_tsv) as fd:
         rd = csv.reader(fd, delimiter='\t')
         for row in rd:
             row_tax_id = int(row[0])
-            name = str(row[2]) # taxonomy_name_tsv does not include column headers so these are guesses based on the data
+            name = str(row[2]) # the file does not include column headers so these are guesses based on the data
             name_type = str(row[6])
             if row_tax_id==species_tax_id and name_type=="scientific name":
                 taxonomy_scientific_name = name
@@ -133,31 +135,54 @@ def get_ref_gene(species, gene_symbol__gene_info__dict):
     """ 
     Getting a list of the gene reference information per gene.
     """
+
+    def extract_value_from_unparsed_string(unparsed_string, key):
+        """
+        Extracts the value from an unparsed string
+        
+        key example: "gene_id"
+        """
+        start_index = unparsed_string.find(key) + len(key + ' "')
+        end_index = unparsed_string[start_index:].find('"') + start_index
+        return unparsed_string[start_index:end_index]
+
     
     # Going through all the files in the species directory 
-    for refGene_file in os.listdir(f"creating_citation_counts_tsv/data/{species}"):
-         #Since the reference file is uniquely named and could not be hard-coded, this will filter out "gene_info" and "gene2pubmed" to read the reference file
-        if refGene_file != "gene_info" and "gene2pubmed":
+    ref_gene = {}
+    for file in os.listdir(f"creating_citation_counts_tsv/data/{species}"):
+        #Since the reference file is uniquely named and could not be hard-coded, this will filter out files that are not .gtf files to read the reference file
+        if file.endswith(".gtf"):
             # Adding gene's reference information to the list created from getting_gene_info per gene and saving it to the refGene variable
-            refGene = (sc.textFile(f"creating_citation_counts_tsv/data/{species}/{refGene_file}")
-                    .filter(lambda x: x[0] != '#')
-                    .map(lambda x: x.split('\t'))
-                    .filter(lambda x: 'transcript' in x[2])
-                    .map(lambda x: (str(x[8])
-                    .split(";")[0]
-                    .replace("gene_id ", "")
-                    .replace('"', '')
-                    .upper(), (int(x[3]), int(abs(int(x[3])-int(x[4]))))))
-                    .join(gene_symbol__gene_info__dict)
-                    .map(lambda x: (x[0], (x[1][1][1], x[1][0][0], x[1][0][1], "#73af42", x[1][1][2], x[1][1][3])))
-                    .reduceByKey(lambda a, b: a)
-                    .map(lambda x: (x[0], x[1][0], x[1][1], x[1][2], "#73af42", x[1][4], x[1][5])))
-            
-            # Outputing the refGene variable
-            print(refGene.take(1))
-            
-            # Returning the refGene variable
-            return refGene
+            # This file has no headers so here's an example instead:
+            #chr6    refGene transcript      26086290        26091034        .       -       .       gene_id "LOC108783645"; transcript_id "NR_144383";  gene_name "LOC108783645";
+            # which parses to:
+            #['chr6', 'refGene', 'transcript', '26086290', '26091034', '.', '-', '.', 'gene_id "LOC108783645"; transcript_id "NR_144383";  gene_name "LOC108783645";']
+            with open(f"creating_citation_counts_tsv/data/{species}/{file}") as fd:
+                rd = csv.reader(fd, delimiter='\t')
+                for row in rd:
+                    type = str(row[2]) # the file does not include column headers so these are guesses based on the data (for example: transcript, exon, 3utr, cds ...)
+                    details = str(row[8])
+                    if type=="transcript":
+                        gene_symbol = extract_value_from_unparsed_string(details, "gene_id").upper()
+                        start_coordinate = int(row[3])
+                        end_coordinate = int(row[4])
+                        coordinate_length = abs(end_coordinate - start_coordinate)
+                        color = "#73af42"
+                        if gene_symbol in gene_symbol__gene_info__dict.keys():
+                            chromosome = gene_symbol__gene_info__dict[gene_symbol]["chromosome"]
+                            description = gene_symbol__gene_info__dict[gene_symbol]["description"]
+                            citation_count = gene_symbol__gene_info__dict[gene_symbol]["citation_count"]
+                        else:
+                            chromosome = ""
+                            description = ""
+                            citation_count = 0
+                        ref_gene[gene_symbol] = {chromosome, start_coordinate, coordinate_length, color, description, citation_count}
+
+    # Outputing the ref_gene variable
+    print( next(iter( ref_gene.items() )) )
+    
+    # Returning the ref_gene variable
+    return ref_gene
 
 def translate_disease(disease):
     """ 
@@ -284,16 +309,16 @@ def get_significance(gene, source, num_diseases):
     return f"Involved in {'; '.join(top_disease_associations).lower()}" if top_disease_associations else None
 
 
-def create_tsv(refGene, tax_name, significance_SOURCES):
+def create_tsv_for_top(refGene, tax_name, significance_SOURCES, top_count):
     """
-    Creating TSVs containing the 10 most-cited genes per species and their gene information.
+    Creating TSVs containing the `top_count` most-cited genes per species and their gene information.
     """
     
     # Outputing the start of the Getting Top Ten TSVs process
     print("Getting Top Ten TSVs")
     
     # Getting the list of the top ten most cited genes from the list created from get_ref_gene
-    top_ten_gene = sorted(refGene.collect(), key=lambda x: x[6])[-10:][::-1]
+    top_ten_gene = sorted(refGene.collect(), key=lambda x: x[6])[-top_count:][::-1]
     
     # Creating the top_ten_gene_list variable
     top_ten_gene_list = []
@@ -365,13 +390,10 @@ if __name__ == "__main__":
         
         gene_citation_counts = get_recent_gene_citation_count(f"creating_citation_counts_tsv/data/{species}/gene2pubmed", "creating_citation_counts_tsv/data/recent_pmid_year.ssv")
         
-        # Getting a list of the gene information per gene and species' taxonomy name.
         gene_info, tax_name = getting_gene_info(f"creating_citation_counts_tsv/data/{species}/gene_info", gene_citation_counts, "creating_citation_counts_tsv/taxonomy_name")
         
-        # Getting a list of the gene reference information per gene
-        refGene = get_ref_gene(species, gene_info)
+        ref_gene = get_ref_gene(species, gene_info)
         
-        # Creating TSVs containing the 10 most-cited genes per species and their gene information
-        create_tsv(refGene, tax_name, significance_SOURCES[species])
+        create_tsv_for_top(ref_gene, tax_name, significance_SOURCES[species], 10)
 
         
