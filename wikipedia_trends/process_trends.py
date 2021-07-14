@@ -1,6 +1,7 @@
 import csv
 from datetime import datetime, timedelta
 import gzip
+import os
 import requests
 import sys
 from time import perf_counter
@@ -11,7 +12,8 @@ gene_list_url = "https://raw.githubusercontent.com/eweitz/ideogram/master/data/a
 pageviews_base_url = "https://dumps.wikimedia.org/other/pageviews"
 
 name_map_tsv_location = "./wikipedia_trends/gene_page_map.tsv"
-pageviews_download_location = "./wikipedia_trends/downloads/pageviews{count}.gz"
+downloads_dir = "./wikipedia_trends/downloads/"
+pageviews_download_location = downloads_dir + "pageviews{count}.gz"
 output_location = "./wikipedia_trends/wikipedia_top_viewed_genes.tsv"
 
 num_pageviews_files = 12 # The number of hours of data to process (should eventually be set to 48)
@@ -64,12 +66,14 @@ def init_gene_counts(page_to_gene_map):
 
 # Download and save the Wikipedia trends dump file 
 def download_trends_file(file_num):
+    # Ensure that the downloads directory exists
+    if not os.path.exists(downloads_dir):
+        os.makedirs(downloads_dir)
     trends_datetime = start_datetime + timedelta(hours=file_num)
     pageviews_url = get_pageviews_download_url(trends_datetime)
     print("Downloading wikipedia trends hourly data...")
     with requests.Session() as s:
         response = s.get(pageviews_url)
-
         with open(pageviews_download_location.format(count=file_num), "wb") as f:
             f.write(response.content)
 
