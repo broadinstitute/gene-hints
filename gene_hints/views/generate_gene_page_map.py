@@ -87,7 +87,7 @@ def save_page_name_map(gene_symbols):
             else: 
                 # load the page, and see what the title is 
                 page_name = get_correct_page_name(symbol)
-            page_names_to_symbols[page_name] = symbol
+            page_names_to_symbols[page_name.lower()] = symbol
             f.write("%s\t%s\n"%(page_name, symbol))
             i+=1
             if i % 100 == 0:

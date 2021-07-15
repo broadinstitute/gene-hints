@@ -79,12 +79,12 @@ def download_trends_file(file_num):
 # pageview dump file of the format ["language", "page_name", "hourly_view_count", "always_zero_val"]
 # Ex. ["aa", "Main_Page", "4", "0"]
 def add_row_to_gene_count(counts_dict, row, page_to_gene_map):
-    # handle malformed rows
+    # log and ignore malformed rows (they happen rarely for uknonwn reasons)
     if len(row) < 4:
         print("\tEncountered malformed row:", row)
     # process the row 
     else:
-        page_name = row[1]
+        page_name = row[1].lower()
         if row[0] == "en" and page_to_gene_map.get(page_name) is not None:
             gene_symbol = page_to_gene_map[page_name]
             view_count = int(row[2])
@@ -127,7 +127,7 @@ def save_counts_to_file(view_counts):
             line_count += 1
     # Overwrite the file with new data
     with open(output_file_location, "w") as f:
-        f.write("gene_symbol\tdaily_page_views\tprev_daily_page_views\n")
+        f.write("gene_symbol\twikipedia_daily_page_views\twikipedia_daily_page_views_change_from_previous_day\n")
         for gene, views, in view_counts.items():
             prev_views = prev_view_counts.get(gene, 0)
             f.write("%s\t%s\t%s\n"%(gene, views, prev_views))
