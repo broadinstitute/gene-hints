@@ -191,22 +191,19 @@ def get_ref_gene(species, gene_symbol__gene_info__dict):
     # Returning the ref_gene variable
     return ref_gene
 
-def get_genes_with_highest_citation_count(ref_gene, top_gene_count):
+def sort_and_list_genes(ref_gene):
     """
-    Returns the genes with the most citations. # of genes returned is determined by `top_gene_count`.
+    Returns a list of the genes in order of citation count, starting with the largest first.
     """
-    
-    print("Getting Top " + str(top_gene_count) + " most-cited Genes")
 
     # Getting the list of the top ten most cited genes from the list created from get_ref_gene
-    top_genes_list = sorted(ref_gene.items(), key=lambda x: x[1]['citation_count'], reverse=True)[:top_gene_count]
+    sorted_genes_list = sorted(ref_gene.items(), key=lambda x: x[1]['citation_count'], reverse=True)
     
-    print("Gene with the most citations:")
-    print(str(top_genes_list[0]))
+    print("Gene with the most citations: " + str(sorted_genes_list[0]))
 
-    return top_genes_list
+    return sorted_genes_list
 
-def create_tsv_for_genes(top_genes_list, tax_name):
+def create_tsv_for_genes(sorted_genes_list, tax_name):
     """
     Creating TSVs containing gene information.
     """
@@ -240,8 +237,8 @@ def create_tsv_for_genes(top_genes_list, tax_name):
         # Add the header row to the TSV
         tsv_writer.writerow(["#name", "chromosome", "start", "length", "color", "full_name", citations, "significance"])
         
-        # Going through each gene in the top_genes_list 
-        for gene in top_genes_list:
+        # Going through each gene in the sorted_genes_list 
+        for gene in sorted_genes_list:
             # Adding the gene information to the TSV
             symbol = gene[0]
             chromosome = gene[1]["chromosome"]
@@ -271,7 +268,6 @@ if __name__ == "__main__":
         
         ref_gene = get_ref_gene(species, gene_info)
 
-        NUMBER_OF_GENES_FOR_TSV = 10
-        top_genes_list = get_genes_with_highest_citation_count(ref_gene, NUMBER_OF_GENES_FOR_TSV)
+        sorted_genes_list = sort_and_list_genes(ref_gene)
 
-        create_tsv_for_genes(top_genes_list, tax_name)
+        create_tsv_for_genes(sorted_genes_list, tax_name)
