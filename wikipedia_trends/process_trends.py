@@ -46,7 +46,7 @@ def load_page_name_to_gene_map():
         print("Processing file contents...")
         for row in reader:
             if line_count > 0:
-                name_map[row[0]] = row[1]
+                name_map[row[0].lower()]= row[1]
             line_count += 1
     return name_map
 
