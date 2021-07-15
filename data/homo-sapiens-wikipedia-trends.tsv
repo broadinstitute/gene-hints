@@ -1,4 +1,4 @@
-gene_symbol	daily_page_views	prev_daily_page_views
+gene_symbol	wikipedia_daily_page_views	wikipedia_daily_page_views_change_from_previous_day
 TP53	0	0
 TNF	88	6
 UBC	8	2
