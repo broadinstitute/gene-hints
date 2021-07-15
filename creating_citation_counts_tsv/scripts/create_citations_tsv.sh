@@ -50,11 +50,11 @@ gunzip creating_citation_counts_tsv/data/gene2pubmed.gz
 
 # gene2pubmed is a big file, so we are parsing out what we need
 # Getting Human gene2pubmed
-cat creating_citation_counts_tsv/data/gene2pubmed | awk '{if ($1 == 9606 || $1 == 9605) print;}' > creating_citation_counts_tsv/data/human/gene2pubmed
+cat creating_citation_counts_tsv/data/gene2pubmed | awk '{if ($1 == 9606) print;}' > creating_citation_counts_tsv/data/human/gene2pubmed
 # Getting Mouse gene2pubmed
-cat creating_citation_counts_tsv/data/gene2pubmed | awk '{if (10088 || $1 == 10089 || $1 == 10090 || $1 == 10091 || $1 == 10091 || $1 == 10092 || $1 == 10093) print;}' > creating_citation_counts_tsv/data/mouse/gene2pubmed
+cat creating_citation_counts_tsv/data/gene2pubmed | awk '{if ($1 == 10090) print;}' > creating_citation_counts_tsv/data/mouse/gene2pubmed
 # Getting Rat gene2pubmed
-cat creating_citation_counts_tsv/data/gene2pubmed | awk '{if ($1 == 10114 || $1 == 10115 || $1 == 10116 || $1 == 10117 || $1 == 10118 || $1 == 10119 || $1 == 10121 || $1 == 10122 || $1 == 10127) print;}' > creating_citation_counts_tsv/data/rat/gene2pubmed
+cat creating_citation_counts_tsv/data/gene2pubmed | awk '{if ($1 == 10116) print;}' > creating_citation_counts_tsv/data/rat/gene2pubmed
 # ADD Extra Species gene2pubmed
 
 # Remove main file to save space
@@ -79,11 +79,11 @@ gunzip creating_citation_counts_tsv/data/gene_info.gz
 
 # Gene info is a big file, so we are parsing out what we need
 # Getting Human gene_info
-cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 9606 || $1 == 9605) print;}' > creating_citation_counts_tsv/data/human/gene_info
+cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 9606) print;}' > creating_citation_counts_tsv/data/human/gene_info
 # Getting Mouse gene_info
-cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 10088 || $1 == 10089 || $1 == 10090 || $1 == 10091 || $1 == 10091 || $1 == 10092) print;}' > creating_citation_counts_tsv/data/mouse/gene_info
+cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 10090) print;}' > creating_citation_counts_tsv/data/mouse/gene_info
 # Getting Rat gene_info
-cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 10114 || $1 == 10115 || $1 == 10116 || $1 == 10117 || $1 == 10118 || $1 == 10119 || $1 == 10121 || $1 == 10122 || $1 == 10127) print;}' > creating_citation_counts_tsv/data/rat/gene_info
+cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 10116) print;}' > creating_citation_counts_tsv/data/rat/gene_info
 # ADD Extra Species gene_info
 
 # Remove main file to save space
