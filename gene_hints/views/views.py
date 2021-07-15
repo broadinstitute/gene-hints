@@ -32,11 +32,16 @@ def get_pageviews_download_url(time):
 # pageview dump file of the format ["language", "page_name", "hourly_view_count", "always_zero_val"]
 # Ex. ["aa", "Main_Page", "4", "0"]
 def add_row_to_gene_count(counts_dict, row, page_to_gene_map):
-    page_name = row[1]
-    if row[0] == "en" and page_to_gene_map.get(page_name) is not None:
-        gene_symbol = page_to_gene_map[page_name]
-        view_count = int(row[2])
-        counts_dict[gene_symbol] += view_count
+    # handle malformed rows
+    if len(row) < 4:
+        print("\tEncountered malformed row:", row)
+    # process the row 
+    else:
+        page_name = row[1]
+        if row[0] == "en" and page_to_gene_map.get(page_name) is not None:
+            gene_symbol = page_to_gene_map[page_name]
+            view_count = int(row[2])
+            counts_dict[gene_symbol] += view_count
 
 
 # Load a map from wikipedia page names to gene symbols from file.
@@ -72,8 +77,9 @@ def download_trends_file(file_num):
     # Generate the hourly trends filename and URL
     trends_datetime = start_datetime + timedelta(hours=-file_num)
     pageviews_url = get_pageviews_download_url(trends_datetime)
+    print("Processing the trends file from", trends_datetime.strftime("%m/%d/%Y, %H:00"))
     # Download the file 
-    print("Downloading wikipedia trends hourly data...")
+    print("\tDownloading wikipedia trends hourly data...")
     with requests.Session() as s:
         response = s.get(pageviews_url)
         with open(pageviews_download_location.format(count=file_num), "wb") as f:
@@ -83,7 +89,7 @@ def download_trends_file(file_num):
 # Process the downloaded and zipped trends file by adding all
 # relevant views to the total count. 
 def process_trends_file(gene_counts, page_to_gene_map, file_num):
-    print("Processing pageview file", file_num, "contents...")
+    print("\tProcessing pageview file contents...")
     with gzip.open(pageviews_download_location.format(count=file_num), "rt") as f:
         reader = csv.reader(f.read().splitlines(), delimiter=" ")
         line_count = 0
