@@ -6,6 +6,7 @@ import requests
 import sys
 from time import perf_counter
 
+# TODO consider using numpy to speed up TSV reading and writing 
 
 # URLS and Directory locations
 wiki_pageviews_base_url = "https://dumps.wikimedia.org/other/pageviews"
@@ -13,10 +14,11 @@ wiki_trends_dir = "./wikipedia_trends/"
 name_map_tsv_location =  wiki_trends_dir + "gene_page_map.tsv"
 downloads_dir = wiki_trends_dir + "downloads/"
 pageviews_download_location = downloads_dir + "pageviews{count}.gz"
-output_location = wiki_trends_dir + "wikipedia_top_viewed_genes.tsv"
+output_file_location = "./data/homo-sapiens-wikipedia-trends.tsv"
+
 
 # Other global variables and settings
-num_hours_to_process = 12 # Eventually set to 48
+num_hours_to_process = 24
 most_recent_datetime = datetime.now(timezone.utc) - timedelta(hours=1) # One hour before the current time in UTC
 
 # override the csv field limits, to handle errors in wiki trends files (which will break the whole script otherwise)
@@ -104,15 +106,31 @@ def process_trends_file(gene_counts, page_to_gene_map, file_num):
 
 
 # Save to file and print the top viewed gene pages. 
+# TODO: remove this, it's only helpful for debugging the page mapping
 def output_pageview_counts(gene_counts):
     # Get the top counts per gene 
-    top_counts = dict(sorted(gene_counts.items(), key=lambda x: x[1], reverse=True)[:10])
-    print("Top viewed gene pages:", top_counts)
-    with open(output_location, "w") as f:
-        f.write("gene_symbol\tpage_views\n")
-        for gene, views, in gene_counts.items():
-            f.write("%s\t%s\n"%(gene, views))
+    top_counts = sorted(gene_counts.items(), key=lambda x: x[1], reverse=True)[:10]
+    print("Top viewed gene pages:", dict(top_counts[:10]))
 
+# Read the existing tsv file, and update the gene counts 
+# The file rows should be of the format; ["gene_symbol", "daily_page_views", "prev_daily_page_views"]
+def save_counts_to_file(view_counts):
+    # Read in the existing data
+    prev_view_counts = {}
+    print("Updating the wikipedia trends output file...")
+    with open(output_file_location, "rt") as f:
+        reader = csv.reader(f, delimiter="\t")
+        line_count = 0
+        for row in reader:
+            if line_count > 0:
+                prev_view_counts[row[0]] = int(row[1])
+            line_count += 1
+    # Overwrite the file with new data
+    with open(output_file_location, "w") as f:
+        f.write("gene_symbol\daily_page_views\tprev_daily_page_views\n")
+        for gene, views, in view_counts.items():
+            prev_views = prev_view_counts.get(gene, 0)
+            f.write("%s\t%s\t%s\n"%(gene, views, prev_views))
 
 
 # Run everything!
@@ -126,5 +144,6 @@ for file_num in range(num_hours_to_process):
     process_trends_file(gene_counts, page_to_gene_map, file_num)
 
 output_pageview_counts(gene_counts)
+save_counts_to_file(gene_counts)
 
 print("Finished in", int(perf_counter() - start_time), "seconds.")
