@@ -241,12 +241,15 @@ def request_disgenet(endpoint, params=None):
     
     # Setting base_url variable to input in the Disgenet API
     headers = {"content-type": "application/json"}
+
+    url = f"{base_url}/{endpoint}"
+    # print(url) # for debugging
     
     # Calling the Disgenet API
     try:
         # Calling the Disgenet API and saving it in the response variable
         response = requests.get(
-            url=f"{base_url}/{endpoint}", params=params, headers=headers
+            url=url, params=params, headers=headers
         )
         # Check the response variable status
         response.raise_for_status()
@@ -315,19 +318,26 @@ def get_significance(gene, source, num_diseases):
     # Format and return top_disease_associations
     return f"Involved in {'; '.join(top_disease_associations).lower()}" if top_disease_associations else None
 
+def get_genes_with_highest_citation_count(ref_gene, top_gene_count):
+    """
+    Returns the genes with the most citations. # of genes returned is determined by `top_gene_count`.
+    """
+    
+    print("Getting Top " + str(top_gene_count) + " most-cited Genes")
 
-def create_tsv_for_most_cited_genes(ref_gene, tax_name, significance_SOURCES, top_count):
-    """
-    Creating TSVs containing the `top_count` most-cited genes per species and their gene information.
-    """
-    
-    print("Getting Top " + str(top_count) + " most-cited Genes")
-    
     # Getting the list of the top ten most cited genes from the list created from get_ref_gene
-    top_genes_list = sorted(ref_gene.items(), key=lambda x: x[1]['citation_count'], reverse=True)[:top_count]
+    top_genes_list = sorted(ref_gene.items(), key=lambda x: x[1]['citation_count'], reverse=True)[:top_gene_count]
     
     print("Gene with the most citations:")
     print(str(top_genes_list[0]))
+
+    return top_genes_list
+
+def create_tsv_for_genes(top_genes_list, tax_name, significance_SOURCES):
+    """
+    Creating TSVs containing gene information.
+    """
+    
     
     # Creating the top_genes_with_significance_list variable
     top_genes_with_significance_list = []
@@ -415,8 +425,10 @@ if __name__ == "__main__":
         
         ref_gene = get_ref_gene(species, gene_info)
 
-        create_tsv_for_most_cited_genes(ref_gene, tax_name, significance_SOURCES[species], 10)
-        #todo: refactor to split into significance and create tsv
+        NUMBER_OF_GENES_FOR_TSV = 10
+        top_genes_list = get_genes_with_highest_citation_count(ref_gene, NUMBER_OF_GENES_FOR_TSV)
+
+        create_tsv_for_genes(top_genes_list, tax_name, significance_SOURCES[species])
 
         
 #todo -- add csv comments to each file open
