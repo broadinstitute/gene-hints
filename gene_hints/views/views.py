@@ -127,7 +127,7 @@ def save_counts_to_file(view_counts):
             line_count += 1
     # Overwrite the file with new data
     with open(output_file_location, "w") as f:
-        f.write("gene_symbol\daily_page_views\tprev_daily_page_views\n")
+        f.write("gene_symbol\tdaily_page_views\tprev_daily_page_views\n")
         for gene, views, in view_counts.items():
             prev_views = prev_view_counts.get(gene, 0)
             f.write("%s\t%s\t%s\n"%(gene, views, prev_views))
