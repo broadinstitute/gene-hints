@@ -91,12 +91,12 @@ def get_gene_info(species_gene_info_tsv, gene_citation_counts, taxonomy_name_tsv
             tax_id = str(row[0])
             symbol = str(row[2]).upper()
             chromosome = str(row[6])
-            description = str(row[8])
+            full_name = str(row[8])
             gene_symbol__gene_info__dict[symbol] = {
                 "symbol": symbol,
                 "gene_id": gene_id,
                 "chromosome": chromosome,
-                "description": description,
+                "full_name": full_name,
                 "citation_count": gene_citation_counts.get(gene_id, 0),
                 "tax_id": tax_id
             }
@@ -109,16 +109,16 @@ def get_gene_info(species_gene_info_tsv, gene_citation_counts, taxonomy_name_tsv
     species_tax_id = first_dict_entry["tax_id"]
 
     # Outputing the species_tax_id variable
-    print(species_tax_id)
+    print("species_tax_id: " + species_tax_id)
 
     # Getting the taxonomy scientific name for the taxonomy ID given and saving it to the taxonomy_scientific_name variable
     taxonomy_scientific_name = ""
     # This file has no headers so here's an example instead:
-    #28      |       halophilic eubacterium  |               |       scientific name |
+    #9606    |       Homo sapiens    |               |       scientific name |
     with open(taxonomy_name_tsv) as fd:
         rd = csv.reader(fd, delimiter='\t')
         for row in rd:
-            row_tax_id = int(row[0])
+            row_tax_id = str(row[0])
             name = str(row[2]) # the file does not include column headers so these are guesses based on the data
             name_type = str(row[6])
             if row_tax_id==species_tax_id and name_type=="scientific name":
@@ -126,7 +126,7 @@ def get_gene_info(species_gene_info_tsv, gene_citation_counts, taxonomy_name_tsv
                 break
 
     # Outputing the taxonomy_scientific_name variable
-    print(taxonomy_scientific_name)
+    print("taxonomy_scientific_name: " + taxonomy_scientific_name)
 
     # Returning the gene_info and taxonomy_scientific_name variable
     return gene_symbol__gene_info__dict, taxonomy_scientific_name
@@ -170,18 +170,18 @@ def get_ref_gene(species, gene_symbol__gene_info__dict):
                         color = "#73af42"
                         if gene_symbol in gene_symbol__gene_info__dict.keys():
                             chromosome = gene_symbol__gene_info__dict[gene_symbol]["chromosome"]
-                            description = gene_symbol__gene_info__dict[gene_symbol]["description"]
+                            full_name = gene_symbol__gene_info__dict[gene_symbol]["full_name"]
                             citation_count = gene_symbol__gene_info__dict[gene_symbol]["citation_count"]
                         else:
                             chromosome = ""
-                            description = ""
+                            full_name = ""
                             citation_count = 0
                         ref_gene[gene_symbol] = {
                             "chromosome": chromosome,
                             "start_coordinate": start_coordinate,
                             "coordinate_length": coordinate_length,
                             "color": color,
-                            "description": description,
+                            "full_name": full_name,
                             "citation_count": citation_count,
                             }
 
@@ -334,7 +334,10 @@ def create_tsv_for_most_cited_genes(ref_gene, tax_name, significance_SOURCES, to
     
     # Going through each gene in the top_genes_list 
     for gene_row in top_genes_list:
-                
+        
+        if gene_row[1]['citation_count'] == 0:
+            continue
+
         # Getting the top three name disease and saving it to the significance variable
         gene_name = gene_row[0]
         significance = get_significance(gene_name, significance_SOURCES, 3)
@@ -377,7 +380,17 @@ def create_tsv_for_most_cited_genes(ref_gene, tax_name, significance_SOURCES, to
         # Going through each gene in the top_genes_with_significance_list 
         for gene in top_genes_with_significance_list:
             # Adding the gene information to the TSV
-            tsv_writer.writerow(gene)
+            symbol = gene[0]
+            chromosome = gene[1]["chromosome"]
+            start = gene[1]["start_coordinate"]
+            length = gene[1]["coordinate_length"]
+            color = gene[1]["color"]
+            full_name = gene[1]["full_name"]
+            citations = gene[1]["citation_count"]
+            significance = gene[2]
+            tsv_row_values = [symbol, chromosome, start, length, color, full_name, citations, significance]
+
+            tsv_writer.writerow(tsv_row_values)
     
 # Main Function
 if __name__ == "__main__":
@@ -386,7 +399,7 @@ if __name__ == "__main__":
     
     # Setting dictionary of species to Disgenet API source 
     significance_SOURCES = {
-        "human": 'CTD_human' , 
+        "human": 'CTD_human', 
         "mouse": 'MGD',
         "rat": 'RGD',
     }
@@ -403,7 +416,7 @@ if __name__ == "__main__":
         ref_gene = get_ref_gene(species, gene_info)
 
         create_tsv_for_most_cited_genes(ref_gene, tax_name, significance_SOURCES[species], 10)
-        #todo: remove citations counts == 0
+        #todo: refactor to split into significance and create tsv
 
         
 #todo -- add csv comments to each file open
