@@ -4,7 +4,7 @@ Creating TSVs containing the 10 most-cited genes per species and their gene info
 import os
 from datetime import date, timedelta, datetime
 import csv
-
+import argparse
 
 def get_recent_gene_citation_count(species_gene2pubmed_tsv, recent_citations_ssv):
     """ 
@@ -205,7 +205,7 @@ def sort_and_list_genes(ref_gene):
 
     return sorted_genes_list
 
-def create_tsv_for_genes(sorted_genes_list, tax_name):
+def create_tsv_for_genes(sorted_genes_list, tax_name, output_file_suffix, timeframe_days):
     """
     Creating TSVs containing gene information.
     """
@@ -219,17 +219,14 @@ def create_tsv_for_genes(sorted_genes_list, tax_name):
     # Getting today date
     today = date.today().strftime("%Y_%m_%d")
 
-    # Setting the 5 months time frame
-    days = 155
-
-    # Getting the date 5 months ago
-    month_ago = (datetime.today() - timedelta(days=155)).strftime("%Y_%m_%d")
+    # Getting the date timeframe_days ago
+    month_ago = (datetime.today() - timedelta(days=timeframe_days)).strftime("%Y_%m_%d")
     
     # Creating the citation variable that states the time frame from five months ago to today
     citations = f"citations_from_{month_ago}_to_{today}"
     
     # Creating the TSV name that contains the gene_species_name variable
-    tsv_name= f'data/{gene_species_name}-citation-information.tsv'
+    tsv_name= f'data/{gene_species_name}-citation-information-{output_file_suffix}.tsv'
     
     # Creating the TSV
     with open(tsv_name, 'wt') as out_file:
@@ -256,6 +253,12 @@ def create_tsv_for_genes(sorted_genes_list, tax_name):
     
 # Main Function
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('citation_count_ssv', metavar='N', type=str, help='citation count ssv file path')
+    parser.add_argument('output_file_suffix', metavar='N', type=str, help='suffix for TSV file (for example, "recent" or "past"')
+    parser.add_argument('timeframe_days', metavar='N', type=int, help='days in the timeframe')
+    args = parser.parse_args()
+    
     # Setting list of species
     list_of_species = ["human", "mouse", "rat"]
 
@@ -264,7 +267,7 @@ if __name__ == "__main__":
         # Outputing species name
         print(species)
         
-        gene_citation_counts = get_recent_gene_citation_count(f"creating_citation_counts_tsv/data/{species}/gene2pubmed", "creating_citation_counts_tsv/data/recent_pmid_year.ssv")
+        gene_citation_counts = get_recent_gene_citation_count(f"creating_citation_counts_tsv/data/{species}/gene2pubmed", args.citation_count_ssv)
         
         gene_info, tax_name = get_gene_info(f"creating_citation_counts_tsv/data/{species}/gene_info", gene_citation_counts, "creating_citation_counts_tsv/taxonomy_name")
         
@@ -272,4 +275,4 @@ if __name__ == "__main__":
 
         sorted_genes_list = sort_and_list_genes(ref_gene)
 
-        create_tsv_for_genes(sorted_genes_list, tax_name)
+        create_tsv_for_genes(sorted_genes_list, tax_name, args.output_file_suffix, args.timeframe_days)
