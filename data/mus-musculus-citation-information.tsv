@@ -1,0 +1,11 @@
+#name	chromosome	start	length	color	full_name	citations_from_2021_02_10_to_2021_07_15	significance
+GT(ROSA)26SOR	6	113047360	6845	#73af42	gene trap ROSA 26, Philippe Soriano	76	
+MKI67	7	135291517	26591	#73af42	antigen identified by monoclonal antibody Ki 67	32	
+CASP3	8	47070326	22407	#73af42	caspase 3	27	
+SOX2	3	34704144	2465	#73af42	SRY (sex determining region Y)-box 2	25	
+TRP53	11	69471185	11514	#73af42	transformation related protein 53	23	
+PAX6	2	105512808	15947	#73af42	paired box 6	20	
+NLRP3	11	59433512	24267	#73af42	NLR family, pyrin domain containing 3	18	
+BCL11B	12	107876662	93011	#73af42	B cell leukemia/lymphoma 11B	17	
+EOMES	9	118307257	7943	#73af42	eomesodermin	17	
+PECAM1	11	106545039	61068	#73af42	platelet/endothelial cell adhesion molecule 1	16	

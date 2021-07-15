@@ -1,0 +1,11 @@
+#name	chromosome	start	length	color	full_name	citations_from_2021_02_10_to_2021_07_15	significance
+NLRP3	10	45893018	24269	#73af42	NLR family, pyrin domain containing 3	11	
+TGFB1	1	82480875	16321	#73af42	transforming growth factor, beta 1	10	
+IL1B	3	121876259	6378	#73af42	interleukin 1 beta	10	
+TNF	20	4855829	2617	#73af42	tumor necrosis factor	9	
+EPHB2	5	155024478	179956	#73af42	Eph receptor B2	9	
+HIF1A	6	96811185	44865	#73af42	hypoxia inducible factor 1 subunit alpha	9	
+NFE2L2	3	62497571	27423	#73af42	nuclear factor, erythroid 2-like 2	9	
+HMOX1	19	14508634	6822	#73af42	heme oxygenase 1	9	
+YAP1	8	6135542	68037	#73af42	Yes1 associated transcriptional regulator	8	
+SLC9A1	5	151573122	53238	#73af42	solute carrier family 9 member A1	8	

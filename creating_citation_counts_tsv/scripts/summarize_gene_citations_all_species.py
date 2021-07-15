@@ -230,7 +230,7 @@ def create_tsv_for_genes(top_genes_list, tax_name):
     citations = f"citations_from_{month_ago}_to_{today}"
     
     # Creating the TSV name that contains the gene_species_name variable
-    tsv_name= f'tsv/{gene_species_name}-citation-information.tsv'
+    tsv_name= f'data/{gene_species_name}-citation-information.tsv'
     
     # Creating the TSV
     with open(tsv_name, 'wt') as out_file:

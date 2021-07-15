@@ -1,0 +1,11 @@
+#name	chromosome	start	length	color	full_name	citations_from_2021_02_10_to_2021_07_15	significance
+ACE2	X	15561033	39927	#73af42	angiotensin converting enzyme 2	80	
+CD274	9	5450542	20012	#73af42	CD274 molecule	43	
+EGFR	7	55019017	184059	#73af42	epidermal growth factor receptor	42	
+TP53	17	7668402	6842	#73af42	tumor protein p53	33	
+IL6	7	22727200	4798	#73af42	interleukin 6	32	
+KRAS	12	25205246	45683	#73af42	KRAS proto-oncogene, GTPase	25	
+PDCD1	2	241849884	9010	#73af42	programmed cell death 1	24	
+SIRT1	10	67885181	33209	#73af42	sirtuin 1	23	
+IL1B	2	112829756	7023	#73af42	interleukin 1 beta	23	
+VDR	12	47841537	63457	#73af42	vitamin D receptor	22	
