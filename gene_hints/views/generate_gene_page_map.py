@@ -3,11 +3,11 @@ import csv
 import requests
 from time import perf_counter
 
-gene_list_url = "https://raw.githubusercontent.com/eweitz/ideogram/master/data/annotations/gene-cache/homo-sapiens.tsv"
+gene_symbol_master_list_url = "https://raw.githubusercontent.com/eweitz/ideogram/master/data/annotations/gene-cache/homo-sapiens.tsv"
 wiki_base_url = "https://en.wikipedia.org/wiki/"
 custom_disambiguation = { # override for pages that don't automatically lead to to the disambiguation
-    "BTD": "PageDoesNotExist", # no page for the gene, but BTD has it's own page
-    "BOC": "BOC_(gene)",
+    "BTD": "PageDoesNotExist", # no page for the gene, but BTD has it's own page (should be fixed now!)
+    "BOC": "BOC_(gene)", # Need to handle this type of disambiguation automatically in the future
     "CBS": "Cystathionine_beta_synthase",
     "CTSH": "Cathepsin_H",
     "DST": "Dystonin",
@@ -31,7 +31,7 @@ custom_disambiguation = { # override for pages that don't automatically lead to 
 def get_gene_symbols():
     genes = []
     with requests.Session() as s:
-        download = s.get(gene_list_url)
+        download = s.get(gene_symbol_master_list_url)
         decoded_content = download.content.decode('utf-8')
         reader = csv.reader(decoded_content.splitlines(), delimiter='\t')
         line_count = 0
@@ -44,19 +44,32 @@ def get_gene_symbols():
     return genes
 
 
-def get_page_name_from_symbol(symbol):
+# Determine whether the page is a disambiguation, or links to a disambiguation page.
+def has_disambiguation(wiki_page_soup, attempted_page_name):
+    has_disambiguation_link = wiki_page_soup.find("a", {"class": "mw-disambig"}) is not None
+    has_link_to_gene_page = wiki_page_soup.find("a", {"href": "/wiki/" + attempted_page_name + "_(gene)"}) is not None
+    has_disambiguation_in_header = "(disambiguation)" in wiki_page_soup.find(id="firstHeading")
+    has_disambiguation_box = wiki_page_soup.find("div", {"id": "disambigbox"}) is not None
+
+    return has_disambiguation_link or has_link_to_gene_page or has_disambiguation_in_header or has_disambiguation_box
+
+
+# Load the wikipedia page, and see if it redirects to a page with a different name, or has a disambiguation. 
+# The purpose of this method is to avoid getting the pageviews for unrelated pages, when we intend for the gene page. 
+# Ex. "/wiki/GBA" redirects to "/wiki/Game_Boy_Advance". We want to detect the disambiguation so we know 
+# to go to "/wiki//wiki/GBA_(gene)" instead.
+def get_correct_page_name(attempted_page_name):
     gene_suffix = "_(gene)"
-    r = requests.get(wiki_base_url + symbol)
-    soup = BeautifulSoup(r.content, 'html.parser') 
+    r = requests.get(wiki_base_url + attempted_page_name)
+    soup = BeautifulSoup(r.content, 'html.parser')
+    page_name = soup.find(id="firstHeading").text.replace(" ", "_") 
 
     # when there is a disambiguation, we need to look for the specific gene page
-    has_disambiguation = soup.find("a", {"class": "mw-disambig"}) is not None
-    has_link_to_gene_page = soup.find("a", {"href": "/wiki/" + symbol + "_(gene)"}) is not None
-    if (has_disambiguation or has_link_to_gene_page) and not (gene_suffix in symbol):
+    if has_disambiguation(soup, attempted_page_name) and not (gene_suffix in attempted_page_name):
         # recursively call this with the _gene suffix
-        return get_page_name_from_symbol(symbol + gene_suffix)
+        return get_correct_page_name(attempted_page_name + gene_suffix)
     else: 
-        return soup.find(id="firstHeading").text.replace(" ", "_")
+        return page_name
 
 
 # Load the wikipedia page for each gene and see what the actual page name is. 
@@ -73,10 +86,7 @@ def save_page_name_map(gene_symbols):
                 page_name = custom_disambiguation[symbol]
             else: 
                 # load the page, and see what the title is 
-                page_name = get_page_name_from_symbol(symbol)
-                # if it finds a disambiguation page, try again with the specifier
-                if "_(disambiguation)" in page_name:
-                    page_name = get_page_name_from_symbol(symbol + "_(gene)")
+                page_name = get_correct_page_name(symbol)
             page_names_to_symbols[page_name] = symbol
             f.write("%s\t%s\n"%(page_name, symbol))
             i+=1
