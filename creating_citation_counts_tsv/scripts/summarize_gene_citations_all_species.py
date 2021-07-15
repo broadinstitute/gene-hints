@@ -2,14 +2,8 @@
 Creating TSVs containing the 10 most-cited genes per species and their gene information.
 """
 import os
-import sys
-import json
-import pyspark
-import requests
-from operator import add
 from datetime import date, timedelta, datetime
 import csv
-from collections import Counter
 
 
 def get_recent_gene_citation_count(species_gene2pubmed_tsv, recent_citations_ssv):
@@ -191,133 +185,6 @@ def get_ref_gene(species, gene_symbol__gene_info__dict):
     # Returning the ref_gene variable
     return ref_gene
 
-def translate_disease(disease):
-    """ 
-    Getting the common translated disease per disease given
-    """
-    
-    # Dictionary of common translated disease to disease
-    disease_translations = {
-    'Neoplasms' : 'Cancer',
-    'Musculoskeletal Diseases' : 'Muscle and Bone Diseases',
-    'Digestive System Diseases' : 'Gastrointestinal Diseases',
-    'Stomatognathic Diseases' : 'Mouth and Jaw Diseases',
-    'Respiratory Tract Diseases' : 'Respiratory System Diseases',
-    'Otorhinolaryngologic Diseases' : 'Ears, Throat and Nose Diseases',
-    'Nervous System Diseases' : 'Nervous System Diseases',
-    'Eye Diseases' : 'Eye Diseases',
-    'Male Urogenital Diseases' : 'Male Genital Organ Diseases',
-    'Female Urogenital Diseases and Pregnancy Complications' : 'Female Genital Organ and Pregnancy Diseases',
-    'Cardiovascular Diseases' : 'Heart and Blood Diseases',
-    'Hemic and Lymphatic Diseases' : 'Blood Diseases',
-    'Congenital, Hereditary, and Neonatal Diseases and Abnormalities' : 'Inherited and Newborn Diseases',
-    'Skin and Connective Tissue Diseases' : 'Skin Diseases',
-    'Nutritional and Metabolic Diseases' : 'Nutrition and Metabolism Related Diseases',
-    'Endocrine System Diseases' : 'Hormone Related Diseases',
-    'Immune System Diseases' : 'Immune System Diseases',
-    'Disorders of Environmental Origin' : 'Environmental Disorders',
-    'Occupational Diseases' : 'Work-Related Diseases',
-    'Substance-Related Disorders' : 'Substance-Related Disorders',
-    'Wounds and Injuries' : 'Wounds and Injuries',
-    'Behavior and Behavior Mechanisms' : 'Behavior',
-  }
-    try: 
-        # Check to see if the disease is disease_translations Dictionary
-        # Return common translated disease (If found)
-        return disease_translations[disease]
-    except:
-        # Return 'Other' (If not found)
-        return 'Other'
-
-def request_disgenet(endpoint, params=None):
-    """ 
-    Makes a request to GWAS API with specified endpoint and parameters.
-    Returns the response in json.
-    Raises on request failure.
-    """
-    
-    # Setting base_url variable to input in the Disgenet API
-    base_url = "https://www.disgenet.org/api"
-    
-    # Setting base_url variable to input in the Disgenet API
-    headers = {"content-type": "application/json"}
-
-    url = f"{base_url}/{endpoint}"
-    # print(url) # for debugging
-    
-    # Calling the Disgenet API
-    try:
-        # Calling the Disgenet API and saving it in the response variable
-        response = requests.get(
-            url=url, params=params, headers=headers
-        )
-        # Check the response variable status
-        response.raise_for_status()
-        # Return the response variable as a JSON
-        return response.json()
-    except (
-        # Rasing errors the Disgenet API call fails
-        requests.exceptions.ConnectionError,
-        requests.exceptions.HTTPError,
-        requests.exceptions.Timeout,
-    ) as e:
-        # Raise RuntimeError(f"Request failed: {e}")
-        return [{"disease_class_name":[]}]
-
-def get_significance(gene, source, num_diseases):
-    """
-    Getting all diseases associated to gene.
-    """
-    # Create gda (gene-disease association) variable to input in the Disgenet API
-    gda = "gda/gene/"
-    
-    # API call to Disgenet database to get a list of diseases for the gene
-    gene_related_diseases = request_disgenet(endpoint=f"{gda}{gene}", params=f"source={source}&format=json")
-    
-    # Creating the disease_associations variable
-    disease_associations = []
-    
-    # Going through each disease in the gene_related_diseases list 
-    for disease in gene_related_diseases:
-        # Skipping instances with no disease class name
-        if disease['disease_class_name']:
-            # Getting base disease class and strip whitespaces
-            disease_associations.append(disease['disease_class_name'].split(';')[0].strip())
-  
-    # Checks if disease_associations list is empty 
-    if not disease_associations:
-        # Adding None to the disease_associations List
-        disease_associations.append("None")
-
-    # Talling disease class names
-    tallied_disease_associations = Counter(disease_associations)
-  
-    # Getting top n + 3 gene disease associations
-    # + 3 to account for multiple 'other' disease classes (update to n-related variable)
-    disease_associations = [association for (association, _) in tallied_disease_associations.most_common(num_diseases + 3)]
-    
-    # Creating the top_disease_associations variable
-    top_disease_associations = []
-    
-    # Going through each disease in the disease_associations list 
-    for disease in disease_associations: 
-        # Limiting top disease associations
-        if len(top_disease_associations) < num_diseases: 
-            # Overwriting with layperson understandable terms 
-            disease = translate_disease(disease) 
-        # Allowing single other association
-        if disease != 'Other' or 'Other' not in top_disease_associations:
-            # Adding disease to top_disease_associations
-            top_disease_associations.append(disease)
-
-    # Check if other is in the top_disease_associations list
-    if 'Other' in top_disease_associations:
-        # Move Other to the back of the list
-        top_disease_associations.append(top_disease_associations.pop(top_disease_associations.index('Other')))
-
-    # Format and return top_disease_associations
-    return f"Involved in {'; '.join(top_disease_associations).lower()}" if top_disease_associations else None
-
 def get_genes_with_highest_citation_count(ref_gene, top_gene_count):
     """
     Returns the genes with the most citations. # of genes returned is determined by `top_gene_count`.
@@ -333,30 +200,10 @@ def get_genes_with_highest_citation_count(ref_gene, top_gene_count):
 
     return top_genes_list
 
-def create_tsv_for_genes(top_genes_list, tax_name, significance_SOURCES):
+def create_tsv_for_genes(top_genes_list, tax_name):
     """
     Creating TSVs containing gene information.
     """
-    
-    
-    # Creating the top_genes_with_significance_list variable
-    top_genes_with_significance_list = []
-    
-    # Going through each gene in the top_genes_list 
-    for gene_row in top_genes_list:
-        
-        if gene_row[1]['citation_count'] == 0:
-            continue
-
-        # Getting the top three name disease and saving it to the significance variable
-        gene_name = gene_row[0]
-        significance = get_significance(gene_name, significance_SOURCES, 3)
-        
-        # Add the significance information to the gene_row list
-        gene_row = gene_row + tuple([significance])
-        
-        # Adding the updated gene_row to the top_genes_with_significance_list
-        top_genes_with_significance_list.append(gene_row)
     
     # Getting the species' scientific taxonomy name and saving it to the gene_species_name variable
     gene_species_name = tax_name.replace(" ", "-").replace("(", "-").replace(")", "-").replace("/", "-").replace("=", "-").lower()
@@ -387,8 +234,8 @@ def create_tsv_for_genes(top_genes_list, tax_name, significance_SOURCES):
         # Add the header row to the TSV
         tsv_writer.writerow(["#name", "chromosome", "start", "length", "color", "full_name", citations, "significance"])
         
-        # Going through each gene in the top_genes_with_significance_list 
-        for gene in top_genes_with_significance_list:
+        # Going through each gene in the top_genes_list 
+        for gene in top_genes_list:
             # Adding the gene information to the TSV
             symbol = gene[0]
             chromosome = gene[1]["chromosome"]
@@ -397,7 +244,7 @@ def create_tsv_for_genes(top_genes_list, tax_name, significance_SOURCES):
             color = gene[1]["color"]
             full_name = gene[1]["full_name"]
             citations = gene[1]["citation_count"]
-            significance = gene[2]
+            significance = "" # `significance` is now being handled from the front-end. leaving this here for backwards compatibility. Remove when no longer needed.
             tsv_row_values = [symbol, chromosome, start, length, color, full_name, citations, significance]
 
             tsv_writer.writerow(tsv_row_values)
@@ -406,14 +253,7 @@ def create_tsv_for_genes(top_genes_list, tax_name, significance_SOURCES):
 if __name__ == "__main__":
     # Setting list of species
     list_of_species = ["human", "mouse", "rat"]
-    
-    # Setting dictionary of species to Disgenet API source 
-    significance_SOURCES = {
-        "human": 'CTD_human', 
-        "mouse": 'MGD',
-        "rat": 'RGD',
-    }
-    
+
     # Going through each species
     for species in list_of_species:
         # Outputing species name
@@ -428,7 +268,7 @@ if __name__ == "__main__":
         NUMBER_OF_GENES_FOR_TSV = 10
         top_genes_list = get_genes_with_highest_citation_count(ref_gene, NUMBER_OF_GENES_FOR_TSV)
 
-        create_tsv_for_genes(top_genes_list, tax_name, significance_SOURCES[species])
+        create_tsv_for_genes(top_genes_list, tax_name)
 
         
 #todo -- add csv comments to each file open
