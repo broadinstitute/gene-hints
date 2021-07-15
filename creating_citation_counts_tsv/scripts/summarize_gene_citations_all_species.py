@@ -17,8 +17,9 @@ def get_recent_gene_citation_count(species_gene2pubmed_tsv, recent_citations_ssv
 
     # Create a dict mapping pubmed_id to gene_id
     pubmed_gene_dict = {}
-    # This file has no headers so here's an example instead:
-    # 9606    9       9173883
+    # File header and example data row:
+        # #tax_id GeneID  PubMed_ID
+        # 9606    9       9173883
     with open(species_gene2pubmed_tsv) as fd:
         rd = csv.reader(fd, delimiter="\t", quotechar='"')
         for row in rd:
@@ -80,8 +81,9 @@ def get_gene_info(species_gene_info_tsv, gene_citation_counts, taxonomy_name_tsv
     
     # Adding gene's information to the list created from get_recent_gene_citation_count per gene and saving it to the gene_info variable
     gene_symbol__gene_info__dict = {}
-    # This file has no headers so here's an example instead:
-    # 9606    59272   ACE2    -       ACEH    MIM:300335|HGNC:HGNC:13557|Ensembl:ENSG00000130234      X       Xp22.2  angiotensin converting enzyme 2 protein-coding  ACE2    angiotensin converting enzyme 2 O       angiotensin-converting enzyme 2|ACE-related carboxypeptidase|angiotensin I converting enzyme (peptidyl-dipeptidase A) 2|angiotensin I converting enzyme 2|angiotensin-converting enzyme homolog|angiotensin-converting enzyme-related carboxypeptidase|metalloprotease MPROT15|peptidyl-dipeptidase A|truncated angiotensin converting enzyme 2 20210711        -
+    # File header and example data row:
+        # #tax_id GeneID  Symbol  LocusTag        Synonyms        dbXrefs chromosome      map_location    description     type_of_gene    Symbol_from_nomenclature_authority      Full_name_from_nomenclature_authority   Nomenclature_status     Other_designations      Modification_date       Feature_type
+        # 9606    59272   ACE2    -       ACEH    MIM:300335|HGNC:HGNC:13557|Ensembl:ENSG00000130234      X       Xp22.2  angiotensin converting enzyme 2 protein-coding  ACE2    angiotensin converting enzyme 2 O       angiotensin-converting enzyme 2|ACE-related carboxypeptidase|angiotensin I converting enzyme (peptidyl-dipeptidase A) 2|angiotensin I converting enzyme 2|angiotensin-converting enzyme homolog|angiotensin-converting enzyme-related carboxypeptidase|metalloprotease MPROT15|peptidyl-dipeptidase A|truncated angiotensin converting enzyme 2 20210711        -
     with open(species_gene_info_tsv) as fd:
         rd = csv.reader(fd, delimiter='\t')
         for row in rd:
