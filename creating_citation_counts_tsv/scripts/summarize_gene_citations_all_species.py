@@ -80,6 +80,35 @@ def get_recent_gene_citation_count(species_gene2pubmed_tsv, recent_citations_ssv
     # Returning the gene_citation_counts variable
     return gene_citation_counts
 
+# ranks a particular key in the dict (in the dict)
+# ties are accounted for so that if there are 7 ties for the highest count, then all 7 genes are rank #1. The next highest gene gets rank #8.
+def rank_citation_counts(gene_citation_counts):
+    #first get `count`s and number of times that `count` appears
+    count__num_occurances__dict = dict([])
+    for key_itr in gene_citation_counts:
+        count = gene_citation_counts[key_itr]
+        count__num_occurances__dict[count] = count__num_occurances__dict.get(count, 0) + 1
+        
+    print(count__num_occurances__dict)
+    sorted_count_list = sorted(count__num_occurances__dict, reverse=True)
+    print("sorted_count_list: " + str(sorted_count_list))
+
+    #calculate ranks, accounting for ties
+    count__rank__dict = dict([])
+    rank_counter = 1
+    for count in sorted_count_list:
+        count__rank__dict[count] = rank_counter
+        rank_counter = rank_counter + count__num_occurances__dict[count]
+    print("citation_count mapping to rank: " + str(count__rank__dict))
+
+    #put it into a new dict for simplicity
+    gene_rank_dict = {}
+    for key_itr in gene_citation_counts:
+        count = gene_citation_counts[key_itr]
+        gene_rank_dict[key_itr] = count__rank__dict[count]
+    
+    return gene_rank_dict
+
 def get_gene_info(species_gene_info_tsv, recent_gene_citation_counts, past_gene_citation_counts, recent_gene_ranks, past_gene_ranks, taxonomy_name_tsv):
     """ 
     Getting a list of the gene information per gene and species' taxonomy name.
@@ -153,36 +182,6 @@ def get_gene_info(species_gene_info_tsv, recent_gene_citation_counts, past_gene_
 
     # Returning the gene_info and taxonomy_scientific_name variable
     return gene_symbol__gene_info__dict, taxonomy_scientific_name
-
-#todo: move this up after next commit
-# ranks a particular key in the dict (in the dict)
-# ties are accounted for so that if there are 7 ties for the highest count, then all 7 genes are rank #1. The next highest gene gets rank #8.
-def rank_citation_counts(gene_citation_counts):
-    #first get `count`s and number of times that `count` appears
-    count__num_occurances__dict = dict([])
-    for key_itr in gene_citation_counts:
-        count = gene_citation_counts[key_itr]
-        count__num_occurances__dict[count] = count__num_occurances__dict.get(count, 0) + 1
-        
-    print(count__num_occurances__dict)
-    sorted_count_list = sorted(count__num_occurances__dict, reverse=True)
-    print("sorted_count_list: " + str(sorted_count_list))
-
-    #calculate ranks, accounting for ties
-    count__rank__dict = dict([])
-    rank_counter = 1
-    for count in sorted_count_list:
-        count__rank__dict[count] = rank_counter
-        rank_counter = rank_counter + count__num_occurances__dict[count]
-    print("citation_count mapping to rank: " + str(count__rank__dict))
-
-    #put it into a new dict for simplicity
-    gene_rank_dict = {}
-    for key_itr in gene_citation_counts:
-        count = gene_citation_counts[key_itr]
-        gene_rank_dict[key_itr] = count__rank__dict[count]
-    
-    return gene_rank_dict
 
 def get_ref_gene(species, gene_symbol__gene_info__dict): 
     """ 
