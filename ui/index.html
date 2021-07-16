@@ -110,7 +110,7 @@
               <option class="alpha-support" value="felis-catus">Cat (Felis catus)</option>
               <option class="alpha-support" value="macaca-fascicularis">Cynomolgus monkey (Macaca fascicularis)</option>
               <option class="alpha-support" value="canis-lupus-familiaris">Dog (Canis lupus familiaris)</option>
-              <option value="drosophila-melanogaster">Fly (Drosophila melanogaster)</option>
+              <option class="alpha-support" value="drosophila-melanogaster">Fly (Drosophila melanogaster)</option>
             </optgroup>
 
             <!-- <option class="alpha-support" value="anopheles-gambiae">Mosquito (Anopheles gambiae)</option>
@@ -286,10 +286,11 @@
 
       config = adjustChrMargin(config)
 
+      config.onPlotRelatedGenes = setTrends
+
       if ('q' in urlParams) {
         delete config.annotationsPath
         config.onLoad = plotGeneFromUrl
-        config.onPlotRelatedGenes = showIdeogram()
         ideogram = Ideogram.initRelatedGenes(config);
       } else {
         if (!isAlpha(newOrganism)) {
@@ -369,6 +370,97 @@
       return config
     }
 
+
+    async function fetchTrendsByGene() {
+      const _trendsByGene = {};
+
+      const organism = ideogram.config.organism
+      let citesUrl = `../data/${organism}-citation-information.tsv`
+      if (organism === 'homo-sapiens') {
+        citesUrl = '../data/homo-sapiens-gene-details.tsv';
+      }
+      const response = await fetch(citesUrl);
+      const data = await response.text();
+      const lines = data.split('\n');
+      const table = lines.map(line => line.split('\t'));
+      console.log('table', table);
+
+      table.forEach(columnsInRow => {
+        if (columnsInRow[0][0] === '#') return; // Skip header
+
+        // eslint-disable-next-line
+        // #name	chromosome	start	length	color	full_name	days_in_timeframe	recent_timeframe_citation_count	past_timeframe_citation_count	citation_count_delta	significance
+        const gene = columnsInRow[0];
+        const pubmedCitations = {
+          days: parseInt(columnsInRow[6]), // days_in_timeframe
+          count: parseInt(columnsInRow[7]), // past_timeframe_citation_count
+          delta: parseInt(columnsInRow[9]) // citation_count_delta
+        };
+
+        _trendsByGene[gene] = {pubmedCitations};
+
+        if (ideogram.config.organism === 'homo-sapiens') {
+          const wpDelta = parseInt(columnsInRow[12]) - parseInt(columnsInRow[11])
+          const wikipediaPageViews = {
+            count: parseInt(columnsInRow[11]), // wikipedia_daily_page_views
+            delta: wpDelta // wikipedia_daily_page_views_change_from_previous_day
+          }
+          _trendsByGene[gene].wikipediaPageViews = wikipediaPageViews
+        }
+      });
+
+      return _trendsByGene;
+    }
+
+    function formatDelta(delta) {
+      const deltaInt = parseInt(delta)
+      let arrow = '&rarr;' // right arrow, for 0
+      let color = 'black'
+      if (deltaInt < 0) {
+        arrow = '&darr;' // down arrow
+        color = 'red'
+      } else if (deltaInt > 0) {
+        arrow = '&uarr;' // up arrow
+        color = 'green'
+      }
+      const style = `font-weight: bold; color:${color}`
+      return `(<span style="${style}">${arrow}</span> ${delta})`
+    }
+
+    async function setTrends() {
+      showIdeogram()
+      const trendsByGene = await fetchTrendsByGene()
+
+      // const updatedAnnots = {}
+      for (gene in ideogram.annotDescriptions.annots) {
+        if (gene in trendsByGene) {
+          const pubmed = trendsByGene[gene].pubmedCitations
+          const annot = ideogram.annotDescriptions.annots[gene]
+
+          const trendsHeader =
+            `<div style="font-weight: bold">Recent trends</div>`
+
+          const pmDelta = formatDelta(pubmed.delta)
+          let padding = '<br/><br/>';
+          if (annot.description === '') padding = '' // Don't double-pad search gene
+          let newDesc =
+            `${annot.description}${padding}` +
+            trendsHeader +
+            `Citations in PubMed: ${pubmed.count} ${pmDelta}`;
+
+          if ('wikipediaPageViews' in trendsByGene[gene]) {
+            const wikipedia = trendsByGene[gene].wikipediaPageViews
+            const wpDelta = formatDelta(wikipedia.delta)
+            newDesc +=
+              `<br/>Page views in Wikipedia: ${wikipedia.count} ${wpDelta}`
+          }
+
+          annot.description = newDesc
+          ideogram.annotDescriptions.annots[gene] = annot
+        }
+      }
+    }
+
     updateExamples(organism);
 
     config = {
@@ -379,6 +471,7 @@
       chrLabelSize: 12,
       annotationHeight: 7,
       onLoad: plotGeneFromUrl,
+      onPlotRelatedGenes: setTrends,
       onClickAnnot
     }
 
@@ -392,9 +485,7 @@
       ideogram = Ideogram.initRelatedGenes(config);
     } else {
 
-      console.log('organism', organism)
       if (isAlpha(organism)) {
-        console.log('organism', organism)
         config.onLoad = showIdeogram
         ideogram = new Ideogram(config);
       } else {
