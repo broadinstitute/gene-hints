@@ -49,6 +49,7 @@ mkdir creating_citation_counts_tsv/data/human
 mkdir creating_citation_counts_tsv/data/mouse
 mkdir creating_citation_counts_tsv/data/rat
 mkdir creating_citation_counts_tsv/data/dog
+mkdir creating_citation_counts_tsv/data/cat
 # ADD Extra Species folders
 
 # Getting taxonomy names
@@ -71,6 +72,8 @@ cat creating_citation_counts_tsv/data/gene2pubmed | awk '{if ($1 == 10090) print
 cat creating_citation_counts_tsv/data/gene2pubmed | awk '{if ($1 == 10116) print;}' > creating_citation_counts_tsv/data/rat/gene2pubmed
 # Getting dog gene2pubmed
 cat creating_citation_counts_tsv/data/gene2pubmed | awk '{if ($1 == 9615) print;}' > creating_citation_counts_tsv/data/dog/gene2pubmed
+# Getting cat gene2pubmed
+cat creating_citation_counts_tsv/data/gene2pubmed | awk '{if ($1 == 9685) print;}' > creating_citation_counts_tsv/data/cat/gene2pubmed
 # ADD Extra Species gene2pubmed
 
 # Remove main file to save space
@@ -90,6 +93,9 @@ gunzip -f creating_citation_counts_tsv/data/rat/rn6.refGene.gtf.gz
 # Getting dog refences file
 wget -N -P creating_citation_counts_tsv/data/dog https://hgdownload.soe.ucsc.edu/goldenPath/canFam5/bigZips/genes/refGene.gtf.gz
 gunzip -f creating_citation_counts_tsv/data/dog/refGene.gtf.gz
+# Getting cat refences file
+wget -N -P creating_citation_counts_tsv/data/cat https://hgdownload.soe.ucsc.edu/goldenPath/felCat9/bigZips/genes/felCat9.refGene.gtf.gz
+gunzip -f creating_citation_counts_tsv/data/cat/felCat9.refGene.gtf.gz
 # ADD Extra Species refences file
 
 # We need a mapping of gene IDs, which are just numbers, to more meaningful names and descriptions.
@@ -105,6 +111,8 @@ cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 10090) print;}
 cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 10116) print;}' > creating_citation_counts_tsv/data/rat/gene_info
 # Getting dog gene_info
 cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 9615) print;}' > creating_citation_counts_tsv/data/dog/gene_info
+# Getting cat gene_info
+cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 9685) print;}' > creating_citation_counts_tsv/data/cat/gene_info
 # ADD Extra Species gene_info
 
 # Remove main file to save space

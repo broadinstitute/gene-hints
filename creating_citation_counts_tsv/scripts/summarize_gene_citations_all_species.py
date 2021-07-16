@@ -321,7 +321,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     # Setting list of species
-    list_of_species = ["human", "mouse", "rat", "dog"]
+    list_of_species = ["human", "mouse", "rat", "dog", "cat"]
 
     # Going through each species
     for species in list_of_species:
