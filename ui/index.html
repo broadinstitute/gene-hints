@@ -389,11 +389,11 @@
         if (columnsInRow[0][0] === '#') return; // Skip header
 
         // eslint-disable-next-line
-        // gene_symbol	chromosome	start	length	color	full_name	days_in_timeframe	recent_timeframe_citation_count	past_timeframe_citation_count	citation_count_delta	significance
+        // gene_symbol	chromosome	start	length	color	full_name	days_in_timeframe	recent_timeframe_citation_count	prior_timeframe_citation_count	citation_count_delta	significance
         const gene = columnsInRow[0];
         const pubmedCitations = {
           days: parseInt(columnsInRow[6]), // days_in_timeframe
-          count: parseInt(columnsInRow[7]), // past_timeframe_citation_count
+          count: parseInt(columnsInRow[7]), // prior_timeframe_citation_count
           delta: parseInt(columnsInRow[9]) // citation_count_delta
         };
 
