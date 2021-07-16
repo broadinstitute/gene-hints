@@ -341,3 +341,5 @@ if __name__ == "__main__":
         sorted_genes_list = sort_and_list_genes(ref_gene)
 
         create_tsv_for_genes(sorted_genes_list, tax_name, args.timeframe_days)
+
+#todo: rename past to prior
