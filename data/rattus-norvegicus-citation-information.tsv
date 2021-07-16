@@ -1,4 +1,4 @@
-#name	chromosome	start	length	color	full_name	days_in_timeframe	recent_timeframe_citation_count	past_timeframe_citation_count	citation_count_delta	significance	recent_gene_rank	past_gene_rank	rank_delta
+gene_symbol	chromosome	start	length	color	full_name	days_in_timeframe	recent_timeframe_citation_count	past_timeframe_citation_count	citation_count_delta	significance	recent_gene_rank	past_gene_rank	rank_delta
 Ephb2	5	155024478	179956	#73af42	Eph receptor B2	180	9	0	9		5	670	-665
 Slc9a1	5	151573122	53238	#73af42	solute carrier family 9 member A1	180	8	0	8		9	670	-661
 Ptch1	17	1032242	53643	#73af42	patched 1	180	7	0	7		12	670	-658
