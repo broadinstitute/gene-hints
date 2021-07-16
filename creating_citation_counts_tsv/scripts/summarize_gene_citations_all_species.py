@@ -94,7 +94,7 @@ def get_gene_info(species_gene_info_tsv, recent_gene_citation_counts, past_gene_
                 continue
             gene_id = str(row[1])
             tax_id = str(row[0])
-            symbol = str(row[2]).upper()
+            symbol = str(row[2])
             chromosome = str(row[6])
             full_name = str(row[8])
             recent_citation_count = recent_gene_citation_counts.get(gene_id, 0)
@@ -173,7 +173,7 @@ def get_ref_gene(species, gene_symbol__gene_info__dict):
                     type = str(row[2]) # the file does not include column headers so these are guesses based on the data (for example: transcript, exon, 3utr, cds ...)
                     details = str(row[8])
                     if type=="transcript":
-                        gene_symbol = extract_value_from_unparsed_string(details, "gene_id").upper()
+                        gene_symbol = extract_value_from_unparsed_string(details, "gene_id")
                         start_coordinate = int(row[3])
                         end_coordinate = int(row[4])
                         coordinate_length = abs(end_coordinate - start_coordinate)
