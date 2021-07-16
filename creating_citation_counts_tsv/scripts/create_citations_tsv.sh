@@ -5,10 +5,6 @@
 # First install 
 pip3 install -r creating_citation_counts_tsv/requirements.txt 
 
-# Cleanup existing files
-rm -f creating_citation_counts_tsv/data/recent_pmid_year.ssv
-rm -f creating_citation_counts_tsv/data/past_pmid_year.ssv
-
 # Create a data, tsv, and tmp-ssv folder
 mkdir creating_citation_counts_tsv/data
 mkdir tsv
@@ -28,19 +24,22 @@ output_dir_past=creating_citation_counts_tsv/data/tmp-ssv/past-timeframe
 python3 creating_citation_counts_tsv/scripts/pmids_by_date.py --startdate ${recent_timeframe_start_date} --enddate ${recent_timeframe_end_date} --output-dir ${output_dir_recent}
 python3 creating_citation_counts_tsv/scripts/pmids_by_date.py --startdate ${past_timeframe_start_date} --enddate ${past_timeframe_end_date} --output-dir ${output_dir_past}
 
-#todo: refactor this ; the ssv should be named year_pmid
 # Consolidate the publications from each day into one complete list
+recent_timeframe__year_pmid__ssv_path="creating_citation_counts_tsv/data/recent_pmid_year.ssv"
+past_timeframe__year_pmid__ssv_path="creating_citation_counts_tsv/data/past_pmid_year.ssv"
+# Cleanup any existing files
+rm -f ${recent_timeframe__year_pmid__ssv_path}
+rm -f ${past_timeframe__year_pmid__ssv_path}
 # For easier processing, we'll collapse the per-day list of files into one file
 for file in $(find ${output_dir_recent} -name "*.ssv"); \
-do cat $file | awk '{split($1,a,"-"); print a[1], $2}' >> creating_citation_counts_tsv/data/recent_pmid_year.ssv; \
+do cat $file | awk '{split($1,a,"-"); print a[1], $2}' >> ${recent_timeframe__year_pmid__ssv_path}; \
 done
 for file in $(find ${output_dir_past} -name "*.ssv"); \
-do cat $file | awk '{split($1,a,"-"); print a[1], $2}' >> creating_citation_counts_tsv/data/past_pmid_year.ssv; \
+do cat $file | awk '{split($1,a,"-"); print a[1], $2}' >> ${past_timeframe__year_pmid__ssv_path}; \
 done
 
 # Remove tmp-ssv to save space
-rm creating_citation_counts_tsv/data/tmp-ssv/*
-rmdir creating_citation_counts_tsv/data/tmp-ssv
+rm -rf creating_citation_counts_tsv/data/tmp-ssv
 
 # Creating taxonomy folder 
 mkdir creating_citation_counts_tsv/taxonomy
@@ -104,5 +103,4 @@ cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 10116) print;}
 rm creating_citation_counts_tsv/data/gene_info
 
 # Lastly create the tsv with the total citations per gene along with the gene's information
-python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py "creating_citation_counts_tsv/data/recent_pmid_year.ssv" recent $days_in_timeframe
-python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py "creating_citation_counts_tsv/data/past_pmid_year.ssv" past $days_in_timeframe
+python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py ${recent_timeframe__year_pmid__ssv_path} ${past_timeframe__year_pmid__ssv_path} $days_in_timeframe
