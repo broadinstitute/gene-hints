@@ -105,32 +105,35 @@ def process_trends_file(gene_counts, page_to_gene_map, file_num):
                 print("\t-- Processed", int(line_count / 1000000), " million lines. --")
 
 
-# Save to file and print the top viewed gene pages. 
-# TODO: remove this, it's only helpful for debugging the page mapping
-def output_pageview_counts(gene_counts):
-    # Get the top counts per gene 
-    top_counts = sorted(gene_counts.items(), key=lambda x: x[1], reverse=True)[:10]
-    print("Top viewed gene pages:", dict(top_counts[:10]))
-
 # Read the existing tsv file, and update the gene counts 
 # The file rows should be of the format; ["gene_symbol", "daily_page_views", "prev_daily_page_views"]
 def save_counts_to_file(view_counts):
+    # Order the gene counts 
+    ordered_counts = sorted(gene_counts.items(), key=lambda x: x[1], reverse=True)
+    print("Top viewed gene pages:", dict(ordered_counts[:10]))
     # Read in the existing data
     prev_view_counts = {}
+    prev_gene_ranks = {}
     print("Updating the wikipedia trends output file...")
     with open(output_file_location, "rt") as f:
         reader = csv.reader(f, delimiter="\t")
         line_count = 0
         for row in reader:
             if line_count > 0:
-                prev_view_counts[row[0]] = int(row[1])
+                gene_symbol = row[0]
+                view_count = int(row[1])
+                prev_view_counts[gene_symbol] = view_count
+                prev_gene_ranks[gene_symbol] = line_count
             line_count += 1
     # Overwrite the file with new data
     with open(output_file_location, "w") as f:
-        f.write("gene_symbol\twikipedia_daily_page_views\twikipedia_daily_page_views_change_from_previous_day\n")
-        for gene, views, in view_counts.items():
+        f.write("gene_symbol\twikipedia_daily_page_views\twikipedia_daily_page_views_change_from_previous_day\tview_rank\tview_rank_delta\n")
+        rank = 1
+        for gene, views, in ordered_counts:
             prev_views = prev_view_counts.get(gene, 0)
-            f.write("%s\t%s\t%s\n"%(gene, views, prev_views))
+            rank_delta = rank - prev_gene_ranks.get(gene, rank) # delta is 0 if the record did not exist before
+            f.write("%s\t%s\t%s\t%s\t%s\n"%(gene, views, prev_views, rank, rank_delta))
+            rank += 1
 
 
 # Run everything!
@@ -143,7 +146,6 @@ for file_num in range(num_hours_to_process):
     download_trends_file(file_num)
     process_trends_file(gene_counts, page_to_gene_map, file_num)
 
-output_pageview_counts(gene_counts)
 save_counts_to_file(gene_counts)
 
 print("Finished in", int(perf_counter() - start_time), "seconds.")
