@@ -8,11 +8,19 @@ gene_symbol_master_list_url = "https://raw.githubusercontent.com/eweitz/ideogram
 wiki_base_url = "https://en.wikipedia.org/wiki/"
 output_file_location = "./wikipedia_trends/gene_page_map.tsv"
 custom_disambiguation = { # override for pages that don't automatically lead to to the disambiguation
-    "BTD": "PageDoesNotExist", # no page for the gene, but BTD has it's own page 
+    "BTD": "PageDoesNotExist", # no page related to this gene exists, but the symbol does match an actual unrelated page name 
+    "MCU": "PageDoesNotExist",
+    "RFK": "PageDoesNotExist", 
+    "EPYC": "PageDoesNotExist",
+    "DSEL": "PageDoesNotExist",
+    "CHAD": "PageDoesNotExist",
+    "MT4": "PageDoesNotExist",
     "CTSH": "Cathepsin_H", # no standard disambiguation for this
-    "MCU": "PageDoesNotExist", # no page for the gene, but MCU has it's own page
-    "REST": "RE1-silencing_transcription_factor", # this should work on its own now, but I need to check. 
-    "RFK": "PageDoesNotExist" } # no page for the gene, but RFK has it's own page
+    "REST": "RE1-silencing_transcription_factor",
+    "MGMT": "O-6-methylguanine-DNA_methyltransferase",
+    "MAVS": "Mitochondrial_antiviral-signaling_protein" }
+
+# O-6-methylguanine-DNA_methyltransferase
 append_only = True # Control whether the script overwrites existing values in the file
 
 

@@ -236,7 +236,7 @@ TLR9	TLR9
 Oxoguanine_glycosylase	OGG1
 Urokinase	PLAU
 Hemoglobin_subunit_alpha	HBA1
-MGMT	MGMT
+O-6-methylguanine-DNA_methyltransferase	MGMT
 FTO_gene	FTO
 Tissue_factor	F3
 Osteoprotegerin	TNFRSF11B
@@ -1382,7 +1382,7 @@ Uteroglobin	SCGB1A1
 BCL10	BCL10
 MFN2	MFN2
 CDC37	CDC37
-Dallas_Mavericks	MAVS
+Mitochondrial_antiviral-signaling_protein	MAVS
 Caspase_6	CASP6
 IFNAR1	IFNAR1
 MEF2C	MEF2C
@@ -13671,7 +13671,7 @@ Cathepsin_O	CTSO
 CYLC2	CYLC2
 DNAH6	DNAH6
 DNAH8	DNAH8
-Epyc	EPYC
+PageDoesNotExist	EPYC
 Extracellular_matrix_protein_2	ECM2
 FOLR3	FOLR3
 GBP3	GBP3
@@ -14015,7 +14015,7 @@ CCDC149	CCDC149
 SESTD1	SESTD1
 FAM58A	FAM58A
 SLC25A51	SLC25A51
-Domain-specific_language	DSEL
+PageDoesNotExist	DSEL
 ZNF276	ZNF276
 MARS2	MARS2
 9-Mar	9-Mar
@@ -14237,7 +14237,7 @@ MYZAP	MYZAP
 PRNCR1	PRNCR1
 IL12A-AS1	IL12A-AS1
 AFG3L1P	AFG3L1P
-CHAD	CHAD
+PageDoesNotExist	CHAD
 CREBL2	CREBL2
 CSHL1	CSHL1
 CYP2D7	CYP2D7
@@ -16515,7 +16515,7 @@ ZNF333	ZNF333
 ACTRT3	ACTRT3
 C14orf142	C14orf142
 FAXC	FAXC
-MetaTrader_4	MT4
+PageDoesNotExist	MT4
 EBPL	EBPL
 ACCS_(gene)	ACCS
 ABHD1	ABHD1

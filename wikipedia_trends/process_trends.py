@@ -131,7 +131,7 @@ def save_counts_to_file(view_counts):
         rank = 1
         for gene, views, in ordered_counts:
             prev_views = prev_view_counts.get(gene, 0)
-            rank_delta = rank - prev_gene_ranks.get(gene, rank) # delta is 0 if the record did not exist before
+            rank_delta = prev_gene_ranks.get(gene, rank) - rank # delta is 0 if the record did not exist before
             f.write("%s\t%s\t%s\t%s\t%s\n"%(gene, views, prev_views, rank, rank_delta))
             rank += 1
 
