@@ -1,8 +1,11 @@
 """ 
-Creating TSVs containing the 10 most-cited genes per species and their gene information.
+Creating TSVs containing the most-cited genes per species and their gene information.
 """
+usage = """
+    python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py ${recent_timeframe__year_pmid__ssv_path} ${past_timeframe__year_pmid__ssv_path} $days_in_timeframe
+    """
+    
 import os
-from datetime import date, timedelta, datetime
 import csv
 import argparse
 
@@ -260,10 +263,10 @@ def create_tsv_for_genes(sorted_genes_list, tax_name, timeframe_days):
     
 # Main Function
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Process some integers.')
-    parser.add_argument('recent_citation_count_ssv', metavar='N', type=str, help='recent citation count ssv file path')
-    parser.add_argument('past_citation_count_ssv', metavar='N', type=str, help='past citation count ssv file path')
-    parser.add_argument('timeframe_days', metavar='N', type=int, help='days in the timeframe')
+    parser = argparse.ArgumentParser(usage=usage)
+    parser.add_argument('recent_citation_count_ssv', metavar='recent_citation_count_ssv', type=str, help='recent citation count ssv file path')
+    parser.add_argument('past_citation_count_ssv', metavar='past_citation_count_ssv', type=str, help='past citation count ssv file path')
+    parser.add_argument('timeframe_days', metavar='timeframe_days', type=int, help='days in the timeframe')
     args = parser.parse_args()
     
     # Setting list of species
