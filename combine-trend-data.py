@@ -2,7 +2,7 @@
 Combines wikipedia view and citation count data tsvs
 """
 usage = """
-    python3 combine-trend-data.py data/homo-sapiens-citation-information.tsv data/homo-sapiens-wikipedia-trends.tsv homo-sapiens-gene-details.tsv
+    python3 combine-trend-data.py data/homo-sapiens-citation-information.tsv data/homo-sapiens-wikipedia-trends.tsv data/homo-sapiens-gene-details.tsv
     """
 
 import csv
@@ -49,7 +49,9 @@ def combine_dicts(tsv_dict_1, tsv_dict_2):
 def dict_to_tsv(combined_dict, output_tsv_path):
     with open(output_tsv_path, 'wt') as out_file:
         tsv_writer = csv.writer(out_file, delimiter='\t')
-        tsv_writer.writerow(["gene_symbol", "chromosome", "start", "length", "color", "full_name", "days_in_timeframe", "recent_timeframe_citation_count", "past_timeframe_citation_count", "citation_count_delta", "significance", "wikipedia_daily_page_views", "wikipedia_daily_page_views_change_from_previous_day"])
+        headers = ["gene_symbol", "chromosome", "start", "length", "color", "full_name", "days_in_timeframe", "recent_timeframe_citation_count", "past_timeframe_citation_count", "citation_count_delta", "significance", "wikipedia_daily_page_views", "wikipedia_daily_page_views_change_from_previous_day"]
+        print("combined_tsv headers list: " + str(headers))
+        tsv_writer.writerow(headers)
         for key in combined_dict:
             row_data = [key] + combined_dict[key]
             tsv_writer.writerow(row_data)
@@ -69,4 +71,3 @@ if __name__ == "__main__":
     combined_dict = combine_dicts(citation_data, wiki_data) # citation data has more rows than the wiki data so use that as the "base" tsv
 
     dict_to_tsv(combined_dict, args.output_tsv_path)
-
