@@ -144,6 +144,35 @@ def get_gene_info(species_gene_info_tsv, recent_gene_citation_counts, past_gene_
     # Returning the gene_info and taxonomy_scientific_name variable
     return gene_symbol__gene_info__dict, taxonomy_scientific_name
 
+# ranks a particular key in the dict (in the dict)
+# ties are accounted for so that if there are 7 ties for the highest count, then all 7 genes are rank #1. The next highest gene gets rank #8.
+def rank_dict_value(gene_info, key_to_be_ranked):
+    rank_key = key_to_be_ranked + "_rank"
+    
+    #first get `count`s and number of times that `count` appears
+    count__num_occurances__dict = dict([])
+    for key_itr in gene_info:
+        count = gene_info[key_itr][key_to_be_ranked]
+        count__num_occurances__dict[count] = count__num_occurances__dict.get(count, 0) + 1
+        
+    print(count__num_occurances__dict)
+    sorted_count_list = sorted(count__num_occurances__dict, reverse=True)
+    print(sorted_count_list)
+
+    #calculate ranks, accounting for ties
+    count__rank__dict = dict([])
+    rank_counter = 1
+    for count in sorted_count_list:
+        count__rank__dict[count] = rank_counter
+        rank_counter = rank_counter + count__num_occurances__dict[count]
+
+    #put it back into the original dict
+    for key_itr in gene_info:
+        count = gene_info[key_itr][key_to_be_ranked]
+        gene_info[key_itr][rank_key] = count__rank__dict[count]
+    
+    return gene_info
+
 def get_ref_gene(species, gene_symbol__gene_info__dict): 
     """ 
     Getting a list of the gene reference information per gene.
@@ -270,7 +299,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     # Setting list of species
-    list_of_species = ["human", "mouse", "rat"]
+    # list_of_species = ["human", "mouse", "rat"] #todo: put this back
+    list_of_species = ["dog"]
 
     # Going through each species
     for species in list_of_species:
@@ -280,10 +310,17 @@ if __name__ == "__main__":
         recent_gene_citation_counts = get_recent_gene_citation_count(f"creating_citation_counts_tsv/data/{species}/gene2pubmed", args.recent_citation_count_ssv)
         past_gene_citation_counts = get_recent_gene_citation_count(f"creating_citation_counts_tsv/data/{species}/gene2pubmed", args.past_citation_count_ssv)
         
-        gene_info, tax_name = get_gene_info(f"creating_citation_counts_tsv/data/{species}/gene_info", recent_gene_citation_counts, past_gene_citation_counts, "creating_citation_counts_tsv/taxonomy_name")
+        gene_symbol__gene_info__dict, tax_name = get_gene_info(f"creating_citation_counts_tsv/data/{species}/gene_info", recent_gene_citation_counts, past_gene_citation_counts, "creating_citation_counts_tsv/taxonomy_name")
         
-        ref_gene = get_ref_gene(species, gene_info)
+        half_ranked__gene_symbol__gene_info__dict = rank_dict_value(gene_symbol__gene_info__dict, "recent_citation_count") #TODO: refactor -- move before get_gene_info
+        fully_ranked__gene_symbol__gene_info__dict = rank_dict_value(gene_symbol__gene_info__dict, "past_citation_count")
+
+        ref_gene = get_ref_gene(species, fully_ranked__gene_symbol__gene_info__dict)
 
         sorted_genes_list = sort_and_list_genes(ref_gene)
 
         create_tsv_for_genes(sorted_genes_list, tax_name, args.timeframe_days)
+
+
+#todo: output
+#todo: rename past to prior
