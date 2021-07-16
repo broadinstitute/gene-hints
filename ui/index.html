@@ -101,9 +101,20 @@
       <div>
         <select>
           <!-- <optgroup label="Model organisms"></optgroup> -->
-            <option value="homo-sapiens" selected>Human (Homo sapiens)</option>
-            <option value="mus-musculus">Mouse (Mus musculus)</option>
-            <option value="rattus-norvegicus">Rat (Rattus norvegicus)</option>
+            <optgroup label="Full support">
+              <option value="homo-sapiens" selected>Human (Homo sapiens)</option>
+              <option value="mus-musculus">Mouse (Mus musculus)</option>
+              <option value="rattus-norvegicus">Rat (Rattus norvegicus)</option>
+            </optgroup>
+            <optgroup label="Partial support">
+              <option class="alpha-support" value="felis-catus">Cat (Felis catus)</option>
+              <option class="alpha-support" value="macaca-fascicularis">Cynomolgus monkey (Macaca fascicularis)</option>
+              <option class="alpha-support" value="canis-lupus-familiaris">Dog (Canis lupus familiaris)</option>
+            </optgroup>
+
+            <!-- <option class="alpha-support" value="anopheles-gambiae">Mosquito (Anopheles gambiae)</option>
+            <option class="alpha-support" value="plasmodium-falciparum">Malaria parasite (Plasmodium falciparum)</option> -->
+
             <!-- <option value="drosophila-melanogaster">Fly (Drosophila melanogaster)</option> -->
             <!-- <option value="caenorhabditis-elegans">Worm (Caenorhabditis elegans)</option> -->
             <!-- <option value="danio-rerio">Zebrafish (Danio rerio)</option> -->
@@ -164,20 +175,20 @@
   <script type="text/javascript">
 
     const examplesByOrganism = {
-      'homo-sapiens': ['AGT', 'RAD51', 'APP'],
-      'mus-musculus': ['Rad51', 'Pten', 'Sox2'],
+      'homo-sapiens': ['ACE2', 'RAD51', 'APP'],
+      'mus-musculus': ['Pten', 'Rad51', 'Sox2'],
       'rattus-norvegicus': ['Rad51', 'Pten', 'Sox2'],
       'drosophila-melanogaster': ['dpp', 'N', 'Ubx'],
       'saccharomyces-cerevisiae': ['rad51', 'atp6', 'cytb'],
       'arabidopsis-thaliana': ['PHYA', 'FLC', 'FT'],
       'danio-rerio': ['bmp4', 'myod1', 'cyp1a'],
-      'macaca-mulatta': ['RAD51', 'CD4', 'APOE'],
-      'macaca-fascicularis': ['RAD51', 'CD4', 'APOE'],
-      'felis-catus': ['RAD51', 'CD4', 'APOE'],
-      'canis-lupus-familiaris': ['RAD51', 'CD4', 'APOE'],
+      'macaca-mulatta': ['ACE2', 'RAD51', 'APP'],
+      'macaca-fascicularis': ['ACE2', 'RAD51', 'APP'],
+      'felis-catus': ['FGF5', 'MAPK9', 'OXTR'],
+      'canis-lupus-familiaris': ['FGF5', 'MAPK9', 'OXTR'],
       'equus-caballus': ['RAD51', 'CD4', 'APOE'],
-      'bos-taurus': ['RAD51', 'CD4', 'APOE'],
-      'sus-scrofa': ['RAD51', 'CD4', 'APOE'],
+      'bos-taurus': ['ACE2', 'RAD51', 'APP'],
+      'sus-scrofa': ['ACE2', 'RAD51', 'APP'],
       'anopheles-gambiae': ['ND1', 'CYTB', 'ATP6'],
       'plasmodium-falciparum': ['coxIII', 'PFBI', 'PFFE1']
     }
@@ -267,11 +278,12 @@
       // config.showFullyBanded = banded;
       delete ideogram;
 
-
       config.organism = newOrganism
 
-
       document.querySelector('#ideogram-container').style.visibility = 'hidden';
+
+
+      config = adjustChrMargin(config)
 
       if ('q' in urlParams) {
         delete config.annotationsPath
@@ -279,7 +291,9 @@
         config.onPlotRelatedGenes = showIdeogram()
         ideogram = Ideogram.initRelatedGenes(config);
       } else {
-        config.annotationsPath = getAnnotsPath(newOrganism)
+        if (!isAlpha(newOrganism)) {
+          config.annotationsPath = getAnnotsPath(newOrganism)
+        }
         ideogram = Ideogram.initGeneHints(config);
       }
     }
@@ -336,6 +350,22 @@
       ideogram.plotRelatedGenes(annot.name);
     }
 
+    function isAlpha(organism) {
+      const elements = document.querySelectorAll('.alpha-support')
+      const alphaOrgs = Array.from(elements).map(el => el.value)
+      return alphaOrgs.includes(organism)
+    }
+
+    function adjustChrMargin(config) {
+      // console.log('config.organism', config.organism)
+      if (config.organism === 'canis-lupus-familiaris') {
+        config.chrMargin = 2
+      } else {
+        delete config.chrMargin
+      }
+      return config
+    }
+
     updateExamples(organism);
 
     config = {
@@ -349,19 +379,31 @@
       onClickAnnot
     }
 
+
+    config = adjustChrMargin(config)
+
     // annotsInList = ['CDK9', 'CDK19', 'CDK1'];
     // let ideogram = Ideogram.initRelatedGenes(config, annotsInList)
     let ideogram;
     if ('q' in urlParams) {
       ideogram = Ideogram.initRelatedGenes(config);
     } else {
-      if ('default-hints' in urlParams) {
-        config.annotationsPath = urlParams['default-hints'];
-      } else {
-        config.annotationsPath = getAnnotsPath(organism)
-      }
 
-      ideogram = Ideogram.initGeneHints(config);
+      console.log('organism', organism)
+      if (isAlpha(organism)) {
+        console.log('organism', organism)
+        config.onLoad = showIdeogram
+        ideogram = new Ideogram(config);
+      } else {
+
+        if ('default-hints' in urlParams) {
+          config.annotationsPath = urlParams['default-hints'];
+        } else {
+          config.annotationsPath = getAnnotsPath(organism)
+        }
+
+        ideogram = Ideogram.initGeneHints(config);
+      }
     }
   </script>
 </body>
