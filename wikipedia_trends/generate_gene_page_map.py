@@ -1,30 +1,19 @@
 from bs4 import BeautifulSoup
 import csv
+import os
 import requests
 from time import perf_counter
 
 gene_symbol_master_list_url = "https://raw.githubusercontent.com/eweitz/ideogram/master/data/annotations/gene-cache/homo-sapiens.tsv"
 wiki_base_url = "https://en.wikipedia.org/wiki/"
+output_file_location = "./wikipedia_trends/gene_page_map.tsv"
 custom_disambiguation = { # override for pages that don't automatically lead to to the disambiguation
-    "BTD": "PageDoesNotExist", # no page for the gene, but BTD has it's own page (should be fixed now!)
-    "BOC": "BOC_(gene)", # Need to handle this type of disambiguation automatically in the future
-    "CBS": "Cystathionine_beta_synthase",
-    "CTSH": "Cathepsin_H",
-    "DST": "Dystonin",
-    "ESPN": "Espin_(protein)",
-    "GBA": "Glucocerebrosidase",
-    "GIF": "Intrinsic_factor",
+    "BTD": "PageDoesNotExist", # no page for the gene, but BTD has it's own page 
+    "CTSH": "Cathepsin_H", # no standard disambiguation for this
     "MCU": "PageDoesNotExist", # no page for the gene, but MCU has it's own page
-    "MDK": "Midkine",
-    "MVP": "Major_vault_protein",
-    "NRL": "NRL_(gene)",
-    "PDF": "PDF_(gene)",
-    "REST": "RE1-silencing_transcription_factor",
-    "RFK": "PageDoesNotExist", # no page for the gene, but RFK has it's own page
-    "RDX": "Radixin",
-    "SPARC": "Osteonectin",
-    "T": "Brachyury",
-    "VIP": "Vasoactive_intestinal_peptide" }
+    "REST": "RE1-silencing_transcription_factor", # this should work on its own now, but I need to check. 
+    "RFK": "PageDoesNotExist" } # no page for the gene, but RFK has it's own page
+append_only = True # Control whether the script overwrites existing values in the file
 
 
 # Get a list of gene symbols by downloading and processing the list of all gene symbols.
@@ -42,6 +31,27 @@ def get_gene_symbols():
                 genes.append(row[2])
     print("Found", len(genes), "genes.")
     return genes
+
+
+# If the global append_only variable is false, then this should return an empty dict
+# Note: this returns a gene -> pagename mapping (opposite of what we generate later), so that we can look up by gene 
+def get_past_genes_mapped():
+    past_mapping = {}
+    if not append_only:
+        return past_mapping
+    try:
+        print("Initializing the page map with past mapping values")
+        with open(output_file_location, "rt") as f:
+            reader = csv.reader(f, delimiter="\t")
+            line_count = 0
+            for row in reader:
+                if line_count > 0:
+                    past_mapping[row[1]]= row[0]
+                line_count += 1
+    except FileNotFoundError:
+        print("Unable to find existing output file. Generating a new one from scratch.")
+    print("\tUsing", len(past_mapping), "previously generated values.")
+    return past_mapping
 
 
 # Determine whether the page is a disambiguation, or links to a disambiguation page.
@@ -74,24 +84,30 @@ def get_correct_page_name(attempted_page_name):
 
 # Load the wikipedia page for each gene and see what the actual page name is. 
 # Most gene wiki pages will load when given the gene symbol, but have a different actual page name. 
-def save_page_name_map(gene_symbols):
+def save_page_name_map(gene_symbols, past_mapping):
     page_names_to_symbols = {}
     i = 0
     start_time = perf_counter()
-    with open('./wikipedia_trends/gene_page_map.tsv', 'w') as f:
-        f.write("tpage_name\tgene_symbol\n")
+    file_exists = os.path.exists(output_file_location)
+    # Write to the file 
+    with open(output_file_location, 'a' if append_only else 'w') as f:
+        if not append_only or not file_exists:
+            f.write("tpage_name\tgene_symbol\n")
         for symbol in gene_symbols:
-            # handle any pages like "PDF" where it leads to an incorrect but non-ambiguous page
-            if custom_disambiguation.get(symbol) is not None:
-                page_name = custom_disambiguation[symbol]
-            else: 
-                # load the page, and see what the title is 
-                page_name = get_correct_page_name(symbol)
-            page_names_to_symbols[page_name.lower()] = symbol
-            f.write("%s\t%s\n"%(page_name, symbol))
+            if past_mapping.get(symbol) is None:
+                # Get the page value for this symbol
+                # handle any pages like "PDF" where it leads to an incorrect but non-ambiguous page
+                if custom_disambiguation.get(symbol) is not None:
+                    page_name = custom_disambiguation[symbol]
+                else: 
+                    # load the page, and see what the title is 
+                    page_name = get_correct_page_name(symbol)
+                page_names_to_symbols[page_name.lower()] = symbol
+                f.write("%s\t%s\n"%(page_name, symbol))
             i+=1
             if i % 100 == 0:
                 print("processed", i, "in", perf_counter() - start_time, "seconds.")
 
 symbols = get_gene_symbols()
-save_page_name_map(symbols)
+past_mapping = get_past_genes_mapped()
+save_page_name_map(symbols, past_mapping)
