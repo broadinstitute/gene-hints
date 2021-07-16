@@ -52,8 +52,8 @@ def combine_dicts(tsv_dict_1, tsv_dict_2):
 def combine_headers(headers_1, headers_2):
     print("Combining :" + str(headers_1))
     print("With :" + str(headers_2))
-    if headers_1[0] == headers_2[0]:
-        exit("First column of the headers do not match. Aborting")
+    if headers_1[0] != headers_2[0]:
+        exit("First column of the headers do not match. Aborting!")
 
     combined_headers = []
     headers_2_without_primary_key = headers_2[1:]
