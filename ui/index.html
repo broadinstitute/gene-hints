@@ -110,6 +110,7 @@
               <option class="alpha-support" value="felis-catus">Cat (Felis catus)</option>
               <option class="alpha-support" value="macaca-fascicularis">Cynomolgus monkey (Macaca fascicularis)</option>
               <option class="alpha-support" value="canis-lupus-familiaris">Dog (Canis lupus familiaris)</option>
+              <option value="drosophila-melanogaster">Fly (Drosophila melanogaster)</option>
             </optgroup>
 
             <!-- <option class="alpha-support" value="anopheles-gambiae">Mosquito (Anopheles gambiae)</option>
@@ -178,7 +179,7 @@
       'homo-sapiens': ['ACE2', 'RAD51', 'APP'],
       'mus-musculus': ['Pten', 'Rad51', 'Sox2'],
       'rattus-norvegicus': ['Rad51', 'Pten', 'Sox2'],
-      'drosophila-melanogaster': ['dpp', 'N', 'Ubx'],
+      'drosophila-melanogaster': ['dpp', 'N', 'tim'],
       'saccharomyces-cerevisiae': ['rad51', 'atp6', 'cytb'],
       'arabidopsis-thaliana': ['PHYA', 'FLC', 'FT'],
       'danio-rerio': ['bmp4', 'myod1', 'cyp1a'],
@@ -360,6 +361,8 @@
       // console.log('config.organism', config.organism)
       if (config.organism === 'canis-lupus-familiaris') {
         config.chrMargin = 2
+      } else if (config.organism === 'drosophila-melanogaster') {
+        config.chrMargin = 40
       } else {
         delete config.chrMargin
       }
