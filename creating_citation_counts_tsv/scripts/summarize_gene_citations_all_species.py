@@ -290,7 +290,7 @@ def create_tsv_for_genes(sorted_genes_list, tax_name, timeframe_days):
         tsv_writer = csv.writer(out_file, delimiter='\t')
         
         # Add the header row to the TSV
-        tsv_writer.writerow(["#name", "chromosome", "start", "length", "color", "full_name", "days_in_timeframe", "recent_timeframe_citation_count", "past_timeframe_citation_count", "citation_count_delta", "significance", "recent_gene_rank", "past_gene_rank", "rank_delta",])
+        tsv_writer.writerow(["gene_symbol", "chromosome", "start", "length", "color", "full_name", "days_in_timeframe", "recent_timeframe_citation_count", "past_timeframe_citation_count", "citation_count_delta", "significance", "recent_gene_rank", "past_gene_rank", "rank_delta",])
         
         # Going through each gene in the sorted_genes_list 
         for gene in sorted_genes_list:
