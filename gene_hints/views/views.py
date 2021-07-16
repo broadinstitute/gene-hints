@@ -6,37 +6,33 @@ import requests
 import sys
 from time import perf_counter
 
+# TODO consider using numpy to speed up TSV reading and writing 
 
-# Global vars 
-gene_list_url = "https://raw.githubusercontent.com/eweitz/ideogram/master/data/annotations/gene-cache/homo-sapiens.tsv"
-pageviews_base_url = "https://dumps.wikimedia.org/other/pageviews"
-
-name_map_tsv_location = "./wikipedia_trends/gene_page_map.tsv"
-downloads_dir = "./wikipedia_trends/downloads/"
+# URLS and Directory locations
+wiki_pageviews_base_url = "https://dumps.wikimedia.org/other/pageviews"
+wiki_trends_dir = "./wikipedia_trends/"
+name_map_tsv_location =  wiki_trends_dir + "gene_page_map.tsv"
+downloads_dir = wiki_trends_dir + "downloads/"
 pageviews_download_location = downloads_dir + "pageviews{count}.gz"
-output_location = "./wikipedia_trends/wikipedia_top_viewed_genes.tsv"
-
-num_pageviews_files = 12 # The number of hours of data to process (should eventually be set to 48)
-start_datetime = datetime.now(timezone.utc) - timedelta(hours=1) # One hour before the current time in UTC
-
-csv.field_size_limit(sys.maxsize) # TODO: decide whether this is needed 
+output_file_location = "./data/homo-sapiens-wikipedia-trends.tsv"
 
 
-def get_pageviews_download_url(time):
-    directory = time.strftime("/%Y/%Y-%m/") # format like /2021/2021-07/
-    filename = time.strftime("pageviews-%Y%m%d-%H0000.gz") # format like pageviews-20210712-130000.gz
-    return pageviews_base_url + directory + filename
+# Other global variables and settings
+num_hours_to_process = 24
+most_recent_datetime = datetime.now(timezone.utc) - timedelta(hours=1) # One hour before the current time in UTC
 
-# Checks a given row from the wikipedia pageview dump file, and adds any views to the running total. 
-# Takes in a dictionary of pageview counts per gene and a row of the 
-# pageview dump file of the format ["language", "page_name", "hourly_view_count", "always_zero_val"]
-# Ex. ["aa", "Main_Page", "4", "0"]
-def add_row_to_gene_count(counts_dict, row, page_to_gene_map):
-    page_name = row[1]
-    if row[0] == "en" and page_to_gene_map.get(page_name) is not None:
-        gene_symbol = page_to_gene_map[page_name]
-        view_count = int(row[2])
-        counts_dict[gene_symbol] += view_count
+# override the csv field limits, to handle errors in wiki trends files (which will break the whole script otherwise)
+csv.field_size_limit(sys.maxsize) 
+
+
+
+# Initialize our gene counts as zero by downloading and processing the list of all gene symbols.
+def init_gene_counts(page_to_gene_map):
+    gene_counts = {}
+    for gene in page_to_gene_map.values():
+        gene_counts[gene] = 0
+    print("\tFound", len(gene_counts), "genes.")
+    return gene_counts
 
 
 # Load a map from wikipedia page names to gene symbols from file.
@@ -50,18 +46,15 @@ def load_page_name_to_gene_map():
         print("Processing file contents...")
         for row in reader:
             if line_count > 0:
-                name_map[row[0]] = row[1]
+                name_map[row[0].lower()]= row[1]
             line_count += 1
     return name_map
 
 
-# Initialize our gene counts as zero by downloading and processing the list of all gene symbols.
-def init_gene_counts(page_to_gene_map):
-    gene_counts = {}
-    for gene in page_to_gene_map.values():
-        gene_counts[gene] = 0
-    print("\tFound", len(gene_counts), "genes.")
-    return gene_counts
+def get_pageviews_download_url(time):
+    directory = time.strftime("/%Y/%Y-%m/") # format like /2021/2021-07/
+    filename = time.strftime("pageviews-%Y%m%d-%H0000.gz") # format like pageviews-20210712-130000.gz
+    return wiki_pageviews_base_url + directory + filename
 
 
 # Download and save the Wikipedia trends dump file 
@@ -70,20 +63,38 @@ def download_trends_file(file_num):
     if not os.path.exists(downloads_dir):
         os.makedirs(downloads_dir)
     # Generate the hourly trends filename and URL
-    trends_datetime = start_datetime + timedelta(hours=-file_num)
+    trends_datetime = most_recent_datetime + timedelta(hours=-file_num)
     pageviews_url = get_pageviews_download_url(trends_datetime)
+    print("Processing the trends file from", trends_datetime.strftime("%m/%d/%Y, %H:00"))
     # Download the file 
-    print("Downloading wikipedia trends hourly data...")
+    print("\tDownloading wikipedia trends hourly data...")
     with requests.Session() as s:
         response = s.get(pageviews_url)
         with open(pageviews_download_location.format(count=file_num), "wb") as f:
             f.write(response.content)
 
 
+# Checks a given row from the wikipedia pageview dump file, and adds any views to the running total. 
+# Takes in a dictionary of pageview counts per gene and a row of the 
+# pageview dump file of the format ["language", "page_name", "hourly_view_count", "always_zero_val"]
+# Ex. ["aa", "Main_Page", "4", "0"]
+def add_row_to_gene_count(counts_dict, row, page_to_gene_map):
+    # log and ignore malformed rows (they happen rarely for uknonwn reasons)
+    if len(row) < 4:
+        print("\tEncountered malformed row:", row)
+    # process the row 
+    else:
+        page_name = row[1].lower()
+        if row[0] == "en" and page_to_gene_map.get(page_name) is not None:
+            gene_symbol = page_to_gene_map[page_name]
+            view_count = int(row[2])
+            counts_dict[gene_symbol] += view_count
+
+
 # Process the downloaded and zipped trends file by adding all
 # relevant views to the total count. 
 def process_trends_file(gene_counts, page_to_gene_map, file_num):
-    print("Processing pageview file", file_num, "contents...")
+    print("\tProcessing pageview file contents...")
     with gzip.open(pageviews_download_location.format(count=file_num), "rt") as f:
         reader = csv.reader(f.read().splitlines(), delimiter=" ")
         line_count = 0
@@ -91,19 +102,35 @@ def process_trends_file(gene_counts, page_to_gene_map, file_num):
             line_count += 1
             add_row_to_gene_count(gene_counts, row, page_to_gene_map)
             if line_count % 1000000 == 0:
-                print("\t-- Processed", line_count / 1000000, " million lines. --")
+                print("\t-- Processed", int(line_count / 1000000), " million lines. --")
 
 
 # Save to file and print the top viewed gene pages. 
-def output_top_counts(gene_counts):
+# TODO: remove this, it's only helpful for debugging the page mapping
+def output_pageview_counts(gene_counts):
     # Get the top counts per gene 
-    top_counts = dict(sorted(gene_counts.items(), key=lambda x: x[1], reverse=True)[:20])
-    print("Top viewed gene pages:", top_counts)
-    with open(output_location, "w") as f:
-        f.write("gene_symbol\tpage_views\n")
-        for gene, views, in top_counts.items():
-            f.write("%s\t%s\n"%(gene, views))
+    top_counts = sorted(gene_counts.items(), key=lambda x: x[1], reverse=True)[:10]
+    print("Top viewed gene pages:", dict(top_counts[:10]))
 
+# Read the existing tsv file, and update the gene counts 
+# The file rows should be of the format; ["gene_symbol", "daily_page_views", "prev_daily_page_views"]
+def save_counts_to_file(view_counts):
+    # Read in the existing data
+    prev_view_counts = {}
+    print("Updating the wikipedia trends output file...")
+    with open(output_file_location, "rt") as f:
+        reader = csv.reader(f, delimiter="\t")
+        line_count = 0
+        for row in reader:
+            if line_count > 0:
+                prev_view_counts[row[0]] = int(row[1])
+            line_count += 1
+    # Overwrite the file with new data
+    with open(output_file_location, "w") as f:
+        f.write("gene_symbol\twikipedia_daily_page_views\twikipedia_daily_page_views_change_from_previous_day\n")
+        for gene, views, in view_counts.items():
+            prev_views = prev_view_counts.get(gene, 0)
+            f.write("%s\t%s\t%s\n"%(gene, views, prev_views))
 
 
 # Run everything!
@@ -112,10 +139,11 @@ start_time = perf_counter()
 page_to_gene_map = load_page_name_to_gene_map()
 gene_counts = init_gene_counts(page_to_gene_map)
 
-for file_num in range(num_pageviews_files):
+for file_num in range(num_hours_to_process):
     download_trends_file(file_num)
     process_trends_file(gene_counts, page_to_gene_map, file_num)
 
-output_top_counts(gene_counts)
+output_pageview_counts(gene_counts)
+save_counts_to_file(gene_counts)
 
-print("Finished in", perf_counter() - start_time, "seconds.")
+print("Finished in", int(perf_counter() - start_time), "seconds.")
