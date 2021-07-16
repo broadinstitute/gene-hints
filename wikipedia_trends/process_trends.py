@@ -127,7 +127,7 @@ def save_counts_to_file(view_counts):
             line_count += 1
     # Overwrite the file with new data
     with open(output_file_location, "w") as f:
-        f.write("gene_symbol\twikipedia_daily_page_views\twikipedia_daily_page_views_change_from_previous_day\trank\tview_rank_delta\n")
+        f.write("gene_symbol\twikipedia_daily_page_views\twikipedia_daily_page_views_change_from_previous_day\tview_rank\tview_rank_delta\n")
         rank = 1
         for gene, views, in ordered_counts:
             prev_views = prev_view_counts.get(gene, 0)
