@@ -1,4 +1,4 @@
-#name	chromosome	start	length	color	full_name	significance
+gene_symbol	chromosome	start	length	color	full_name	significance
 TP53	17	7571719	19149	#34a853	tumor protein p53	Tumor suppressor, mutated in up to half of all cancers
 UBC	12	125396190	3397	#4285f4	ubiquitin C	Stress-regulated gene with roles in innate immunity and DNA repair
 APOE	19	45409005	3647	#4285f4	apolipoprotein E	Involved in fat metabolism, implicated in Alzheimer's disease and cardiovascular disease

@@ -1,4 +1,4 @@
-#name	chromosome	start	length	color	full_name	citations_from_2020-06-22_to_2020-11-24	significance
+gene_symbol	chromosome	start	length	color	full_name	citations_from_2020-06-22_to_2020-11-24	significance
 MTOR	1	11143897	5641	#73af42	mechanistic target of rapamycin kinase	9	Involved in cancer; inherited and newborn diseases; gastrointestinal diseases
 KRAS	12	25205245	45684	#73af42	KRAS proto-oncogene, GTPase	9	Involved in cancer; gastrointestinal diseases; inherited and newborn diseases
 CRP	1	159712288	2301	#73af42	C-reactive protein	9	Involved in heart and blood diseases; gastrointestinal diseases; nutrition and metabolism related diseases

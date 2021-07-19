@@ -1,4 +1,4 @@
-#name	chromosome	start	length	color	full_name	days_in_timeframe	recent_timeframe_citation_count	past_timeframe_citation_count	citation_count_delta	significance	recent_gene_rank	past_gene_rank	rank_delta
+gene_symbol	chromosome	start	length	color	full_name	days_in_timeframe	recent_timeframe_citation_count	past_timeframe_citation_count	citation_count_delta	significance	recent_gene_rank	past_gene_rank	rank_delta
 BDNF	D1	84257819	743	#73af42	brain derived neurotrophic factor	180	0	0	0		3	5	-2
 CXCR4	C1	130088796	3800	#73af42	C-X-C motif chemokine receptor 4	180	0	0	0		3	5	-2
 CCL17	E2	36523719	2366	#73af42	C-C motif chemokine ligand 17	180	0	0	0		3	5	-2
