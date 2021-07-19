@@ -138,7 +138,7 @@ def add_significance_to_TSVs():
               gene_name = row[0]
               
               # skip significance search for header
-              if '#name' not in gene_name:
+              if 'gene_symbol' not in gene_name:
                 try:
                   # get each gene's significance
                   significance = get_significance(gene_name, SOURCES[source], num_diseases)

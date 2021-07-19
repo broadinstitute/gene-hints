@@ -1,4 +1,4 @@
-#name	chromosome	start	length	color	full_name	days_in_timeframe	recent_timeframe_citation_count	past_timeframe_citation_count	citation_count_delta	significance	recent_gene_rank	past_gene_rank	rank_delta
+gene_symbol	chromosome	start	length	color	full_name	days_in_timeframe	recent_timeframe_citation_count	past_timeframe_citation_count	citation_count_delta	significance	recent_gene_rank	past_gene_rank	rank_delta
 GSTP1	18	50040622	3016	#73af42	glutathione S-transferase pi 1	180	6	0	6		1	37	-36
 KDR	13	47729487	41625	#73af42	kinase insert domain receptor	180	4	0	4		3	37	-34
 MIR8907	16	4933794	28389	#73af42	microRNA mir-8907	180	0	0	0		7	37	-30

@@ -1,4 +1,4 @@
-#name	chromosome	start	length	color	full_name	citations_from_2020/06/22_to_2020/11/24	significance
+gene_symbol	chromosome	start	length	color	full_name	citations_from_2020/06/22_to_2020/11/24	significance
 Trpv4	12	47698947	38955	#73af42	transient receptor potential cation channel, subfamily V, member 4	3	n/a
 Hmgb1	16	37500017	2222	#73af42	high mobility group box 1	3	Involved in heart and blood diseases; cancer; other
 Fos	6	109300433	2866	#73af42	Fos proto-oncogene, AP-1 transcription factor subunit	2	Involved in heart and blood diseases; cancer; other
