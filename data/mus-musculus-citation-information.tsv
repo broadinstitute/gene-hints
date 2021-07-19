@@ -1,4 +1,4 @@
-#name	chromosome	start	length	color	full_name	days_in_timeframe	recent_timeframe_citation_count	past_timeframe_citation_count	citation_count_delta	significance	recent_gene_rank	past_gene_rank	rank_delta
+gene_symbol	chromosome	start	length	color	full_name	days_in_timeframe	recent_timeframe_citation_count	past_timeframe_citation_count	citation_count_delta	significance	recent_gene_rank	past_gene_rank	rank_delta
 Mki67	7	135291517	26591	#73af42	antigen identified by monoclonal antibody Ki 67	180	36	26	10		2	35	-33
 Trpv2	11	62466453	24676	#73af42	transient receptor potential cation channel, subfamily V, member 2	180	9	0	9		104	4382	-4278
 Sox11	12	27384267	8450	#73af42	SRY (sex determining region Y)-box 11	180	9	0	9		104	4382	-4278

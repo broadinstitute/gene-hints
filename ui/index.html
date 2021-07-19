@@ -389,7 +389,7 @@
         if (columnsInRow[0][0] === '#') return; // Skip header
 
         // eslint-disable-next-line
-        // #name	chromosome	start	length	color	full_name	days_in_timeframe	recent_timeframe_citation_count	past_timeframe_citation_count	citation_count_delta	significance
+        // gene_symbol	chromosome	start	length	color	full_name	days_in_timeframe	recent_timeframe_citation_count	past_timeframe_citation_count	citation_count_delta	significance
         const gene = columnsInRow[0];
         const pubmedCitations = {
           days: parseInt(columnsInRow[6]), // days_in_timeframe

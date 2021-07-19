@@ -1,4 +1,4 @@
-#name	chromosome	start	length	color	full_name	significance
+gene_symbol	chromosome	start	length	color	full_name	significance
 MTOR	1	11203954	5641	#73af42	mechanistic target of rapamycin kinase	n/a
 KRAS	12	25358179	45684	#73af42	KRAS proto-oncogene, GTPase	n/a
 CRP	1	159682078	2301	#73af42	C-reactive protein	n/a
