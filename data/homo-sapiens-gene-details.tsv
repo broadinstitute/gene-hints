@@ -1,4 +1,4 @@
-gene_symbol	chromosome	start	length	color	full_name	days_in_timeframe	recent_timeframe_citation_count	past_timeframe_citation_count	citation_count_delta	significance	recent_gene_rank	past_gene_rank	rank_delta	wikipedia_daily_page_views	wikipedia_daily_page_views_change_from_previous_day	view_rank	view_rank_delta
+gene_symbol	chromosome	start	length	color	full_name	days_in_timeframe	recent_timeframe_citation_count	prior_timeframe_citation_count	citation_count_delta	significance	recent_gene_rank	prior_gene_rank	rank_delta	wikipedia_daily_page_views	wikipedia_daily_page_views_change_from_previous_day	view_rank	view_rank_delta
 PACSIN2	22	42869766	90115	#73af42	protein kinase C and casein kinase substrate in neurons 2	180	10	0	10		156	10478	-10322	2	2	4184	18
 SPRY2	13	80335977	3682	#73af42	sprouty RTK signaling antagonist 2	180	10	0	10		156	10478	-10322	4	4	2491	23
 ZFYVE26	14	67746522	70068	#73af42	zinc finger FYVE-type containing 26	180	10	0	10		156	10478	-10322	2	2	4572	41
