@@ -3,7 +3,7 @@ from pandas import json_normalize
 import os
 
 output_location = "./wikipedia_trends/"
-filename = 'gene_pange_map.tsv'
+filename = 'gene_page_map.tsv'
 
 
 def query_wikidata(sparql_query, sparql_service_url):
