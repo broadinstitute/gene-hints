@@ -2,15 +2,15 @@
 
 # Creating Citiation TSVs Per selected species. Adapted from source code: https://github.com/pkerpedjiev/gene-citation-counts
 
-# First install 
-pip3 install -r creating_citation_counts_tsv/requirements.txt 
+# First install
+pip3 install -r creating_citation_counts_tsv/requirements.txt
 
 # Create a data, tsv, and tmp-ssv folder
 mkdir creating_citation_counts_tsv/data
 mkdir tsv
 mkdir creating_citation_counts_tsv/data/tmp-ssv
 
-#To get an idea of how citation counts have changed over a time frame, we need a list of which citations were published when. 
+#To get an idea of how citation counts have changed over a time frame, we need a list of which citations were published when.
 # This script queries Entrez gene for citation lists for each day for the time frame specified.
 days_in_timeframe=180
 days_in_timeframe_doubled=$(($days_in_timeframe * 2))
@@ -41,7 +41,7 @@ done
 # Remove tmp-ssv to save space
 rm -rf creating_citation_counts_tsv/data/tmp-ssv
 
-# Creating taxonomy folder 
+# Creating taxonomy folder
 mkdir creating_citation_counts_tsv/taxonomy
 
 # Creating Species folders (human, mouse, rat)
@@ -53,7 +53,7 @@ mkdir creating_citation_counts_tsv/data/cat
 # ADD Extra Species folders
 
 # Getting taxonomy names
-wget -N -P creating_citation_counts_tsv/taxonomy/ https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/new_taxdump/new_taxdump.tar.Z 
+wget -N -P creating_citation_counts_tsv/taxonomy/ https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/new_taxdump/new_taxdump.tar.Z
 zcat creating_citation_counts_tsv/taxonomy/new_taxdump.tar.Z > creating_citation_counts_tsv/taxonomy/new_taxdump.tar; /
 tar -C creating_citation_counts_tsv/taxonomy/ -xvf creating_citation_counts_tsv/taxonomy/new_taxdump.tar
 mv creating_citation_counts_tsv/taxonomy/names.dmp creating_citation_counts_tsv/taxonomy_name
@@ -86,7 +86,7 @@ wget -N -P creating_citation_counts_tsv/data/human https://hgdownload.soe.ucsc.e
 gunzip -f creating_citation_counts_tsv/data/human/hg38.refGene.gtf.gz
 # Getting Mouse refences file
 wget -N -P creating_citation_counts_tsv/data/mouse https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/genes/refGene.gtf.gz
-gunzip -f creating_citation_counts_tsv/data/mouse/refGene.gtf.gz 
+gunzip -f creating_citation_counts_tsv/data/mouse/refGene.gtf.gz
 # Getting Rat refences file
 wget -N -P creating_citation_counts_tsv/data/rat https://hgdownload.soe.ucsc.edu/goldenPath/rn6/bigZips/genes/rn6.refGene.gtf.gz
 gunzip -f creating_citation_counts_tsv/data/rat/rn6.refGene.gtf.gz
@@ -105,18 +105,20 @@ gunzip creating_citation_counts_tsv/data/gene_info.gz
 # Gene info is a big file, so we are parsing out what we need
 # Getting Human gene_info
 cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 9606) print;}' > creating_citation_counts_tsv/data/human/gene_info
-# Getting Mouse gene_info
-cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 10090) print;}' > creating_citation_counts_tsv/data/mouse/gene_info
-# Getting Rat gene_info
-cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 10116) print;}' > creating_citation_counts_tsv/data/rat/gene_info
-# Getting dog gene_info
-cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 9615) print;}' > creating_citation_counts_tsv/data/dog/gene_info
-# Getting cat gene_info
-cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 9685) print;}' > creating_citation_counts_tsv/data/cat/gene_info
+# # Getting Mouse gene_info
+# cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 10090) print;}' > creating_citation_counts_tsv/data/mouse/gene_info
+# # Getting Rat gene_info
+# cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 10116) print;}' > creating_citation_counts_tsv/data/rat/gene_info
+# # Getting dog gene_info
+# cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 9615) print;}' > creating_citation_counts_tsv/data/dog/gene_info
+# # Getting cat gene_info
+# cat creating_citation_counts_tsv/data/gene_info | awk '{if ($1 == 9685) print;}' > creating_citation_counts_tsv/data/cat/gene_info
 # ADD Extra Species gene_info
 
 # Remove main file to save space
 rm creating_citation_counts_tsv/data/gene_info
 
 # Lastly create the tsv with the total citations per gene along with the gene's information
+
+echo "python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py ${recent_timeframe__year_pmid__ssv_path} ${prior_timeframe__year_pmid__ssv_path} $days_in_timeframe"
 python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py ${recent_timeframe__year_pmid__ssv_path} ${prior_timeframe__year_pmid__ssv_path} $days_in_timeframe
