@@ -1,16 +1,16 @@
-""" 
+"""
 Creating TSVs containing the most-cited genes per species and their gene information.
 """
 usage = """
     python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py ${recent_timeframe__year_pmid__ssv_path} ${prior_timeframe__year_pmid__ssv_path} $days_in_timeframe
     """
-    
+
 import os
 import csv
 import argparse
 
 def get_recent_gene_citation_count(species_gene2pubmed_tsv, recent_citations_ssv):
-    """ 
+    """
     Input:
         species_gene2pubmed_tsv: tsv of genes and associated publication citation ID for a species
         recent_citations_ssv: ssv of all recent citations
@@ -38,7 +38,7 @@ def get_recent_gene_citation_count(species_gene2pubmed_tsv, recent_citations_ssv
 
     # Outputing the first element in pubmed_gene_dict
     print( next(iter( pubmed_gene_dict.items() )) )
-    
+
     # Figure out which pubmed_ids in pubmed_gene_dict were published recently
     recent_pubmed_array = []
     # This file has no headers so here's an example instead:
@@ -51,12 +51,12 @@ def get_recent_gene_citation_count(species_gene2pubmed_tsv, recent_citations_ssv
             pubmed_id = str(row[1])
             if pubmed_id in pubmed_gene_dict.keys():
                 recent_pubmed_array.append((pubmed_id))
-    
+
     # Outputing the first element in the recent_pubmed_array variable
     if len(recent_pubmed_array) > 0:
         print(recent_pubmed_array[0])
     else:
-        print("No pubmed matches -- try increasing the date range.") # todo: refactor - handle empty array gracefully
+        print("No PubMed matches -- try increasing the date range.") # todo: refactor - handle empty array gracefully
 
     # reverse pubmed_gene_dict so that we have a mapping of gene_id to pubmed_id
     recent_gene_pubmed_dict = {}
@@ -68,7 +68,7 @@ def get_recent_gene_citation_count(species_gene2pubmed_tsv, recent_citations_ssv
                 pubmed_set.add(pubmed_id)
             else:
                 recent_gene_pubmed_dict[gene_id] = set(pubmed_id)
-    
+
     # Dict mapping gene_id to pubmed_id citation count
     gene_citation_counts = {}
     for gene_id in recent_gene_pubmed_dict:
@@ -76,7 +76,7 @@ def get_recent_gene_citation_count(species_gene2pubmed_tsv, recent_citations_ssv
 
     # Outputing the first element in the gene_citation_counts variable
     print( next(iter( gene_citation_counts.items() )) )
-    
+
     # Returning the gene_citation_counts variable
     return gene_citation_counts
 
@@ -88,7 +88,7 @@ def rank_citation_counts(gene_citation_counts):
     for key_itr in gene_citation_counts:
         count = gene_citation_counts[key_itr]
         count__num_occurances__dict[count] = count__num_occurances__dict.get(count, 0) + 1
-        
+
     print(count__num_occurances__dict)
     sorted_count_list = sorted(count__num_occurances__dict, reverse=True)
     print("sorted_count_list: " + str(sorted_count_list))
@@ -106,18 +106,18 @@ def rank_citation_counts(gene_citation_counts):
     for key_itr in gene_citation_counts:
         count = gene_citation_counts[key_itr]
         gene_rank_dict[key_itr] = count__rank__dict[count]
-    
+
     return gene_rank_dict
 
 def get_gene_info(species_gene_info_tsv, recent_gene_citation_counts, prior_gene_citation_counts, recent_gene_ranks, prior_gene_ranks, taxonomy_name_tsv):
-    """ 
+    """
     Getting a list of the gene information per gene and species' taxonomy name.
     """
 
     # necessary for calculating rank delta correctly for unranked items
     recent_last_rank = int(max(recent_gene_ranks.values())) + 1
     prior_last_rank = int(max(prior_gene_ranks.values())) + 1
-    
+
     # Adding gene's information to the list created from get_recent_gene_citation_count per gene and saving it to the gene_info variable
     gene_symbol__gene_info__dict = {}
     # File header and example data row:
@@ -144,7 +144,7 @@ def get_gene_info(species_gene_info_tsv, recent_gene_citation_counts, prior_gene
                 "gene_id": gene_id,
                 "chromosome": chromosome,
                 "full_name": full_name,
-                "recent_citation_count": recent_citation_count,
+                "citation_count": recent_citation_count,
                 "prior_citation_count": prior_citation_count,
                 "citation_count_delta": citation_count_delta,
                 "tax_id": tax_id,
@@ -152,11 +152,11 @@ def get_gene_info(species_gene_info_tsv, recent_gene_citation_counts, prior_gene
                 "prior_gene_rank": prior_gene_rank,
                 "rank_delta": rank_delta
             }
-    
+
     # Outputing the first element in the gene_info variable
     first_dict_entry = gene_symbol__gene_info__dict[list(gene_symbol__gene_info__dict.keys())[0]]
     print(first_dict_entry)
-    
+
     # Getting the taxonomy ID for the species and saving it to the species_tax_id variable
     species_tax_id = first_dict_entry["tax_id"]
 
@@ -183,23 +183,23 @@ def get_gene_info(species_gene_info_tsv, recent_gene_citation_counts, prior_gene
     # Returning the gene_info and taxonomy_scientific_name variable
     return gene_symbol__gene_info__dict, taxonomy_scientific_name
 
-def get_ref_gene(species, gene_symbol__gene_info__dict): 
-    """ 
+def get_ref_gene(species, gene_symbol__gene_info__dict):
+    """
     Getting a list of the gene reference information per gene.
     """
 
     def extract_value_from_unparsed_string(unparsed_string, key):
         """
         Extracts the value from an unparsed string
-        
+
         key example: "gene_id"
         """
         start_index = unparsed_string.find(key) + len(key + ' "')
         end_index = unparsed_string[start_index:].find('"') + start_index
         return unparsed_string[start_index:end_index]
 
-    
-    # Going through all the files in the species directory 
+
+    # Going through all the files in the species directory
     ref_gene = {}
     for file in os.listdir(f"creating_citation_counts_tsv/data/{species}"):
         #Since the reference file is uniquely named and could not be hard-coded, this will filter out files that are not .gtf files to read the reference file
@@ -254,7 +254,7 @@ def get_ref_gene(species, gene_symbol__gene_info__dict):
 
     # Outputing the ref_gene variable
     print( next(iter( ref_gene.items() )) )
-    
+
     # Returning the ref_gene variable
     return ref_gene
 
@@ -265,7 +265,7 @@ def sort_and_list_genes(ref_gene):
 
     # Getting the list of the top ten most cited genes from the list created from get_ref_gene
     sorted_genes_list = sorted(ref_gene.items(), key=lambda x: x[1]['citation_count_delta'], reverse=True)
-    
+
     print("Gene with the greatest positive citation delta: " + str(sorted_genes_list[0]))
 
     return sorted_genes_list
@@ -274,25 +274,34 @@ def create_tsv_for_genes(sorted_genes_list, tax_name, timeframe_days):
     """
     Creating TSVs containing gene information.
     """
-    
+
     # Getting the species' scientific taxonomy name and saving it to the gene_species_name variable
     gene_species_name = tax_name.replace(" ", "-").replace("(", "-").replace(")", "-").replace("/", "-").replace("=", "-").lower()
-    
+
     # Outputting the gene_species_name variable
     print(gene_species_name)
-    
+
     # Creating the TSV name that contains the gene_species_name variable
     tsv_name= f'data/{gene_species_name}-citation-information.tsv'
-    
+
     # Creating the TSV
     with open(tsv_name, 'wt') as out_file:
         # Setting up the TSV
         tsv_writer = csv.writer(out_file, delimiter='\t')
-        
+
         # Add the header row to the TSV
-        tsv_writer.writerow(["gene_symbol", "chromosome", "start", "length", "color", "full_name", "days_in_timeframe", "recent_timeframe_citation_count", "prior_timeframe_citation_count", "citation_count_delta", "significance", "recent_gene_rank", "prior_gene_rank", "rank_delta",])
-        
-        # Going through each gene in the sorted_genes_list 
+        tsv_writer.writerow([
+            "gene_symbol", "chromosome", "start", "length", "color",
+            "full_name", "days_in_timeframe",
+            "recent_timeframe_citation_count",
+            "prior_timeframe_citation_count",
+            "citation_count_delta",
+            "significance",
+            "recent_gene_rank",
+            "prior_gene_rank",
+            "rank_delta",])
+
+        # Going through each gene in the sorted_genes_list
         for gene in sorted_genes_list:
             # Adding the gene information to the TSV
             symbol = gene[0]
@@ -311,7 +320,7 @@ def create_tsv_for_genes(sorted_genes_list, tax_name, timeframe_days):
             tsv_row_values = [symbol, chromosome, start, length, color, full_name, timeframe_days, recent_citation_count, prior_citation_count, citation_count_delta, significance, recent_gene_rank, prior_gene_rank, rank_delta]
 
             tsv_writer.writerow(tsv_row_values)
-    
+
 # Main Function
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage=usage)
@@ -319,7 +328,7 @@ if __name__ == "__main__":
     parser.add_argument('prior_citation_count_ssv', metavar='prior_citation_count_ssv', type=str, help='past citation count ssv file path')
     parser.add_argument('timeframe_days', metavar='timeframe_days', type=int, help='days in the timeframe')
     args = parser.parse_args()
-    
+
     # Setting list of species
     list_of_species = ["human", "mouse", "rat", "dog", "cat"]
 
@@ -327,15 +336,15 @@ if __name__ == "__main__":
     for species in list_of_species:
         # Outputing species name
         print(species)
-        
+
         recent_gene_citation_counts = get_recent_gene_citation_count(f"creating_citation_counts_tsv/data/{species}/gene2pubmed", args.recent_citation_count_ssv)
         prior_gene_citation_counts = get_recent_gene_citation_count(f"creating_citation_counts_tsv/data/{species}/gene2pubmed", args.prior_citation_count_ssv)
 
         recent_gene_rank = rank_citation_counts(recent_gene_citation_counts)
         prior_gene_rank = rank_citation_counts(prior_gene_citation_counts)
-        
+
         gene_symbol__gene_info__dict, tax_name = get_gene_info(f"creating_citation_counts_tsv/data/{species}/gene_info", recent_gene_citation_counts, prior_gene_citation_counts, recent_gene_rank, prior_gene_rank, "creating_citation_counts_tsv/taxonomy_name")
-        
+
         ref_gene = get_ref_gene(species, gene_symbol__gene_info__dict)
 
         sorted_genes_list = sort_and_list_genes(ref_gene)
