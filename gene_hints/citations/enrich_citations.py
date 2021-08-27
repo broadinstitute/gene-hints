@@ -296,10 +296,9 @@ def create_tsv_for_genes(sorted_genes_list, tax_name, timeframe_days):
             "timeframe_citation_count",
             "previous_timeframe_citation_count",
             "citation_count_delta",
-            "significance",
             "gene_rank",
             "previous_gene_rank",
-            "rank_delta",])
+            "rank_delta"])
 
         # Going through each gene in the sorted_genes_list
         for gene in sorted_genes_list:
@@ -313,20 +312,39 @@ def create_tsv_for_genes(sorted_genes_list, tax_name, timeframe_days):
             citation_count = gene[1]["citation_count"]
             previous_citation_count = gene[1]["previous_citation_count"]
             citation_count_delta = gene[1]["citation_count_delta"]
-            significance = "" # `significance` is now being handled from the front-end. leaving this here for backwards compatibility. Remove when no longer needed.
             gene_rank = gene[1]["gene_rank"]
             previous_gene_rank = gene[1]["previous_gene_rank"]
             rank_delta = gene[1]["rank_delta"]
-            tsv_row_values = [symbol, chromosome, start, length, color, full_name, timeframe_days, citation_count, previous_citation_count, citation_count_delta, significance, gene_rank, previous_gene_rank, rank_delta]
+            tsv_row_values = [
+                symbol, chromosome, start, length, color, full_name,
+                timeframe_days, citation_count, previous_citation_count,
+                citation_count_delta, gene_rank, previous_gene_rank,
+                rank_delta
+            ]
 
             tsv_writer.writerow(tsv_row_values)
 
 # Main Function
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage=usage)
-    parser.add_argument('citation_count_ssv', metavar='citation_count_ssv', type=str, help='recent citation count ssv file path')
-    parser.add_argument('previous_citation_count_ssv', metavar='previous_citation_count_ssv', type=str, help='past citation count ssv file path')
-    parser.add_argument('timeframe_days', metavar='timeframe_days', type=int, help='days in the timeframe')
+    parser.add_argument(
+        'citation_count_ssv',
+        metavar='citation_count_ssv',
+        type=str,
+        help='recent citation count ssv file path'
+    )
+    parser.add_argument(
+        'previous_citation_count_ssv',
+        metavar='previous_citation_count_ssv',
+        type=str,
+        help='past citation count ssv file path'
+    )
+    parser.add_argument(
+        'timeframe_days',
+        metavar='timeframe_days',
+        type=int,
+        help='days in the timeframe'
+    )
     args = parser.parse_args()
 
     # Setting list of species
