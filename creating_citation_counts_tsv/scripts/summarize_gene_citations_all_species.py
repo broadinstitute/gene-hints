@@ -2,7 +2,7 @@
 Create TSVs containing the most-cited genes per species and their gene information.
 """
 usage = """
-    python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py ${timeframe__year_pmid__ssv_path} ${prev_timeframe__year_pmid__ssv_path} $days_in_timeframe
+    python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py ${pmid_times_path} ${prev_pmid_times_path} $days_in_timeframe
     """
 
 import os
@@ -351,19 +351,19 @@ if __name__ == "__main__":
         'citation_ssv',
         metavar='citation_ssv',
         type=str,
-        help='recent citation count ssv file path'
+        help='Path to file containing citation counts over timeframe'
     )
     parser.add_argument(
         'prev_citation_ssv',
         metavar='prev_citation_ssv',
         type=str,
-        help='past citation count ssv file path'
+        help='Path to file containing citation counts over previous timeframe'
     )
     parser.add_argument(
         'timeframe_days',
         metavar='timeframe_days',
         type=int,
-        help='days in the timeframe'
+        help='Days in the timeframe'
     )
     args = parser.parse_args()
 
@@ -371,7 +371,7 @@ if __name__ == "__main__":
     organisms = ["human", "mouse", "rat", "dog", "cat"]
 
     for organism in organisms:
-        print(organisms)
+        print(organism)
 
         org_dir = f"creating_citation_counts_tsv/data/{organism}"
 
