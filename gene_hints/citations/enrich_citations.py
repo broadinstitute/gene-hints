@@ -9,6 +9,17 @@ import os
 import csv
 import argparse
 
+organisms = [
+    ["homo-sapiens", "9606", "hg38"], # human
+    ["mus-musculus", "10090", "mm39"], # mouse
+    ["rattus-norvegicus", "10116", "rn6"], # rat
+    ["canis-lupus-familiaris", "9615", "canFam5"], # dog
+    ["felis-catus", "9685", "felCat9"], # cat
+]
+
+cites_dir = './pubmed_citations/'
+data_dir = cites_dir + 'data/'
+
 def get_cites_by_gene(gene2pubmed_tsv, cites_ssv):
     """
     Input:
@@ -23,13 +34,14 @@ def get_cites_by_gene(gene2pubmed_tsv, cites_ssv):
     # File header and example data row:
         # #tax_id GeneID  pmid
         # 9606    9       9173883
+    print(gene2pubmed_tsv)
     with open(gene2pubmed_tsv) as fd:
         rd = csv.reader(fd, delimiter="\t", quotechar='"')
         for row in rd:
             if row[0][0] == '#':
                 continue
-            gene_id = row[1]
-            pmid = row[2]
+            gene_id = row[0]
+            pmid = row[1]
             if pmid in genes_by_pmid.keys():
                 gene_set = genes_by_pmid[pmid]
                 gene_set.add(gene_id)
@@ -47,7 +59,7 @@ def get_cites_by_gene(gene2pubmed_tsv, cites_ssv):
     with open(cites_ssv) as fd:
         rd = csv.reader(fd, delimiter=' ')
         for row in rd:
-            if row[0][0] == '#':
+            if row[0][0] == '#' or len(row) < 2:
                 continue
             pmid = str(row[1])
             if pmid in genes_by_pmid.keys():
@@ -114,37 +126,6 @@ def rank_counts(counts_by_key):
 
     return ranks_by_key
 
-def get_scientific_name(gene_info_by_symbol, taxonomy_name_tsv):
-    # Output the first element in the gene_info variable
-    first_dict_entry = gene_info_by_symbol[
-        list(gene_info_by_symbol.keys())[0]
-    ]
-    print('first_dict_entry')
-    print(first_dict_entry)
-
-    taxid = first_dict_entry["taxid"]
-
-    print("Organism taxonomy ID (taxid): " + taxid)
-
-    # Get scientific name for the taxonomy ID
-    scientific_name = ""
-    # This file has no headers so here's an example instead:
-    #9606    |       Homo sapiens    |               |       scientific name |
-    with open(taxonomy_name_tsv) as fd:
-        rd = csv.reader(fd, delimiter='\t')
-        for row in rd:
-            # File lacks column headers so these are guesses based on the data
-            row_taxid = str(row[0])
-            name = str(row[2])
-            name_type = str(row[6])
-            if row_taxid == taxid and name_type == "scientific name":
-                scientific_name = name
-                break
-
-    print("scientific_name: " + scientific_name)
-
-    return scientific_name
-
 def enrich_gene_info(gene_info_file, cites_by_gene, prev_cites_by_gene, cite_ranks, prev_cite_ranks):
     """
     Gets a list of the gene information per gene
@@ -204,13 +185,13 @@ def extract_value_from_unparsed_string(unparsed_string, key):
     end_index = unparsed_string[start_index:].find('"') + start_index
     return unparsed_string[start_index:end_index]
 
-def get_ref_gene(species, gene_info_by_symbol):
+def get_ref_gene(organism, gene_info_by_symbol):
     """
     Gets a list of the gene reference information per gene.
     """
     # Iterate files in the species directory
     ref_gene = {}
-    for file in os.listdir(f"creating_citation_counts_tsv/data/{species}"):
+    for file in os.listdir(data_dir + organism):
         # Since the reference file is uniquely named and could not be
         # hard-coded, this will filter out files that are not .gtf files to
         # read the reference file
@@ -223,7 +204,7 @@ def get_ref_gene(species, gene_info_by_symbol):
         #chr6    refGene transcript      26086290        26091034        .       -       .       gene_id "LOC108783645"; transcript_id "NR_144383";  gene_name "LOC108783645";
         # which parses to:
         #['chr6', 'refGene', 'transcript', '26086290', '26091034', '.', '-', '.', 'gene_id "LOC108783645"; transcript_id "NR_144383";  gene_name "LOC108783645";']
-        with open(f"creating_citation_counts_tsv/data/{species}/{file}") as fd:
+        with open(f"{data_dir}{organism}/{file}") as fd:
             rd = csv.reader(fd, delimiter='\t')
             for row in rd:
 
@@ -367,13 +348,11 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    # Set list of species
-    organisms = ["human", "mouse", "rat", "dog", "cat"]
-
-    for organism in organisms:
+    for org_array in organisms:
+        organism = org_array[0]
         print(organism)
 
-        org_dir = f"creating_citation_counts_tsv/data/{organism}"
+        org_dir = data_dir + organism
 
         cites_by_gene = get_cites_by_gene(f"{org_dir}/gene2pubmed", args.citation_ssv)
         prev_cites_by_gene = get_cites_by_gene(
@@ -392,9 +371,7 @@ if __name__ == "__main__":
             prev_cite_rank
         )
 
-        scientific_name = get_scientific_name(
-            gene_info, "creating_citation_counts_tsv/taxonomy_name"
-        )
+        scientific_name = organism
 
         ref_gene = get_ref_gene(organism, gene_info)
 
