@@ -1,3 +1,2 @@
-psutil==5.7.3 #unused?
-shortuuid==1.0.1 #unused?
 tqdm==4.54.0
+requests==2.26.0
