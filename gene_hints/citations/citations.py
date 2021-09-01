@@ -15,6 +15,8 @@ import subprocess
 from time import perf_counter
 import glob
 
+days_in_timeframe = 180
+
 # TODO:
 #   * Pull these values from NCBI EUtils API instead of hard-coding
 #       - Do not pull down entire NCBI Taxonomy DB.  It's much too big for
@@ -113,8 +115,6 @@ def split_ncbi_file_by_org(input_path, output_filename):
             with open(data_dir + org + "/" + output_filename, "w") as f:
                 f.write("\n".join(lines))
 
-
-days_in_timeframe = 30
 days_in_timeframe_doubled = days_in_timeframe * 2
 
 start_date = format_date(days_in_timeframe) # E.g. 60 days ago
@@ -126,9 +126,11 @@ output_dir = tmp_dir + "recent-timeframe"
 prev_output_dir= tmp_dir + "past-timeframe"
 
 command = f"python3 creating_citation_counts_tsv/scripts/pmids_by_date.py --start-date {start_date} --end-date {end_date} --output-dir {output_dir}"
+print(command)
 subprocess.run(command.split())
 
 command = f"python3 creating_citation_counts_tsv/scripts/pmids_by_date.py --start-date {prev_start_date} --end-date {prev_end_date} --output-dir {prev_output_dir}"
+print(command)
 subprocess.run(command.split())
 
 # Consolidate the publications from each day into one complete list
@@ -169,10 +171,10 @@ for org_array in organisms:
     # Construct parameters for fetching UCSC genome annotation files,
     # e.g. https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz
     base_url = "https://hgdownload.soe.ucsc.edu/goldenPath/"
-    leaf = "refGene.gtf.gz"
+    leaf = "refGene.gtf"
     if org_name in ["homo-sapiens", "rattus-norvegicus", "felis-catus"]:
         leaf = asm_ucsc_name + "." + leaf
-    url = base_url + asm_ucsc_name + "/bigZips/genes/" + leaf
+    url = base_url + asm_ucsc_name + "/bigZips/genes/" + leaf + ".gz"
     output_path = data_dir + org_name + "/" + leaf
 
     download_gzip(url, output_path)
@@ -189,5 +191,6 @@ split_ncbi_file_by_org(output_path, output_filename)
 # Lastly create the TSV with the total citations per gene along with the gene's information
 
 command = f"python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py {pmid_dates_path} {prev_pmid_dates_path} {days_in_timeframe}"
+print(command)
 subprocess.run(command.split(" "))
 

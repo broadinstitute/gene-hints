@@ -20,11 +20,11 @@ organisms = [
 cites_dir = './pubmed_citations/'
 data_dir = cites_dir + 'data/'
 
-def get_cites_by_gene(gene2pubmed_tsv, cites_ssv):
+def get_cites_by_gene(gene2pubmed_tsv, cites_tsv):
     """
     Input:
         species_gene2pubmed_tsv: tsv of genes and associated publication cite ID for a species
-        cites_ssv: ssv of all recent citations
+        cites_tsv: tsv of all recent citations
     Output:
         Count of recent publication citations for each gene ID.
     """
@@ -40,8 +40,8 @@ def get_cites_by_gene(gene2pubmed_tsv, cites_ssv):
         for row in rd:
             if row[0][0] == '#':
                 continue
-            gene_id = row[0]
-            pmid = row[1]
+            gene_id = row[1]
+            pmid = row[2]
             if pmid in genes_by_pmid.keys():
                 gene_set = genes_by_pmid[pmid]
                 gene_set.add(gene_id)
@@ -49,17 +49,18 @@ def get_cites_by_gene(gene2pubmed_tsv, cites_ssv):
                 genes_by_pmid[pmid] = set([gene_id])
 
     # # Output the first element in genes_by_pmid
-    # print('genes_by_pmid')
-    # print(next(iter( genes_by_pmid.items() )) )
+    print('genes_by_pmid')
+    print(next(iter( genes_by_pmid.items() )) )
 
     # Figure out which PMIDs in genes_by_pmid were published recently
     pmids = []
     # This file has no headers so here's an example instead:
     # 2021 34185482
-    with open(cites_ssv) as fd:
-        rd = csv.reader(fd, delimiter=' ')
+    with open(cites_tsv) as fd:
+        rd = csv.reader(fd, delimiter='\t')
         for row in rd:
             if row[0][0] == '#' or len(row) < 2:
+                print('Short row' + str(row))
                 continue
             pmid = str(row[1])
             if pmid in genes_by_pmid.keys():
@@ -89,6 +90,8 @@ def get_cites_by_gene(gene2pubmed_tsv, cites_ssv):
         cites_by_gene[gene_id] = len(pmids_by_gene[gene_id])
 
     # Output the first element in the cites variable
+    print('len(cites_by_gene.items())')
+    print(len(cites_by_gene.items()))
     print('cites[0]')
     print( next(iter( cites_by_gene.items() )) )
 
@@ -189,8 +192,10 @@ def get_ref_gene(organism, gene_info_by_symbol):
     """
     Gets a list of the gene reference information per gene.
     """
+
     # Iterate files in the species directory
     ref_gene = {}
+    print('data_dir + organism', data_dir + organism)
     for file in os.listdir(data_dir + organism):
         # Since the reference file is uniquely named and could not be
         # hard-coded, this will filter out files that are not .gtf files to
@@ -204,10 +209,10 @@ def get_ref_gene(organism, gene_info_by_symbol):
         #chr6    refGene transcript      26086290        26091034        .       -       .       gene_id "LOC108783645"; transcript_id "NR_144383";  gene_name "LOC108783645";
         # which parses to:
         #['chr6', 'refGene', 'transcript', '26086290', '26091034', '.', '-', '.', 'gene_id "LOC108783645"; transcript_id "NR_144383";  gene_name "LOC108783645";']
-        with open(f"{data_dir}{organism}/{file}") as fd:
+        org_geneinfo = f"{data_dir}{organism}/{file}"
+        with open(org_geneinfo) as fd:
             rd = csv.reader(fd, delimiter='\t')
             for row in rd:
-
                 # File lacks column headers so these are guesses based on the data
                 # E.g.: transcript, exon, 3utr, cds ...
                 type = str(row[2])
@@ -329,14 +334,14 @@ def create_tsv_for_genes(sorted_genes_list, org_name, timeframe_days):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage=usage)
     parser.add_argument(
-        'citation_ssv',
-        metavar='citation_ssv',
+        'citation_tsv',
+        metavar='citation_tsv',
         type=str,
         help='Path to file containing citation counts over timeframe'
     )
     parser.add_argument(
-        'prev_citation_ssv',
-        metavar='prev_citation_ssv',
+        'prev_citation_tsv',
+        metavar='prev_citation_tsv',
         type=str,
         help='Path to file containing citation counts over previous timeframe'
     )
@@ -354,10 +359,10 @@ if __name__ == "__main__":
 
         org_dir = data_dir + organism
 
-        cites_by_gene = get_cites_by_gene(f"{org_dir}/gene2pubmed", args.citation_ssv)
+        cites_by_gene = get_cites_by_gene(f"{org_dir}/gene2pubmed", args.citation_tsv)
         prev_cites_by_gene = get_cites_by_gene(
             f"{org_dir}/gene2pubmed",
-            args.prev_citation_ssv
+            args.prev_citation_tsv
         )
 
         cite_rank = rank_counts(cites_by_gene)
