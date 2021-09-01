@@ -99,6 +99,7 @@ def split_ncbi_file_by_org(input_path, output_filename):
     with open(input_path, 'r') as f:
         lines_by_org = {}
         for line in f:
+            line = line.strip()
             taxid = line.split('\t')[0]
             if taxid in org_names_by_taxid:
                 org = org_names_by_taxid[taxid] # scientific name
@@ -113,7 +114,7 @@ def split_ncbi_file_by_org(input_path, output_filename):
                 f.write("\n".join(lines))
 
 
-days_in_timeframe = 5
+days_in_timeframe = 30
 days_in_timeframe_doubled = days_in_timeframe * 2
 
 start_date = format_date(days_in_timeframe) # E.g. 60 days ago
@@ -131,15 +132,16 @@ command = f"python3 creating_citation_counts_tsv/scripts/pmids_by_date.py --star
 subprocess.run(command.split())
 
 # Consolidate the publications from each day into one complete list
-pmid_times_path = data_dir + "pmid_times.tsv"
-prev_pmid_times_path = data_dir + "prev_pmid_times.tsv"
+pmid_dates_path = data_dir + "pmid_dates.tsv"
+prev_pmid_dates_path = data_dir + "prev_pmid_dates.tsv"
 
 # Clean up any existing files
-# os.remove(pmid_times_path)
-# os.remove(prev_pmid_times_path)
+# os.remove(pmid_dates_path)
+# os.remove(prev_pmid_dates_path)
 
-combine_daily_pmids(pmid_times_path, output_dir)
-combine_daily_pmids(prev_pmid_times_path, prev_output_dir)
+print("Combine daily publication counts")
+combine_daily_pmids(pmid_dates_path, output_dir)
+combine_daily_pmids(prev_pmid_dates_path, prev_output_dir)
 
 # Remove tmp to save space
 #rm -rf creating_citation_counts_tsv/data/tmp
@@ -151,13 +153,16 @@ for organism in organisms:
     if not os.path.exists(dir):
         os.makedirs(dir)
 
+print("Download gene2pubmed")
 url = "https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2pubmed.gz"
 output_filename = "gene2pubmed"
 output_path = data_dir + output_filename
 download_gzip(url, output_path)
 
+print("Split gene2pubmed by organism")
 split_ncbi_file_by_org(output_path, output_filename)
 
+print("Download UCSC genome annotations for each organism")
 for org_array in organisms:
     [org_name, taxid, asm_ucsc_name] = org_array
 
@@ -172,15 +177,17 @@ for org_array in organisms:
 
     download_gzip(url, output_path)
 
+print("Download gene_info")
 url = "https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz"
 output_filename = "gene_info"
 output_path = data_dir + output_filename
 download_gzip(url, output_path)
 
+print("Split gene_info by organism")
 split_ncbi_file_by_org(output_path, output_filename)
 
 # Lastly create the TSV with the total citations per gene along with the gene's information
 
-command = f"python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py {pmid_times_path} {prev_pmid_times_path} {days_in_timeframe}"
+command = f"python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py {pmid_dates_path} {prev_pmid_dates_path} {days_in_timeframe}"
 subprocess.run(command.split(" "))
 
