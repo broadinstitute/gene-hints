@@ -15,7 +15,7 @@ import subprocess
 from time import perf_counter
 import glob
 
-days_in_timeframe = 180
+days_in_timeframe = 360
 
 # TODO:
 #   * Pull these values from NCBI EUtils API instead of hard-coding
@@ -122,13 +122,13 @@ end_date = format_date() # Today
 prev_start_date = format_date(days_in_timeframe * 2) # E.g. 120 days ago
 prev_end_date = start_date # E.g. 60 days ago
 
-output_dir = tmp_dir + "recent-timeframe"
-prev_output_dir= tmp_dir + "past-timeframe"
+output_dir = tmp_dir + "timeframe"
+prev_output_dir= tmp_dir + "prev_timeframe"
 
+# TODO: Enable code below to be imported as Python module
 command = f"python3 creating_citation_counts_tsv/scripts/pmids_by_date.py --start-date {start_date} --end-date {end_date} --output-dir {output_dir}"
 print(command)
 subprocess.run(command.split())
-
 command = f"python3 creating_citation_counts_tsv/scripts/pmids_by_date.py --start-date {prev_start_date} --end-date {prev_end_date} --output-dir {prev_output_dir}"
 print(command)
 subprocess.run(command.split())
@@ -189,7 +189,7 @@ print("Split gene_info by organism")
 split_ncbi_file_by_org(output_path, output_filename)
 
 # Lastly create the TSV with the total citations per gene along with the gene's information
-
+# TODO: Enable code below to be imported as Python module
 command = f"python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py {pmid_dates_path} {prev_pmid_dates_path} {days_in_timeframe}"
 print(command)
 subprocess.run(command.split(" "))
