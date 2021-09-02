@@ -20,22 +20,18 @@ organisms = [
 cites_dir = './pubmed_citations/'
 data_dir = cites_dir + 'data/'
 
-def get_cites_by_gene(gene2pubmed_tsv, cites_tsv):
+def get_genes_by_pmid(organism):
+    """Map PubMed IDs (PMIDs) to gene IDs
     """
-    Input:
-        species_gene2pubmed_tsv: tsv of genes and associated publication cite ID for a species
-        cites_tsv: tsv of all recent citations
-    Output:
-        Count of recent publication citations for each gene ID.
-    """
-
-    # Map PubMed IDs (PMIDs) to gene IDs
     genes_by_pmid  = {}
+
+    gene2pubmed_path = data_dir + organism + "/gene2pubmed"
+
     # File header and example data row:
         # #tax_id GeneID  pmid
         # 9606    9       9173883
-    print(gene2pubmed_tsv)
-    with open(gene2pubmed_tsv) as fd:
+    print(gene2pubmed_path)
+    with open(gene2pubmed_path) as fd:
         rd = csv.reader(fd, delimiter="\t", quotechar='"')
         for row in rd:
             if row[0][0] == '#':
@@ -48,32 +44,62 @@ def get_cites_by_gene(gene2pubmed_tsv, cites_tsv):
             else:
                 genes_by_pmid[pmid] = set([gene_id])
 
-    # # Output the first element in genes_by_pmid
+    return genes_by_pmid
+
+def get_pmids_with_genes_in_timeframe(genes_by_pmid, pmid_dates_path):
+    """Return PMIDs in genes_by_pmid that were published in a timeframe
+
+    The timeframe is implied by data in the file at `pmid_dates_path`.
+    """
+    pmids = []
+
+    # This file has no headers so here's an example instead:
+    # 2021 34185482
+    with open(pmid_dates_path) as fd:
+        rd = csv.reader(fd, delimiter='\t')
+        for row in rd:
+            if row[0][0] == '#':
+                continue
+            pmid = str(row[1])
+            if pmid in genes_by_pmid:
+                pmids.append((pmid))
+
+    return pmids
+
+
+def get_cites_by_gene(organism, pmid_dates_path):
+    """Get citation counts for an organism's genes over a timeframe
+
+    Input:
+        organism: scientific name of species, hyphen-case (e.g. homo-sapiens)
+        pmid_dates_path: location of TSV containing daily cite counts
+    Output:
+        Count of citations for each gene ID.
+    """
+
+    # Get a map PubMed IDs (PMIDs) to gene IDs.
+    # These PMIDs represent publications that mention a gene in the organism.
+    genes_by_pmid  = get_genes_by_pmid(organism)
+
+    # Output the first element in genes_by_pmid
     print('genes_by_pmid')
     print(next(iter( genes_by_pmid.items() )) )
 
-    # Figure out which PMIDs in genes_by_pmid were published recently
-    pmids = []
-    # This file has no headers so here's an example instead:
-    # 2021 34185482
-    with open(cites_tsv) as fd:
-        rd = csv.reader(fd, delimiter='\t')
-        for row in rd:
-            if row[0][0] == '#' or len(row) < 2:
-                print('Short row' + str(row))
-                continue
-            pmid = str(row[1])
-            if pmid in genes_by_pmid.keys():
-                pmids.append((pmid))
+    # Get list of above PMIDs that were published in the dates of interest
+    pmids = get_pmids_with_genes_in_timeframe(genes_by_pmid, pmid_dates_path)
 
-    # Output the first element in the pmids variable
     if len(pmids) > 0:
+        # Output the first element in the pmids variable
         print('pmids[0]')
         print(pmids[0])
     else:
-        print("No PubMed matches -- try increasing the date range.") # todo: refactor - handle empty array gracefully
+        print(
+            f"No publications in PubMed cited genes from {organism} in the " +
+            f"period implied by data in {pmid_dates_path}.  "
+            f"Try increasing the `timeframe_days` value in `citations.py`."
+        )
 
-    # Reverse genes_by_pmid so that we have a mapping of gene_id to pmid
+    # Invert genes_by_pmid, and only include PMIDS in timeframe
     pmids_by_gene = {}
     for pmid in pmids:
         gene_set = genes_by_pmid[pmid]
@@ -84,24 +110,21 @@ def get_cites_by_gene(gene2pubmed_tsv, cites_tsv):
             else:
                 pmids_by_gene[gene_id] = set(pmid)
 
-    # Dict mapping gene_id to PMID citation count
+    # Collapse list of PMIDs to count of PMIDs (citation counts, "cites")
     cites_by_gene = {}
     for gene_id in pmids_by_gene:
         cites_by_gene[gene_id] = len(pmids_by_gene[gene_id])
 
     # Output the first element in the cites variable
-    print('len(cites_by_gene.items())')
-    print(len(cites_by_gene.items()))
     print('cites[0]')
     print( next(iter( cites_by_gene.items() )) )
 
     return cites_by_gene
 
 def rank_counts(counts_by_key):
-    """
-    Ranks a particular key in the dict
+    """Rank keys in a dict by integer count values
 
-    For ties, if there are 7 ties for the highest count, then all 7 keys
+    If there are 7 ties for the highest count, then all 7 keys
     (e.g. genes) are rank #1. The next highest key gets rank #8.
     """
     # First get `count`s and number of times that `count` appears
@@ -129,10 +152,11 @@ def rank_counts(counts_by_key):
 
     return ranks_by_key
 
-def enrich_gene_info(gene_info_file, cites_by_gene, prev_cites_by_gene, cite_ranks, prev_cite_ranks):
+def enrich_genes(organism, cites_by_gene, prev_cites_by_gene, cite_ranks, prev_cite_ranks):
+    """Combine genomic data and citation data
     """
-    Gets a list of the gene information per gene
-    """
+
+    gene_info_path = data_dir + organism + "/gene_info"
 
     # Needed to calculate rank delta for unranked items
     last_rank = int(max(cite_ranks.values())) + 1
@@ -144,17 +168,20 @@ def enrich_gene_info(gene_info_file, cites_by_gene, prev_cites_by_gene, cite_ran
     # File header and example data row:
         # #tax_id GeneID  Symbol  LocusTag        Synonyms        dbXrefs chromosome      map_location    description     type_of_gene    Symbol_from_nomenclature_authority      Full_name_from_nomenclature_authority   Nomenclature_status     Other_designations      Modification_date       Feature_type
         # 9606    59272   ACE2    -       ACEH    MIM:300335|HGNC:HGNC:13557|Ensembl:ENSG00000130234      X       Xp22.2  angiotensin converting enzyme 2 protein-coding  ACE2    angiotensin converting enzyme 2 O       angiotensin-converting enzyme 2|ACE-related carboxypeptidase|angiotensin I converting enzyme (peptidyl-dipeptidase A) 2|angiotensin I converting enzyme 2|angiotensin-converting enzyme homolog|angiotensin-converting enzyme-related carboxypeptidase|metalloprotease MPROT15|peptidyl-dipeptidase A|truncated angiotensin converting enzyme 2 20210711        -
-    with open(gene_info_file) as fd:
+    with open(gene_info_path) as fd:
         rd = csv.reader(fd, delimiter='\t')
         for row in rd:
             if row[0][0] == '#':
                 continue
 
+            # Genomic data, from gene_info_file
             gene_id = str(row[1])
             taxid = str(row[0])
             symbol = str(row[2])
             chromosome = str(row[6])
             full_name = str(row[8])
+
+            # Citation data
             cites = cites_by_gene.get(gene_id, 0)
             prev_cites = prev_cites_by_gene.get(gene_id, 0)
             cite_delta = cites - prev_cites
@@ -179,8 +206,7 @@ def enrich_gene_info(gene_info_file, cites_by_gene, prev_cites_by_gene, cite_ran
     return gene_info_by_symbol
 
 def extract_value_from_unparsed_string(unparsed_string, key):
-    """
-    Extracts the value from an unparsed string
+    """Extract the value from an unparsed string
 
     key example: "gene_id"
     """
@@ -189,8 +215,7 @@ def extract_value_from_unparsed_string(unparsed_string, key):
     return unparsed_string[start_index:end_index]
 
 def get_ref_gene(organism, gene_info_by_symbol):
-    """
-    Gets a list of the gene reference information per gene.
+    """Get reference genomic data for each gene
     """
 
     # Iterate files in the species directory
@@ -204,7 +229,7 @@ def get_ref_gene(organism, gene_info_by_symbol):
             continue
 
         # Add gene's reference information to the list created from
-        # enrich_gene_info per gene and saving it to the refGene variable
+        # enrich_genes per gene and saving it to the refGene variable
         # This file has no headers so here's an example instead:
         #chr6    refGene transcript      26086290        26091034        .       -       .       gene_id "LOC108783645"; transcript_id "NR_144383";  gene_name "LOC108783645";
         # which parses to:
@@ -267,46 +292,37 @@ def get_ref_gene(organism, gene_info_by_symbol):
     return ref_gene
 
 def sort_and_list_genes(ref_gene):
-    """
-    Returns a list of the genes in order of cite count, starting with the largest first
+    """Return list of genes ordered by cite count; most cited gene first
     """
 
-    # Get the list of the top ten most cited genes from the list created from get_ref_gene
+    # Get list of the top ten most cited genes from the list created from get_ref_gene
     sorted_genes_list = sorted(ref_gene.items(), key=lambda x: x[1]['cite_delta'], reverse=True)
 
-    print("Gene with the greatest positive cite delta: " + str(sorted_genes_list[0]))
+    print("Gene with greatest positive cite delta: " + str(sorted_genes_list[0]))
 
     return sorted_genes_list
 
-def create_tsv_for_genes(sorted_genes_list, org_name, timeframe_days):
+def enrich_genescites_summary(sorted_genes_list, organism, timeframe_days):
+    """Write TSV file that combines bibliometrics and genomic data
     """
-    Creates TSVs containing gene information
-    """
+    output_path= f'data/{organism}-pubmed-citations.tsv'
 
-    # Simplify organism name to ease use as file name
-    safe_org_name = org_name.replace(" ", "-").replace("(", "-").replace(")", "-").replace("/", "-").replace("=", "-").lower()
+    # Create TSV file
+    with open(output_path, 'wt') as f:
+        tsv_writer = csv.writer(f, delimiter='\t')
 
-    print(safe_org_name)
-
-    # Create the TSV name that contains the gene_species_name variable
-    tsv_name= f'data/{safe_org_name}-citation-information.tsv'
-
-    # Create the TSV
-    with open(tsv_name, 'wt') as out_file:
-        tsv_writer = csv.writer(out_file, delimiter='\t')
-
-        # Add the header row to the TSV
+        # Add header row to the TSV
         tsv_writer.writerow([
             "gene_symbol", "chromosome", "start", "length", "color",
             "full_name", "days_in_timeframe",
             "cites",
             "prev_cites",
-            "citation_delta",
+            "cite_delta",
             "cite_rank",
             "prev_cite_rank",
             "rank_delta"])
 
-        # Go through each gene in the sorted_genes_list
+        # Write a row in the TSV for each gene in the sorted list
         for gene in sorted_genes_list:
             # Add the gene information to the TSV
             symbol = gene[0]
@@ -334,52 +350,42 @@ def create_tsv_for_genes(sorted_genes_list, org_name, timeframe_days):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage=usage)
     parser.add_argument(
-        'citation_tsv',
-        metavar='citation_tsv',
-        type=str,
-        help='Path to file containing citation counts over timeframe'
+        'pmid_dates_path',
+        help='Path to file containing citation counts over time'
     )
     parser.add_argument(
-        'prev_citation_tsv',
-        metavar='prev_citation_tsv',
-        type=str,
+        'prev_pmid_dates_path',
         help='Path to file containing citation counts over previous timeframe'
     )
     parser.add_argument(
         'timeframe_days',
-        metavar='timeframe_days',
         type=int,
         help='Days in the timeframe'
     )
     args = parser.parse_args()
+    pmid_dates_path = args.pmid_dates_path
+    prev_pmid_dates_path = args.prev_pmid_dates_path
 
     for org_array in organisms:
         organism = org_array[0]
         print(organism)
 
-        org_dir = data_dir + organism
-
-        cites_by_gene = get_cites_by_gene(f"{org_dir}/gene2pubmed", args.citation_tsv)
-        prev_cites_by_gene = get_cites_by_gene(
-            f"{org_dir}/gene2pubmed",
-            args.prev_citation_tsv
-        )
+        cites_by_gene = get_cites_by_gene(organism, pmid_dates_path)
+        prev_cites_by_gene = get_cites_by_gene(organism, prev_pmid_dates_path)
 
         cite_rank = rank_counts(cites_by_gene)
         prev_cite_rank = rank_counts(cites_by_gene)
 
-        gene_info = enrich_gene_info(
-            f"{org_dir}/gene_info",
+        enriched_genes = enrich_genes(
+            organism,
             cites_by_gene,
             prev_cites_by_gene,
             cite_rank,
             prev_cite_rank
         )
 
-        scientific_name = organism
-
-        ref_gene = get_ref_gene(organism, gene_info)
+        ref_gene = get_ref_gene(organism, enriched_genes)
 
         sorted_genes_list = sort_and_list_genes(ref_gene)
 
-        create_tsv_for_genes(sorted_genes_list, scientific_name, args.timeframe_days)
+        enrich_genescites_summary(sorted_genes_list, organism, args.timeframe_days)
