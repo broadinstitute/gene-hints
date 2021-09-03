@@ -9,13 +9,7 @@ import os
 import csv
 import argparse
 
-organisms = [
-    ["homo-sapiens", "9606", "hg38"], # human
-    ["mus-musculus", "10090", "mm39"], # mouse
-    ["rattus-norvegicus", "10116", "rn6"], # rat
-    ["canis-lupus-familiaris", "9615", "canFam5"], # dog
-    ["felis-catus", "9685", "felCat9"], # cat
-]
+from citations import read_organisms
 
 cites_dir = './pubmed_citations/'
 data_dir = cites_dir + 'data/'
@@ -365,8 +359,10 @@ if __name__ == "__main__":
     pmid_dates_path = args.pmid_dates_path
     prev_pmid_dates_path = args.prev_pmid_dates_path
 
-    for org_array in organisms:
-        organism = org_array[0]
+    organisms = read_organisms()
+
+    for org in organisms:
+        organism = org["scientific_name"]
         print(organism)
 
         cites_by_gene = get_cites_by_gene(organism, pmid_dates_path)

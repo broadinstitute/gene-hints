@@ -117,87 +117,90 @@ def split_ncbi_file_by_org(input_path, output_filename):
             with open(data_dir + org + "/" + output_filename, "w") as f:
                 f.write("\n".join(lines))
 
+
 cites_dir = './pubmed_citations/'
 data_dir = cites_dir + 'data/'
 tmp_dir = data_dir + 'tmp/'
 
-# Make tmp_dir, and thereby also the other dirs
-if not os.path.exists(tmp_dir):
-    os.makedirs(tmp_dir)
+if __name__ == "__main__":
 
-now = datetime.now(timezone.utc)
+    # Make tmp_dir, and thereby also the other dirs
+    if not os.path.exists(tmp_dir):
+        os.makedirs(tmp_dir)
 
-days_in_timeframe_doubled = days_in_timeframe * 2
+    now = datetime.now(timezone.utc)
 
-start_date = format_date(days_in_timeframe) # E.g. 60 days ago
-end_date = format_date() # Today
-prev_start_date = format_date(days_in_timeframe * 2) # E.g. 120 days ago
-prev_end_date = start_date # E.g. 60 days ago
+    days_in_timeframe_doubled = days_in_timeframe * 2
 
-output_dir = tmp_dir + "timeframe"
-prev_output_dir= tmp_dir + "prev_timeframe"
+    start_date = format_date(days_in_timeframe) # E.g. 60 days ago
+    end_date = format_date() # Today
+    prev_start_date = format_date(days_in_timeframe * 2) # E.g. 120 days ago
+    prev_end_date = start_date # E.g. 60 days ago
 
-# TODO: Enable code below to be imported as Python module
-command = f"python3 creating_citation_counts_tsv/scripts/pmids_by_date.py --start-date {start_date} --end-date {end_date} --output-dir {output_dir}"
-print(command)
-subprocess.run(command.split())
-command = f"python3 creating_citation_counts_tsv/scripts/pmids_by_date.py --start-date {prev_start_date} --end-date {prev_end_date} --output-dir {prev_output_dir}"
-print(command)
-subprocess.run(command.split())
+    output_dir = tmp_dir + "timeframe"
+    prev_output_dir= tmp_dir + "prev_timeframe"
 
-# Consolidate the publications from each day into one complete list
-pmid_dates_path = data_dir + "pmid_dates.tsv"
-prev_pmid_dates_path = data_dir + "prev_pmid_dates.tsv"
+    # TODO: Enable code below to be imported as Python module
+    command = f"python3 creating_citation_counts_tsv/scripts/pmids_by_date.py --start-date {start_date} --end-date {end_date} --output-dir {output_dir}"
+    print(command)
+    subprocess.run(command.split())
+    command = f"python3 creating_citation_counts_tsv/scripts/pmids_by_date.py --start-date {prev_start_date} --end-date {prev_end_date} --output-dir {prev_output_dir}"
+    print(command)
+    subprocess.run(command.split())
 
-print("Combine daily publication counts")
-combine_daily_pmids(pmid_dates_path, output_dir)
-combine_daily_pmids(prev_pmid_dates_path, prev_output_dir)
+    # Consolidate the publications from each day into one complete list
+    pmid_dates_path = data_dir + "pmid_dates.tsv"
+    prev_pmid_dates_path = data_dir + "prev_pmid_dates.tsv"
 
-organisms = read_organisms()
+    print("Combine daily publication counts")
+    combine_daily_pmids(pmid_dates_path, output_dir)
+    combine_daily_pmids(prev_pmid_dates_path, prev_output_dir)
 
-for org in organisms:
-    dir = data_dir + org["scientific_name"]
-    if not os.path.exists(dir):
-        os.makedirs(dir)
+    organisms = read_organisms()
 
-print("Download gene2pubmed")
-url = "https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2pubmed.gz"
-output_filename = "gene2pubmed"
-output_path = data_dir + output_filename
-download_gzip(url, output_path)
+    for org in organisms:
+        dir = data_dir + org["scientific_name"]
+        if not os.path.exists(dir):
+            os.makedirs(dir)
 
-print("Split gene2pubmed by organism")
-split_ncbi_file_by_org(output_path, output_filename)
-
-print("Download UCSC genome annotations for each organism")
-for org in organisms:
-    org_name = org["scientific_name"]
-    taxid = org["taxid"]
-    asm_ucsc_name = org["genome_assembly_ucsc_name"]
-
-    # Construct parameters for fetching UCSC genome annotation files,
-    # e.g. https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz
-    base_url = "https://hgdownload.soe.ucsc.edu/goldenPath/"
-    leaf = "refGene.gtf"
-    if org_name in ["homo-sapiens", "rattus-norvegicus", "felis-catus"]:
-        leaf = asm_ucsc_name + "." + leaf
-    url = base_url + asm_ucsc_name + "/bigZips/genes/" + leaf + ".gz"
-    output_path = data_dir + org_name + "/" + leaf
-
+    print("Download gene2pubmed")
+    url = "https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2pubmed.gz"
+    output_filename = "gene2pubmed"
+    output_path = data_dir + output_filename
     download_gzip(url, output_path)
 
-print("Download gene_info")
-url = "https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz"
-output_filename = "gene_info"
-output_path = data_dir + output_filename
-download_gzip(url, output_path)
+    print("Split gene2pubmed by organism")
+    split_ncbi_file_by_org(output_path, output_filename)
 
-print("Split gene_info by organism")
-split_ncbi_file_by_org(output_path, output_filename)
+    print("Download UCSC genome annotations for each organism")
+    for org in organisms:
+        org_name = org["scientific_name"]
+        taxid = org["taxid"]
+        asm_ucsc_name = org["genome_assembly_ucsc_name"]
 
-# Lastly create the TSV with the total citations per gene along with the gene's information
-# TODO: Enable code below to be imported as Python module
-command = f"python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py {pmid_dates_path} {prev_pmid_dates_path} {days_in_timeframe}"
-print(command)
-subprocess.run(command.split(" "))
+        # Construct parameters for fetching UCSC genome annotation files,
+        # e.g. https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz
+        base_url = "https://hgdownload.soe.ucsc.edu/goldenPath/"
+        leaf = "refGene.gtf"
+        if org_name in ["homo-sapiens", "rattus-norvegicus", "felis-catus"]:
+            leaf = asm_ucsc_name + "." + leaf
+        url = base_url + asm_ucsc_name + "/bigZips/genes/" + leaf + ".gz"
+        output_path = data_dir + org_name + "/" + leaf
+
+        download_gzip(url, output_path)
+
+    print("Download gene_info")
+    url = "https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz"
+    output_filename = "gene_info"
+    output_path = data_dir + output_filename
+    download_gzip(url, output_path)
+
+    print("Split gene_info by organism")
+    split_ncbi_file_by_org(output_path, output_filename)
+
+    # Lastly create the TSV with the total citations per gene along with the gene's information
+    # TODO: Enable code below to be imported as Python module
+    command = f"python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py {pmid_dates_path} {prev_pmid_dates_path} {days_in_timeframe}"
+    print(command)
+    subprocess.run(command.split(" "))
 
