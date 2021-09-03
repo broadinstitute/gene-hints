@@ -1,5 +1,6 @@
-"""
-Create TSVs containing the most-cited genes per species and their gene information.
+"""Combine genomic and citation data, compute statistics, and write to TSV
+
+Inspired by https://github.com/pkerpedjiev/gene-citation-counts
 """
 usage = """
     python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py ${pmid_times_path} ${prev_pmid_times_path} $days_in_timeframe
@@ -295,7 +296,7 @@ def sort_and_list_genes(ref_gene):
 
     return sorted_genes_list
 
-def enrich_genescites_summary(sorted_genes_list, organism, timeframe_days):
+def write_summary(sorted_genes_list, organism, timeframe_days):
     """Write TSV file that combines bibliometrics and genomic data
     """
     output_path= f'data/{organism}-pubmed-citations.tsv'
@@ -383,4 +384,4 @@ if __name__ == "__main__":
 
         sorted_genes_list = sort_and_list_genes(ref_gene)
 
-        enrich_genescites_summary(sorted_genes_list, organism, args.timeframe_days)
+        write_summary(sorted_genes_list, organism, args.timeframe_days)
