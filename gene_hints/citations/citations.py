@@ -15,44 +15,40 @@ import subprocess
 from time import perf_counter
 import glob
 
-days_in_timeframe = 360
+days_in_timeframe = 5
 
-# TODO:
-#   * Pull these values from NCBI EUtils API instead of hard-coding
-#       - Do not pull down entire NCBI Taxonomy DB.  It's much too big for
-#         this use case, slowing and complicating development.
-#   * Make `organism` a CLI parameter
-#
-# Arrays below have form:
-#   * scientific name, in hypen-case
-#   * taxid ("NCBI Taxonomy ID")
-#   * asm_ucsc_name (genome assembly's name according to UCSC)
-organisms = [
-    ["homo-sapiens", "9606", "hg38"], # human
-    ["mus-musculus", "10090", "mm39"], # mouse
-    ["rattus-norvegicus", "10116", "rn6"], # rat
-    ["canis-lupus-familiaris", "9615", "canFam5"], # dog
-    ["felis-catus", "9685", "felCat9"], # cat
-]
+def read_organisms():
+    """Read organisms TSV and parse taxon / species data
 
-org_names_by_taxid = {}
-for org_array in organisms:
-    taxid = org_array[1]
-    name = org_array[0]
-    org_names_by_taxid[taxid] = name
+    TODO:
+    * Pull these values from NCBI EUtils API instead of hard-coding
+        - Do not pull down entire NCBI Taxonomy DB.  It's much too big for
+            this use case, slowing and complicating development.
 
-# First install
-# pip3 install -r creating_citation_counts_tsv/requirements.txt
+    * Make `organisms` a CLI parameter
+    """
+    organisms = []
 
-cites_dir = './pubmed_citations/'
-data_dir = cites_dir + 'data/'
-tmp_dir = data_dir + 'tmp/'
+    with open("./organisms.tsv") as f:
+        rd = csv.reader(f, delimiter="\t")
+        for row in rd:
+            if len(row) == 0 or row[0][0] == '#':
+                continue
 
-# Make tmp_dir, and thereby also the other dirs
-if not os.path.exists(tmp_dir):
-    os.makedirs(tmp_dir)
+            # Convert e.g. "Homo sapiens" to machine-friendlier "homo-sapiens"
+            name = row[1]
+            name = name.lower().replace(' ', '-')
 
-now = datetime.now(timezone.utc)
+            organism = {
+                "common_name": row[0], # e.g. human
+                "scientific_name": name, # e.g. homo-sapiens (see note above)
+                "taxid": row[2], # e.g. 9606 ("NCBI Taxonomy ID")
+                "genome_assembly_ucsc_name": row[3] # e.g. hg38
+            }
+
+            organisms.append(organism)
+
+    return organisms
 
 def format_date(days_before=None):
     now = datetime.now(timezone.utc)
@@ -62,7 +58,7 @@ def format_date(days_before=None):
         return now.strftime("%Y/%m/%d")
 
 def combine_daily_pmids(output_path, daily_pmid_dir):
-    """ Ease processing by collapsing per-day files into one file
+    """Aggregate per-day files into one file, to ease downstream processing
     """
     pmids = []
 
@@ -94,10 +90,16 @@ def download_gzip(url, output_path):
         f.write(content)
 
 def split_ncbi_file_by_org(input_path, output_filename):
-    """Splits a multi-organism file from NCBI into organism-specific files
+    """Split a multi-organism file from NCBI into organism-specific files
 
     Input file must be a TSV file with taxid as first column
     """
+    org_names_by_taxid = {}
+    for org in organisms:
+        taxid = org["taxid"]
+        name = org["scientific_name"]
+        org_names_by_taxid[taxid] = name
+
     with open(input_path, 'r') as f:
         lines_by_org = {}
         for line in f:
@@ -114,6 +116,16 @@ def split_ncbi_file_by_org(input_path, output_filename):
             lines = lines_by_org[org]
             with open(data_dir + org + "/" + output_filename, "w") as f:
                 f.write("\n".join(lines))
+
+cites_dir = './pubmed_citations/'
+data_dir = cites_dir + 'data/'
+tmp_dir = data_dir + 'tmp/'
+
+# Make tmp_dir, and thereby also the other dirs
+if not os.path.exists(tmp_dir):
+    os.makedirs(tmp_dir)
+
+now = datetime.now(timezone.utc)
 
 days_in_timeframe_doubled = days_in_timeframe * 2
 
@@ -137,21 +149,14 @@ subprocess.run(command.split())
 pmid_dates_path = data_dir + "pmid_dates.tsv"
 prev_pmid_dates_path = data_dir + "prev_pmid_dates.tsv"
 
-# Clean up any existing files
-# os.remove(pmid_dates_path)
-# os.remove(prev_pmid_dates_path)
-
 print("Combine daily publication counts")
 combine_daily_pmids(pmid_dates_path, output_dir)
 combine_daily_pmids(prev_pmid_dates_path, prev_output_dir)
 
-# Remove tmp to save space
-#rm -rf creating_citation_counts_tsv/data/tmp
+organisms = read_organisms()
 
-for organism in organisms:
-    scientific_name = organism[0]
-    taxid = organism[1]
-    dir = data_dir + scientific_name
+for org in organisms:
+    dir = data_dir + org["scientific_name"]
     if not os.path.exists(dir):
         os.makedirs(dir)
 
@@ -165,8 +170,10 @@ print("Split gene2pubmed by organism")
 split_ncbi_file_by_org(output_path, output_filename)
 
 print("Download UCSC genome annotations for each organism")
-for org_array in organisms:
-    [org_name, taxid, asm_ucsc_name] = org_array
+for org in organisms:
+    org_name = org["scientific_name"]
+    taxid = org["taxid"]
+    asm_ucsc_name = org["genome_assembly_ucsc_name"]
 
     # Construct parameters for fetching UCSC genome annotation files,
     # e.g. https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz

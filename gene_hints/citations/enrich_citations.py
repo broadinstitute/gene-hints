@@ -31,8 +31,8 @@ def get_genes_by_pmid(organism):
         # #tax_id GeneID  pmid
         # 9606    9       9173883
     print(gene2pubmed_path)
-    with open(gene2pubmed_path) as fd:
-        rd = csv.reader(fd, delimiter="\t", quotechar='"')
+    with open(gene2pubmed_path) as f:
+        rd = csv.reader(f, delimiter="\t", quotechar='"')
         for row in rd:
             if row[0][0] == '#':
                 continue
@@ -66,7 +66,6 @@ def get_pmids_with_genes_in_timeframe(genes_by_pmid, pmid_dates_path):
 
     return pmids
 
-
 def get_cites_by_gene(organism, pmid_dates_path):
     """Get citation counts for an organism's genes over a timeframe
 
@@ -99,7 +98,7 @@ def get_cites_by_gene(organism, pmid_dates_path):
             f"Try increasing the `timeframe_days` value in `citations.py`."
         )
 
-    # Invert genes_by_pmid, and only include PMIDS in timeframe
+    # Invert genes_by_pmid, and only include PMIDs in timeframe
     pmids_by_gene = {}
     for pmid in pmids:
         gene_set = genes_by_pmid[pmid]
