@@ -2,6 +2,7 @@
 
 Inspired by https://github.com/pkerpedjiev/gene-citation-counts
 """
+
 usage = """
     python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py ${pmid_times_path} ${prev_pmid_times_path} $days_in_timeframe
     """
