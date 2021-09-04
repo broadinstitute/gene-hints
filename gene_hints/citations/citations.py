@@ -12,7 +12,6 @@ import gzip
 import os
 import requests
 import subprocess
-from time import perf_counter
 import glob
 
 days_in_timeframe = 5
@@ -200,7 +199,7 @@ if __name__ == "__main__":
 
     # Lastly create the TSV with the total citations per gene along with the gene's information
     # TODO: Enable code below to be imported as Python module
-    command = f"python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py {pmid_dates_path} {prev_pmid_dates_path} {days_in_timeframe}"
+    command = f"python3 creating_citation_counts_tsv/scripts/enrich_citations.py {pmid_dates_path} {prev_pmid_dates_path} {days_in_timeframe}"
     print(command)
     subprocess.run(command.split(" "))
 

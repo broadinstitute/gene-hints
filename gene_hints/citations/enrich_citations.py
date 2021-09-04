@@ -4,7 +4,7 @@ Inspired by https://github.com/pkerpedjiev/gene-citation-counts
 """
 
 usage = """
-    python3 creating_citation_counts_tsv/scripts/summarize_gene_citations_all_species.py ${pmid_times_path} ${prev_pmid_times_path} $days_in_timeframe
+    python3 creating_citation_counts_tsv/scripts/enrich_citations.py ${pmid_times_path} ${prev_pmid_times_path} $days_in_timeframe
     """
 
 import os
@@ -77,8 +77,8 @@ def get_cites_by_gene(organism, pmid_dates_path):
     genes_by_pmid  = get_genes_by_pmid(organism)
 
     # Output the first element in genes_by_pmid
-    print('genes_by_pmid')
-    print(next(iter( genes_by_pmid.items() )) )
+    print('Number of genes in first PMID in genes_by_pmid')
+    print(len(list(list(genes_by_pmid.items())[0][1])))
 
     # Get list of above PMIDs that were published in the dates of interest
     pmids = get_pmids_with_genes_in_timeframe(genes_by_pmid, pmid_dates_path)
@@ -87,12 +87,6 @@ def get_cites_by_gene(organism, pmid_dates_path):
         # Output the first element in the pmids variable
         print('pmids[0]')
         print(pmids[0])
-    else:
-        print(
-            f"No publications in PubMed cited genes from {organism} in the " +
-            f"period implied by data in {pmid_dates_path}.  "
-            f"Try increasing the `timeframe_days` value in `citations.py`."
-        )
 
     # Invert genes_by_pmid, and only include PMIDs in timeframe
     pmids_by_gene = {}
@@ -110,9 +104,11 @@ def get_cites_by_gene(organism, pmid_dates_path):
     for gene_id in pmids_by_gene:
         cites_by_gene[gene_id] = len(pmids_by_gene[gene_id])
 
+    cites = cites_by_gene.items()
     # Output the first element in the cites variable
-    print('cites[0]')
-    print( next(iter( cites_by_gene.items() )) )
+    if (len(list(cites))) > 0:
+        print('cites[0]')
+        print( next(iter( cites )) )
 
     return cites_by_gene
 
@@ -159,7 +155,7 @@ def enrich_genes(organism, cites_by_gene, prev_cites_by_gene, cite_ranks, prev_c
 
     # Add gene's information to the list created from get_cite
     # per gene and save it to the gene_info variable
-    gene_info_by_symbol = {}
+    enriched_genes = {}
     # File header and example data row:
         # #tax_id GeneID  Symbol  LocusTag        Synonyms        dbXrefs chromosome      map_location    description     type_of_gene    Symbol_from_nomenclature_authority      Full_name_from_nomenclature_authority   Nomenclature_status     Other_designations      Modification_date       Feature_type
         # 9606    59272   ACE2    -       ACEH    MIM:300335|HGNC:HGNC:13557|Ensembl:ENSG00000130234      X       Xp22.2  angiotensin converting enzyme 2 protein-coding  ACE2    angiotensin converting enzyme 2 O       angiotensin-converting enzyme 2|ACE-related carboxypeptidase|angiotensin I converting enzyme (peptidyl-dipeptidase A) 2|angiotensin I converting enzyme 2|angiotensin-converting enzyme homolog|angiotensin-converting enzyme-related carboxypeptidase|metalloprotease MPROT15|peptidyl-dipeptidase A|truncated angiotensin converting enzyme 2 20210711        -
@@ -171,10 +167,16 @@ def enrich_genes(organism, cites_by_gene, prev_cites_by_gene, cite_ranks, prev_c
 
             # Genomic data, from gene_info_file
             gene_id = str(row[1])
-            taxid = str(row[0])
             symbol = str(row[2])
             chromosome = str(row[6])
             full_name = str(row[8])
+
+            if (
+                gene_id not in cites_by_gene and
+                gene_id not in prev_cites_by_gene
+            ):
+                # If gene is uncited, skip it
+                continue
 
             # Citation data
             cites = cites_by_gene.get(gene_id, 0)
@@ -182,9 +184,9 @@ def enrich_genes(organism, cites_by_gene, prev_cites_by_gene, cite_ranks, prev_c
             cite_delta = cites - prev_cites
             cite_rank = cite_ranks.get(gene_id, last_rank)
             prev_cite_rank = prev_cite_ranks.get(gene_id, prev_last_rank)
-            rank_delta = cite_rank - prev_cite_rank
+            cite_rank_delta = cite_rank - prev_cite_rank
 
-            gene_info_by_symbol[symbol] = {
+            enriched_genes[symbol] = {
                 "symbol": symbol,
                 "gene_id": gene_id,
                 "chromosome": chromosome,
@@ -192,30 +194,26 @@ def enrich_genes(organism, cites_by_gene, prev_cites_by_gene, cite_ranks, prev_c
                 "cites": cites,
                 "prev_cites": prev_cites,
                 "cite_delta": cite_delta,
-                "taxid": taxid,
                 "cite_rank": cite_rank,
                 "prev_cite_rank": prev_cite_rank,
-                "rank_delta": rank_delta
+                "cite_rank_delta": cite_rank_delta
             }
 
-    return gene_info_by_symbol
+    return enriched_genes
 
-def extract_value_from_unparsed_string(unparsed_string, key):
-    """Extract the value from an unparsed string
+def parse_gtf_info_key(gtf_info, key):
+    """Extract value from an unparsed GTF "info" string
 
     key example: "gene_id"
     """
-    start_index = unparsed_string.find(key) + len(key + ' "')
-    end_index = unparsed_string[start_index:].find('"') + start_index
-    return unparsed_string[start_index:end_index]
+    start_index = gtf_info.find(key) + len(key + ' "')
+    end_index = gtf_info[start_index:].find('"') + start_index
+    return gtf_info[start_index:end_index]
 
-def get_ref_gene(organism, gene_info_by_symbol):
-    """Get reference genomic data for each gene
+def add_coordinates(organism, genes_by_symbol):
+    """Add genomic coordinates for each gene
     """
 
-    # Iterate files in the species directory
-    ref_gene = {}
-    print('data_dir + organism', data_dir + organism)
     for file in os.listdir(data_dir + organism):
         # Since the reference file is uniquely named and could not be
         # hard-coded, this will filter out files that are not .gtf files to
@@ -223,8 +221,6 @@ def get_ref_gene(organism, gene_info_by_symbol):
         if not file.endswith(".gtf"):
             continue
 
-        # Add gene's reference information to the list created from
-        # enrich_genes per gene and saving it to the refGene variable
         # This file has no headers so here's an example instead:
         #chr6    refGene transcript      26086290        26091034        .       -       .       gene_id "LOC108783645"; transcript_id "NR_144383";  gene_name "LOC108783645";
         # which parses to:
@@ -236,71 +232,47 @@ def get_ref_gene(organism, gene_info_by_symbol):
                 # File lacks column headers so these are guesses based on the data
                 # E.g.: transcript, exon, 3utr, cds ...
                 type = str(row[2])
-                details = str(row[8])
                 if type != "transcript":
                     continue
 
-                gene_symbol = extract_value_from_unparsed_string(details, "gene_id")
+                info = str(row[8])
+                symbol = parse_gtf_info_key(info, "gene_id")
+                if symbol not in genes_by_symbol:
+                    # print('symbol not in genes_by_symbol', symbol)
+                    continue
                 start_coordinate = int(row[3])
                 end_coordinate = int(row[4])
                 coordinate_length = abs(end_coordinate - start_coordinate)
-                color = "#73af42"
 
-                if gene_symbol in gene_info_by_symbol.keys():
-                    gene_info = gene_info_by_symbol[gene_symbol]
-                    chromosome = gene_info["chromosome"]
-                    full_name = gene_info["full_name"]
-                    cites = gene_info["cites"]
-                    prev_cites = gene_info["prev_cites"]
-                    cite_delta = gene_info["cite_delta"]
-                    cite_rank = gene_info["cite_rank"]
-                    prev_cite_rank = gene_info["prev_cite_rank"]
-                    rank_delta = gene_info["rank_delta"]
-                else:
-                    chromosome = ""
-                    full_name = ""
-                    cites = 0
-                    prev_cites = 0
-                    cite_delta = 0
-                    cite_rank = -1
-                    prev_cite_rank = -1
-                    rank_delta = -1
-
-                ref_gene[gene_symbol] = {
-                    "chromosome": chromosome,
+                genes_by_symbol[symbol].update({
                     "start_coordinate": start_coordinate,
                     "coordinate_length": coordinate_length,
-                    "color": color,
-                    "full_name": full_name,
-                    "cites": cites,
-                    "prev_cites": prev_cites,
-                    "cite_delta": cite_delta,
-                    "cite_rank": cite_rank,
-                    "prev_cite_rank": prev_cite_rank,
-                    "rank_delta": rank_delta
-                }
+                })
 
     # Print ref_gene variable
-    print('ref_gene')
-    print( next(iter( ref_gene.items() )) )
+    print('genes_by_symbol with coordinates')
+    print( next(iter( genes_by_symbol.items() )) )
 
-    return ref_gene
+    return genes_by_symbol
 
-def sort_and_list_genes(ref_gene):
-    """Return list of genes ordered by cite count; most cited gene first
+def sort_genes(gene_dict, key):
+    """Return list of genes ordered by key, in descending order
     """
+    sorted_genes = sorted(
+        gene_dict.items(), key=lambda x: x[1][key],
+        reverse=True
+    )
 
-    # Get list of the top ten most cited genes from the list created from get_ref_gene
-    sorted_genes_list = sorted(ref_gene.items(), key=lambda x: x[1]['cite_delta'], reverse=True)
+    print(f"Gene with highest {key}: {str(sorted_genes[0])}")
 
-    print("Gene with greatest positive cite delta: " + str(sorted_genes_list[0]))
-
-    return sorted_genes_list
+    return sorted_genes
 
 def write_summary(sorted_genes_list, organism, timeframe_days):
     """Write TSV file that combines bibliometrics and genomic data
     """
     output_path= f'data/{organism}-pubmed-citations.tsv'
+
+    no_coordinates = []
 
     # Create TSV file
     with open(output_path, 'wt') as f:
@@ -315,31 +287,40 @@ def write_summary(sorted_genes_list, organism, timeframe_days):
             "cite_delta",
             "cite_rank",
             "prev_cite_rank",
-            "rank_delta"])
+            "cite_rank_delta"])
 
         # Write a row in the TSV for each gene in the sorted list
         for gene in sorted_genes_list:
             # Add the gene information to the TSV
             symbol = gene[0]
             chromosome = gene[1]["chromosome"]
-            start = gene[1]["start_coordinate"]
-            length = gene[1]["coordinate_length"]
-            color = gene[1]["color"]
+            # print('gene[1]', gene[1])
+            if "start_coordinate" in gene[1]:
+                start = gene[1]["start_coordinate"]
+                length = gene[1]["coordinate_length"]
+            else:
+                no_coordinates.append(symbol)
+                start = -1
+                length = -1
+            color = "#73af42"
             full_name = gene[1]["full_name"]
             cites = gene[1]["cites"]
             prev_cites = gene[1]["prev_cites"]
             cite_delta = gene[1]["cite_delta"]
             cite_rank = gene[1]["cite_rank"]
             prev_cite_rank = gene[1]["prev_cite_rank"]
-            rank_delta = gene[1]["rank_delta"]
+            cite_rank_delta = gene[1]["cite_rank_delta"]
             tsv_row_values = [
                 symbol, chromosome, start, length, color, full_name,
                 timeframe_days, cites, prev_cites,
                 cite_delta, cite_rank, prev_cite_rank,
-                rank_delta
+                cite_rank_delta
             ]
 
             tsv_writer.writerow(tsv_row_values)
+
+    num_missing = len(no_coordinates)
+    print(f"No genomic coordinates for {num_missing} genes: {no_coordinates}")
 
 # Main function
 if __name__ == "__main__":
@@ -360,6 +341,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     pmid_dates_path = args.pmid_dates_path
     prev_pmid_dates_path = args.prev_pmid_dates_path
+    timeframe_days = args.timeframe_days
 
     organisms = read_organisms()
 
@@ -370,10 +352,21 @@ if __name__ == "__main__":
         cites_by_gene = get_cites_by_gene(organism, pmid_dates_path)
         prev_cites_by_gene = get_cites_by_gene(organism, prev_pmid_dates_path)
 
+        if (
+            len(list(cites_by_gene)) == 0 and
+            len(list(prev_cites_by_gene)) == 0
+        ):
+            print(
+                f"No publications in PubMed cited genes from {organism} " +
+                f"in the last {timeframe_days} days.  " +
+                f"Try increasing the `timeframe_days` value in `citations.py`."
+            )
+            continue
+
         cite_rank = rank_counts(cites_by_gene)
         prev_cite_rank = rank_counts(cites_by_gene)
 
-        enriched_genes = enrich_genes(
+        enriched_genes_basic = enrich_genes(
             organism,
             cites_by_gene,
             prev_cites_by_gene,
@@ -381,8 +374,8 @@ if __name__ == "__main__":
             prev_cite_rank
         )
 
-        ref_gene = get_ref_gene(organism, enriched_genes)
+        enriched_genes = add_coordinates(organism, enriched_genes_basic)
 
-        sorted_genes_list = sort_and_list_genes(ref_gene)
+        sorted_genes_list = sort_genes(enriched_genes, "cite_delta")
 
-        write_summary(sorted_genes_list, organism, args.timeframe_days)
+        write_summary(sorted_genes_list, organism, timeframe_days)
