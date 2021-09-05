@@ -184,7 +184,9 @@ def enrich_genes(organism, cites_by_gene, prev_cites_by_gene, cite_ranks, prev_c
             cite_delta = cites - prev_cites
             cite_rank = cite_ranks.get(gene_id, last_rank)
             prev_cite_rank = prev_cite_ranks.get(gene_id, prev_last_rank)
-            cite_rank_delta = cite_rank - prev_cite_rank
+
+            # Rank 1 is highest, so order negative rank change higher
+            cite_rank_delta = prev_cite_rank - cite_rank
 
             enriched_genes[symbol] = {
                 "symbol": symbol,
@@ -378,7 +380,7 @@ def enrich_citations(pmid_dates_path, prev_pmid_dates_path, num_days):
             continue
 
         cite_rank = rank_counts(cites_by_gene)
-        prev_cite_rank = rank_counts(cites_by_gene)
+        prev_cite_rank = rank_counts(prev_cites_by_gene)
 
         enriched_genes = enrich_genes(
             organism,
@@ -390,7 +392,7 @@ def enrich_citations(pmid_dates_path, prev_pmid_dates_path, num_days):
 
         mapped_genes = add_coordinates(organism, enriched_genes)
 
-        cite_hints = sort_genes(mapped_genes, "cite_delta")
+        cite_hints = sort_genes(mapped_genes, "cite_rank_delta")
 
         write_summary(cite_hints, organism, num_days)
 
