@@ -266,16 +266,20 @@ def sort_genes(gene_dict, key):
 
     return sorted_genes
 
-def pretty_print_table(raw_rows, num_lines):
-    print(f"First {num_lines} lines:")
-    rows = raw_rows[:num_lines]
+def pretty_print_table(raw_rows, num_rows):
+    """Print rows with left-justified columns, for easy reading
+    """
+    print(f"First {num_rows} rows:")
+    rows = raw_rows[:num_rows]
+
+    # From https://stackoverflow.com/a/12065663
     widths = [max(map(len, col)) for col in zip(*rows)]
     for row in rows:
         print("  ".join((val.ljust(width) for val, width in zip(row, widths))))
 
 
 def write_summary(sorted_genes_list, organism, num_days):
-    """Write TSV file that combines bibliometrics and genomic data
+    """Write TSV file that combines citation and genomic data
     """
     output_path = f"data/{organism}-pubmed-citations.tsv"
 
@@ -283,46 +287,49 @@ def write_summary(sorted_genes_list, organism, num_days):
 
     rows = []
 
-    # Create TSV file
-    with open(output_path, 'wt') as f:
-        tsv_writer = csv.writer(f, delimiter='\t')
+    with open(output_path, "wt") as f:
+        tsv_writer = csv.writer(f, delimiter="\t")
 
         header = [
-            "# gene_symbol", "chromosome", "start", "length", "color",
+            "# gene_symbol",
+            "chromosome", "start", "length", "color",
             "full_name", "days_in_timeframe",
             "cites", "prev_cites", "cite_delta", "cite_rank",
-            "prev_cite_rank", "cite_rank_delta"
+            "prev_cite_rank", "cite_rank_delta", "gene_id",
         ]
         # Add header row to the TSV
         tsv_writer.writerow(header)
         rows.append(header)
 
         # Write a row in the TSV for each gene in the sorted list
-        for gene in sorted_genes_list:
+        for item in sorted_genes_list:
             # Add the gene information to the TSV
-            symbol = gene[0]
-            chromosome = gene[1]["chromosome"]
-            # print('gene[1]', gene[1])
-            if "start_coordinate" in gene[1]:
-                start = gene[1]["start_coordinate"]
-                length = gene[1]["coordinate_length"]
+            symbol = item[0]
+            gene = item[1]
+            gene_id = gene["gene_id"]
+            chromosome = gene["chromosome"]
+            # print('gene', gene)
+            if "start_coordinate" in gene:
+                start = gene["start_coordinate"]
+                length = gene["coordinate_length"]
             else:
                 no_coordinates.append(symbol)
                 start = -1
                 length = -1
             color = "#73af42"
-            full_name = gene[1]["full_name"]
-            cites = gene[1]["cites"]
-            prev_cites = gene[1]["prev_cites"]
-            cite_delta = gene[1]["cite_delta"]
-            cite_rank = gene[1]["cite_rank"]
-            prev_cite_rank = gene[1]["prev_cite_rank"]
-            cite_rank_delta = gene[1]["cite_rank_delta"]
+            full_name = gene["full_name"]
+            cites = gene["cites"]
+            prev_cites = gene["prev_cites"]
+            cite_delta = gene["cite_delta"]
+            cite_rank = gene["cite_rank"]
+            prev_cite_rank = gene["prev_cite_rank"]
+            cite_rank_delta = gene["cite_rank_delta"]
             row = [
-                symbol, chromosome, start, length, color, full_name,
-                num_days, cites, prev_cites,
+                symbol,
+                chromosome, start, length, color,
+                full_name, num_days, cites, prev_cites,
                 cite_delta, cite_rank, prev_cite_rank,
-                cite_rank_delta
+                cite_rank_delta, gene_id
             ]
             row = [str(item) for item in row]
             rows.append(row)
@@ -335,15 +342,26 @@ def write_summary(sorted_genes_list, organism, num_days):
     else:
         print("All cited genes in this organism had genomic coordinates!")
 
-    print("Wrote " + output_path)
+    print(f"Wrote { len(rows) } gene citation hints to {output_path}")
     pretty_print_table(rows, 10)
 
+def pretty_org_name(org_name):
+    """Convert e.g. "homo-sapiens" to "Homo sapiens"
+    """
+    first_letter = org_name[0].upper()
+    return first_letter + org_name[1:].replace("-", " ")
+
 def enrich_citations(pmid_dates_path, prev_pmid_dates_path, num_days):
+    """Construct cite hints, write to TSV.  Intended for use in other modules.
+    """
     organisms = read_organisms()
 
     for org in organisms:
         organism = org["scientific_name"]
-        print("\n\nEnriching citations for " + organism)
+        common = org["common_name"]
+        pretty_org = pretty_org_name(organism)
+        print("\n")
+        print(f"Enriching citations for {pretty_org} ({common})")
 
         cites_by_gene = get_cites_by_gene(organism, pmid_dates_path)
         prev_cites_by_gene = get_cites_by_gene(organism, prev_pmid_dates_path)
@@ -362,7 +380,7 @@ def enrich_citations(pmid_dates_path, prev_pmid_dates_path, num_days):
         cite_rank = rank_counts(cites_by_gene)
         prev_cite_rank = rank_counts(cites_by_gene)
 
-        enriched_genes_basic = enrich_genes(
+        enriched_genes = enrich_genes(
             organism,
             cites_by_gene,
             prev_cites_by_gene,
@@ -370,27 +388,27 @@ def enrich_citations(pmid_dates_path, prev_pmid_dates_path, num_days):
             prev_cite_rank
         )
 
-        enriched_genes = add_coordinates(organism, enriched_genes_basic)
+        mapped_genes = add_coordinates(organism, enriched_genes)
 
-        sorted_genes_list = sort_genes(enriched_genes, "cites")
+        cite_hints = sort_genes(mapped_genes, "cite_delta")
 
-        write_summary(sorted_genes_list, organism, num_days)
+        write_summary(cite_hints, organism, num_days)
 
-# Main function
+# Command-line handler
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage=usage)
     parser.add_argument(
-        'pmid_dates_path',
-        help='Path to file containing citation counts over time'
+        "pmid_dates_path",
+        help="Path to file containing citation counts over time"
     )
     parser.add_argument(
-        'prev_pmid_dates_path',
-        help='Path to file containing citation counts over previous timeframe'
+        "prev_pmid_dates_path",
+        help="Path to file containing citation counts over previous timeframe"
     )
     parser.add_argument(
-        'num_days',
+        "num_days",
         type=int,
-        help='Days in the timeframe'
+        help="Days in the timeframe"
     )
     args = parser.parse_args()
     pmid_dates_path = args.pmid_dates_path

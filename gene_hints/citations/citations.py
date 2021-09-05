@@ -14,7 +14,8 @@ import requests
 import subprocess
 import glob
 
-days_in_timeframe = 5
+# Number of days in timeframe
+num_days = 5
 
 def read_organisms():
     """Read organisms TSV and parse taxon / species data
@@ -129,11 +130,11 @@ if __name__ == "__main__":
 
     now = datetime.now(timezone.utc)
 
-    days_in_timeframe_doubled = days_in_timeframe * 2
+    num_days_doubled = num_days * 2
 
-    start_date = format_date(days_in_timeframe) # E.g. 60 days ago
+    start_date = format_date(num_days) # E.g. 60 days ago
     end_date = format_date() # Today
-    prev_start_date = format_date(days_in_timeframe * 2) # E.g. 120 days ago
+    prev_start_date = format_date(num_days * 2) # E.g. 120 days ago
     prev_end_date = start_date # E.g. 60 days ago
 
     output_dir = tmp_dir + "timeframe"
@@ -199,7 +200,7 @@ if __name__ == "__main__":
 
     # Lastly create the TSV with the total citations per gene along with the gene's information
     # TODO: Enable code below to be imported as Python module
-    command = f"python3 creating_citation_counts_tsv/scripts/enrich_citations.py {pmid_dates_path} {prev_pmid_dates_path} {days_in_timeframe}"
+    command = f"python3 creating_citation_counts_tsv/scripts/enrich_citations.py {pmid_dates_path} {prev_pmid_dates_path} {num_days}"
     print(command)
     subprocess.run(command.split(" "))
 
