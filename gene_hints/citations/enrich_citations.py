@@ -4,7 +4,7 @@ Inspired by https://github.com/pkerpedjiev/gene-citation-counts
 """
 
 usage = """
-    python3 creating_citation_counts_tsv/scripts/enrich_citations.py ${pmid_times_path} ${prev_pmid_times_path} $days_in_timeframe
+    python3 creating_citation_counts_tsv/scripts/enrich_citations.py ${pmid_times_path} ${prev_pmid_times_path} ${days_in_timeframe}
     """
 
 import os
@@ -26,7 +26,7 @@ def get_genes_by_pmid(organism):
     # File header and example data row:
         # #tax_id GeneID  pmid
         # 9606    9       9173883
-    print(gene2pubmed_path)
+    # print(gene2pubmed_path)
     with open(gene2pubmed_path) as f:
         rd = csv.reader(f, delimiter="\t", quotechar='"')
         for row in rd:
@@ -63,7 +63,7 @@ def get_pmids_with_genes_in_timeframe(genes_by_pmid, pmid_dates_path):
     return pmids
 
 def get_cites_by_gene(organism, pmid_dates_path):
-    """Get citation counts for an organism's genes over a timeframe
+    """Get citation counts for an organism's genes over time
 
     Input:
         organism: scientific name of species, hyphen-case (e.g. homo-sapiens)
@@ -77,16 +77,16 @@ def get_cites_by_gene(organism, pmid_dates_path):
     genes_by_pmid  = get_genes_by_pmid(organism)
 
     # Output the first element in genes_by_pmid
-    print('Number of genes in first PMID in genes_by_pmid')
-    print(len(list(list(genes_by_pmid.items())[0][1])))
+    # print('Number of genes in first PMID in genes_by_pmid')
+    # print(len(list(list(genes_by_pmid.items())[0][1])))
 
     # Get list of above PMIDs that were published in the dates of interest
     pmids = get_pmids_with_genes_in_timeframe(genes_by_pmid, pmid_dates_path)
 
-    if len(pmids) > 0:
-        # Output the first element in the pmids variable
-        print('pmids[0]')
-        print(pmids[0])
+    # if len(pmids) > 0:
+    #     # Output the first element in the pmids variable
+    #     print('pmids[0]')
+    #     print(pmids[0])
 
     # Invert genes_by_pmid, and only include PMIDs in timeframe
     pmids_by_gene = {}
@@ -104,11 +104,11 @@ def get_cites_by_gene(organism, pmid_dates_path):
     for gene_id in pmids_by_gene:
         cites_by_gene[gene_id] = len(pmids_by_gene[gene_id])
 
-    cites = cites_by_gene.items()
-    # Output the first element in the cites variable
-    if (len(list(cites))) > 0:
-        print('cites[0]')
-        print( next(iter( cites )) )
+    # cites = cites_by_gene.items()
+    # # Output the first element in the cites variable
+    # if (len(list(cites))) > 0:
+    #     print('cites[0]')
+    #     print( next(iter( cites )) )
 
     return cites_by_gene
 
@@ -125,7 +125,7 @@ def rank_counts(counts_by_key):
         occurences_by_count[count] = occurences_by_count.get(count, 0) + 1
 
     sorted_occurences = sorted(occurences_by_count, reverse=True)
-    print("sorted occurences_by_count: " + str(sorted_occurences))
+    # print("sorted occurences_by_count: " + str(sorted_occurences))
 
     # Calculate ranks, accounting for ties
     ranks_by_count = dict([])
@@ -133,7 +133,7 @@ def rank_counts(counts_by_key):
     for count in sorted_occurences:
         ranks_by_count[count] = rank_counter
         rank_counter = rank_counter + occurences_by_count[count]
-    print("cite mapping to rank: " + str(ranks_by_count))
+    # print("cite mapping to rank: " + str(ranks_by_count))
 
     # Put it into a new dict for simplicity
     ranks_by_key = {}
@@ -249,9 +249,8 @@ def add_coordinates(organism, genes_by_symbol):
                     "coordinate_length": coordinate_length,
                 })
 
-    # Print ref_gene variable
-    print('genes_by_symbol with coordinates')
-    print( next(iter( genes_by_symbol.items() )) )
+    # print('genes_by_symbol with coordinates')
+    # print( next(iter( genes_by_symbol.items() )) )
 
     return genes_by_symbol
 
@@ -263,31 +262,40 @@ def sort_genes(gene_dict, key):
         reverse=True
     )
 
-    print(f"Gene with highest {key}: {str(sorted_genes[0])}")
+    # print(f"Gene with highest {key}: {str(sorted_genes[0])}")
 
     return sorted_genes
 
-def write_summary(sorted_genes_list, organism, timeframe_days):
+def pretty_print_table(raw_rows, num_lines):
+    print(f"First {num_lines} lines:")
+    rows = raw_rows[:num_lines]
+    widths = [max(map(len, col)) for col in zip(*rows)]
+    for row in rows:
+        print("  ".join((val.ljust(width) for val, width in zip(row, widths))))
+
+
+def write_summary(sorted_genes_list, organism, num_days):
     """Write TSV file that combines bibliometrics and genomic data
     """
-    output_path= f'data/{organism}-pubmed-citations.tsv'
+    output_path = f"data/{organism}-pubmed-citations.tsv"
 
     no_coordinates = []
+
+    rows = []
 
     # Create TSV file
     with open(output_path, 'wt') as f:
         tsv_writer = csv.writer(f, delimiter='\t')
 
-        # Add header row to the TSV
-        tsv_writer.writerow([
-            "gene_symbol", "chromosome", "start", "length", "color",
+        header = [
+            "# gene_symbol", "chromosome", "start", "length", "color",
             "full_name", "days_in_timeframe",
-            "cites",
-            "prev_cites",
-            "cite_delta",
-            "cite_rank",
-            "prev_cite_rank",
-            "cite_rank_delta"])
+            "cites", "prev_cites", "cite_delta", "cite_rank",
+            "prev_cite_rank", "cite_rank_delta"
+        ]
+        # Add header row to the TSV
+        tsv_writer.writerow(header)
+        rows.append(header)
 
         # Write a row in the TSV for each gene in the sorted list
         for gene in sorted_genes_list:
@@ -310,44 +318,32 @@ def write_summary(sorted_genes_list, organism, timeframe_days):
             cite_rank = gene[1]["cite_rank"]
             prev_cite_rank = gene[1]["prev_cite_rank"]
             cite_rank_delta = gene[1]["cite_rank_delta"]
-            tsv_row_values = [
+            row = [
                 symbol, chromosome, start, length, color, full_name,
-                timeframe_days, cites, prev_cites,
+                num_days, cites, prev_cites,
                 cite_delta, cite_rank, prev_cite_rank,
                 cite_rank_delta
             ]
-
-            tsv_writer.writerow(tsv_row_values)
+            row = [str(item) for item in row]
+            rows.append(row)
+            tsv_writer.writerow(row)
 
     num_missing = len(no_coordinates)
-    print(f"No genomic coordinates for {num_missing} genes: {no_coordinates}")
+    if num_missing > 0:
+        no_coordinates = ", ".join(no_coordinates)
+        print(f"No genomic coordinates for {num_missing} genes: {no_coordinates}")
+    else:
+        print("All cited genes in this organism had genomic coordinates!")
 
-# Main function
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(usage=usage)
-    parser.add_argument(
-        'pmid_dates_path',
-        help='Path to file containing citation counts over time'
-    )
-    parser.add_argument(
-        'prev_pmid_dates_path',
-        help='Path to file containing citation counts over previous timeframe'
-    )
-    parser.add_argument(
-        'timeframe_days',
-        type=int,
-        help='Days in the timeframe'
-    )
-    args = parser.parse_args()
-    pmid_dates_path = args.pmid_dates_path
-    prev_pmid_dates_path = args.prev_pmid_dates_path
-    timeframe_days = args.timeframe_days
+    print("Wrote " + output_path)
+    pretty_print_table(rows, 10)
 
+def enrich_citations(pmid_dates_path, prev_pmid_dates_path, num_days):
     organisms = read_organisms()
 
     for org in organisms:
         organism = org["scientific_name"]
-        print(organism)
+        print("\n\nEnriching citations for " + organism)
 
         cites_by_gene = get_cites_by_gene(organism, pmid_dates_path)
         prev_cites_by_gene = get_cites_by_gene(organism, prev_pmid_dates_path)
@@ -358,8 +354,8 @@ if __name__ == "__main__":
         ):
             print(
                 f"No publications in PubMed cited genes from {organism} " +
-                f"in the last {timeframe_days} days.  " +
-                f"Try increasing the `timeframe_days` value in `citations.py`."
+                f"in the last {num_days} days.  " +
+                f"Try increasing the `num_days` value in `citations.py`."
             )
             continue
 
@@ -376,6 +372,31 @@ if __name__ == "__main__":
 
         enriched_genes = add_coordinates(organism, enriched_genes_basic)
 
-        sorted_genes_list = sort_genes(enriched_genes, "cite_delta")
+        sorted_genes_list = sort_genes(enriched_genes, "cites")
 
-        write_summary(sorted_genes_list, organism, timeframe_days)
+        write_summary(sorted_genes_list, organism, num_days)
+
+# Main function
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(usage=usage)
+    parser.add_argument(
+        'pmid_dates_path',
+        help='Path to file containing citation counts over time'
+    )
+    parser.add_argument(
+        'prev_pmid_dates_path',
+        help='Path to file containing citation counts over previous timeframe'
+    )
+    parser.add_argument(
+        'num_days',
+        type=int,
+        help='Days in the timeframe'
+    )
+    args = parser.parse_args()
+    pmid_dates_path = args.pmid_dates_path
+    prev_pmid_dates_path = args.prev_pmid_dates_path
+    num_days = args.num_days
+
+    enrich_citations(pmid_dates_path, prev_pmid_dates_path, num_days)
+
+
