@@ -16,6 +16,7 @@ import glob
 
 from lib import read_organisms
 from enrich_citations import enrich_citations
+from pmids_by_date import pmids_by_date
 
 # Number of days in timeframe
 num_days = 5
@@ -87,7 +88,6 @@ def split_ncbi_file_by_org(input_path, output_filename):
             with open(data_dir + org + "/" + output_filename, "w") as f:
                 f.write("\n".join(lines))
 
-
 cites_dir = './pubmed_citations/'
 data_dir = cites_dir + 'data/'
 tmp_dir = data_dir + 'tmp/'
@@ -110,13 +110,8 @@ if __name__ == "__main__":
     output_dir = tmp_dir + "timeframe"
     prev_output_dir= tmp_dir + "prev_timeframe"
 
-    # TODO: Enable code below to be imported as Python module
-    command = f"python3 creating_citation_counts_tsv/scripts/pmids_by_date.py --start-date {start_date} --end-date {end_date} --output-dir {output_dir}"
-    print(command)
-    subprocess.run(command.split())
-    command = f"python3 creating_citation_counts_tsv/scripts/pmids_by_date.py --start-date {prev_start_date} --end-date {prev_end_date} --output-dir {prev_output_dir}"
-    print(command)
-    subprocess.run(command.split())
+    pmids_by_date(start_date, end_date, output_dir)
+    pmids_by_date(prev_start_date, prev_end_date, output_dir)
 
     # Consolidate the publications from each day into one complete list
     pmid_dates_path = data_dir + "pmid_dates.tsv"
