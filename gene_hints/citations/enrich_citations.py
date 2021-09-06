@@ -3,10 +3,6 @@
 Inspired by https://github.com/pkerpedjiev/gene-citation-counts
 """
 
-usage = """
-    python3 creating_citation_counts_tsv/scripts/enrich_citations.py ${pmid_times_path} ${prev_pmid_times_path} ${days_in_timeframe}
-    """
-
 import os
 import csv
 import argparse
@@ -398,17 +394,26 @@ def enrich_citations(pmid_dates_path, prev_pmid_dates_path, num_days):
 
 # Command-line handler
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(usage=usage)
+    usage = """
+    python3 creating_citation_counts_tsv/scripts/enrich_citations.py --pmid-dates-path ./pubmed_citations/data/pmid_dates.tsv --prev-pmid-dates-path ./pubmed_citations/data/prev_pmid_dates.tsv --num-days 5
+    """
+
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        usage=usage
+    )
+
     parser.add_argument(
-        "pmid_dates_path",
+        "--pmid-dates-path",
         help="Path to file containing citation counts over time"
     )
     parser.add_argument(
-        "prev_pmid_dates_path",
+        "--prev-pmid-dates-path",
         help="Path to file containing citation counts over previous timeframe"
     )
     parser.add_argument(
-        "num_days",
+        "--num-days",
         type=int,
         help="Days in the timeframe"
     )
@@ -418,5 +423,3 @@ if __name__ == "__main__":
     num_days = args.num_days
 
     enrich_citations(pmid_dates_path, prev_pmid_dates_path, num_days)
-
-
