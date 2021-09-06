@@ -1,7 +1,7 @@
 """Output TSV of gene citation counts over time, and associated metrics
 
 This script queries the NCBI Entrez Gene database for citation lists for
-each day for the time frame specified.
+each day in the specified timeframe.
 
 Inspired by https://github.com/pkerpedjiev/gene-citation-counts/blob/master/README
 """
@@ -14,41 +14,11 @@ import requests
 import subprocess
 import glob
 
+from lib import read_organisms
+from enrich_citations import enrich_citations
+
 # Number of days in timeframe
 num_days = 5
-
-def read_organisms():
-    """Read organisms TSV and parse taxon / species data
-
-    TODO:
-    * Pull these values from NCBI EUtils API instead of hard-coding
-        - Do not pull down entire NCBI Taxonomy DB.  It's much too big for
-            this use case, slowing and complicating development.
-
-    * Make `organisms` a CLI parameter
-    """
-    organisms = []
-
-    with open("./organisms.tsv") as f:
-        rd = csv.reader(f, delimiter="\t")
-        for row in rd:
-            if len(row) == 0 or row[0][0] == '#':
-                continue
-
-            # Convert e.g. "Homo sapiens" to machine-friendlier "homo-sapiens"
-            name = row[1]
-            name = name.lower().replace(' ', '-')
-
-            organism = {
-                "common_name": row[0], # e.g. human
-                "scientific_name": name, # e.g. homo-sapiens (see note above)
-                "taxid": row[2], # e.g. 9606 ("NCBI Taxonomy ID")
-                "genome_assembly_ucsc_name": row[3] # e.g. hg38
-            }
-
-            organisms.append(organism)
-
-    return organisms
 
 def format_date(days_before=None):
     now = datetime.now(timezone.utc)
@@ -198,9 +168,7 @@ if __name__ == "__main__":
     print("Split gene_info by organism")
     split_ncbi_file_by_org(output_path, output_filename)
 
-    # Lastly create the TSV with the total citations per gene along with the gene's information
-    # TODO: Enable code below to be imported as Python module
-    command = f"python3 creating_citation_counts_tsv/scripts/enrich_citations.py {pmid_dates_path} {prev_pmid_dates_path} {num_days}"
-    print(command)
-    subprocess.run(command.split(" "))
+    # Combine genomic and citation data, compute statistics, and write to TSV
+    enrich_citations(pmid_dates_path, prev_pmid_dates_path, num_days)
+
 

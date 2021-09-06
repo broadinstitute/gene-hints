@@ -11,7 +11,7 @@ import os
 import csv
 import argparse
 
-from citations import read_organisms
+from lib import read_organisms
 
 cites_dir = './pubmed_citations/'
 data_dir = cites_dir + 'data/'
