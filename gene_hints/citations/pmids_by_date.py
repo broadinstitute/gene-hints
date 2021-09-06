@@ -1,6 +1,6 @@
 """Query PubMed for citation lists for each day
 
-Adapted from https://github.com/pkerpedjiev/gene-citation-counts
+Inspired by https://github.com/pkerpedjiev/gene-citation-counts
 """
 
 import os
