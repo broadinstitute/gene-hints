@@ -1,15 +1,14 @@
-"""Query PubMed for citation lists for each day
+"""Query PubMed for list of IDs (PMIDs) of articles published each day
 
 Inspired by https://github.com/pkerpedjiev/gene-citation-counts
 """
 
 import os
 import re
-import sys
 import urllib.request as ur
 import time
 from tqdm import tqdm
-from optparse import OptionParser
+import argparse
 from datetime import date as dt_date, timedelta, datetime
 
 def pmids_by_date(
@@ -82,33 +81,27 @@ if __name__ == "__main__":
     usage = """
     python3 creating_citation_counts_tsv/scripts/pmids_by_date.py --start-date 2021/07/07 --end-date 2021/07/15 --output-dir creating_citation_counts_tsv/data/tmp
     """
-    parser = OptionParser(usage=usage)
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        usage=usage
+    )
 
     # Set the time frame
-    parser.add_option(
-        "-s", "--start-date", dest="start_date",
+    parser.add_argument(
+        "--start-date",
         help="Recent end of the date range to search (YYYY/MM/DD)"
     )
-    parser.add_option(
-        "-e", "--end-date", dest="end_date",
+    parser.add_argument(
+        "--end-date",
         help="Distant end the date range to search (YYYY/MM/DD)"
     )
 
-    parser.add_option(
-        "-o", "--output-dir", dest="output_dir",
+    parser.add_argument(
+        "--output-dir",
         help="Directory to output files"
     )
 
-    # Get all the arguments (Start time, End time, and Output file)
-    (options, args) = parser.parse_args()
+    args = parser.parse_args()
 
-    num_required_args = 0 # TODO: make options into args
-
-    # Check for errors with setting the date and output file
-    if len(args) < num_required_args:
-        parser.print_help()
-        sys.exit(1)
-
-
-    pmids_by_date(options.start_date, options.end_date, options.output_dir)
-
+    pmids_by_date(args.start_date, args.end_date, args.output_dir)

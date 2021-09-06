@@ -5,9 +5,9 @@ bioinformatics databases, combines that data, computes statistics, and writes
 it to organism-specific TSV files.  The output gene citation hints files
 are combined with gene view hints files.  These can then help power various
 applications, like the gene hints ideogram at https://broad.io/gene-hints.
-
-Inspired by https://github.com/pkerpedjiev/gene-citation-counts/blob/master/README
 """
+
+# Inspired by https://github.com/pkerpedjiev/gene-citation-counts/blob/master/README
 
 import argparse
 import csv
@@ -21,9 +21,9 @@ from lib import read_organisms
 from enrich_citations import enrich_citations
 from pmids_by_date import pmids_by_date
 
-cites_dir = './pubmed_citations/'
-data_dir = cites_dir + 'data/'
-tmp_dir = data_dir + 'tmp/'
+cites_dir = "./pubmed_citations/"
+data_dir = cites_dir + "data/"
+tmp_dir = data_dir + "tmp/"
 
 def format_date(days_before=None):
     """Get date strings in YYYY/MM/DD format, as expected by NCBI E-utils
@@ -43,7 +43,7 @@ def download_gzip(url, output_path):
         # Human-readable text, to ease debugging
         content = gzip.decompress(response.content).decode()
     except gzip.BadGzipFile as e:
-        print('URL did not respond with a gzipped file: ' + url)
+        print("URL did not respond with a gzipped file: " + url)
         raise(e)
 
     with open(output_path, "w") as f:
@@ -60,11 +60,11 @@ def split_ncbi_file_by_org(input_path, output_filename, organisms):
         name = org["scientific_name"]
         org_names_by_taxid[taxid] = name
 
-    with open(input_path, 'r') as f:
+    with open(input_path, "r") as f:
         lines_by_org = {}
         for line in f:
             line = line.strip()
-            taxid = line.split('\t')[0]
+            taxid = line.split("\t")[0]
             if taxid in org_names_by_taxid:
                 org = org_names_by_taxid[taxid] # scientific name
                 if org in lines_by_org:
@@ -174,7 +174,7 @@ def download_data(pmid_dates_path, prev_pmid_dates_path, num_days):
     organisms = read_organisms()
 
     # Download IDs for articles published about our organisms of interest.
-    # We'll filter and join the "publications over time" and "publications per
+    # We filter and join the "publications over time" and "publications per
     # organism" lists in `enrich_citations`.
     fetch_all_publications_per_organism(organisms)
 
@@ -198,9 +198,12 @@ def gene_citations(num_days):
     # Combine that downloaded data, compute statistics, and write to TSV
     enrich_citations(pmid_dates_path, prev_pmid_dates_path, num_days)
 
+# Command-line handler
 if __name__ == "__main__":
-
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     parser.add_argument(
         "--num-days",
         type=int,
