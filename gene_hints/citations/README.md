@@ -27,7 +27,7 @@ Run `citations.py` from the repo's root directory.
 python3 creating_citation_counts_tsv/scripts/citations.py --num-days 180
 ```
 
-The command above covers almost a year: from today until 180 days ago, and 180 days before that.  While human or mouse have gene citations in almost any timeframe, analyzing longer time periods helps pick up gene citations for less intensely studies organisms like dog or cat.
+The command above covers almost a year: from today until 180 days ago, and 180 days before that.  While human or mouse have gene citations in almost any timeframe, analyzing longer time periods helps pick up gene citations for less intensely studies organisms like dog or cat.  It also picks up more genes in highly-studied organisms.
 
 ## Add a new organism
 Currently, this code produces TSVs for five organisms (a.k.a. taxa or species): human, mouse, rat, dog, and cat. To add another organism, add a row to `organisms.tsv` in the root directory.
