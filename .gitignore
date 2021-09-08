@@ -1,3 +1,7 @@
+# Python scaffolding
+env/
+__pycache__/
+
 # Logs
 logs
 *.log
