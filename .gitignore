@@ -107,12 +107,12 @@ typings/
 .tern-port
 
 # data folder
-creating_citation_counts_tsv/data
+gene_hints/data
 
 # DS_Store folder
 .DS_Store
 
 # Extra folders
-creating_citation_counts_tsv/tsv
-creating_citation_counts_tsv/taxonomy_name
+gene_hints/tsv
+gene_hints/taxonomy_name
 wikipedia_trends/downloads/*.gz

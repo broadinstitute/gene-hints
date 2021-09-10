@@ -395,7 +395,7 @@ def enrich_citations(pmid_dates_path, prev_pmid_dates_path, num_days):
 # Command-line handler
 if __name__ == "__main__":
     usage = """
-    python3 creating_citation_counts_tsv/scripts/enrich_citations.py --pmid-dates-path ./pubmed_citations/data/pmid_dates.tsv --prev-pmid-dates-path ./pubmed_citations/data/prev_pmid_dates.tsv --num-days 5
+    python3 gene_hints/citations/enrich_citations.py --pmid-dates-path ./pubmed_citations/data/pmid_dates.tsv --prev-pmid-dates-path ./pubmed_citations/data/prev_pmid_dates.tsv --num-days 5
     """
 
     parser = argparse.ArgumentParser(

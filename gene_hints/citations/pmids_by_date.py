@@ -13,7 +13,7 @@ from datetime import date as dt_date, timedelta, datetime
 
 def pmids_by_date(
     start_date=None, end_date=None,
-    output_dir="creating_citation_counts_tsv/data/tmp"
+    output_dir="gene_hints/data/tmp"
 ):
     """Query PubMed for citation lists for each day
     """
@@ -79,7 +79,7 @@ def pmids_by_date(
 # Command-line handler
 if __name__ == "__main__":
     usage = """
-    python3 creating_citation_counts_tsv/scripts/pmids_by_date.py --start-date 2021/07/07 --end-date 2021/07/15 --output-dir creating_citation_counts_tsv/data/tmp
+    python3 gene_hints/citations/pmids_by_date.py --start-date 2021/07/07 --end-date 2021/07/15 --output-dir gene_hints/data/tmp
     """
     parser = argparse.ArgumentParser(
         description=__doc__,
