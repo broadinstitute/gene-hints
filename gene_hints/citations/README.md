@@ -17,14 +17,14 @@ Create a Python 3 virtual environment, and install dependencies:
 cd gene-hints
 python3 -m venv env --copies
 source env/bin/activate
-pip install -r creating_citation_counts_tsv/requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Run
 Run `citations.py` from the repo's root directory.
 
 ```
-python3 creating_citation_counts_tsv/scripts/citations.py --num-days 180
+python3 gene_hints/citations/citations.py --num-days 180
 ```
 
 The command above covers almost a year: from today until 180 days ago, and 180 days before that.  While human or mouse have gene citations in almost any timeframe, analyzing longer time periods helps pick up gene citations for less intensely studies organisms like dog or cat.  It also picks up more genes in highly-studied organisms.
