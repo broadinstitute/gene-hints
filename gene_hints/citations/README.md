@@ -1,13 +1,11 @@
 # Create gene citation hints
 
-![TSV_snapshot](https://github.com/broadinstitute/gene-hints/blob/main/images/07-TSV-snapshot.png)
-
 ## Background
 Gene Hints uses citations and view data for genes to enhance discoverability for gene search.  This document discusses how gene citation hint data is generated.
 
 The citation code uses the PubMed database to collect all publications over a given number of days. Next, NCBI data is used to match the genes to publication that mention ("cite") them.  UCSC and NCBI data are then used to match gene IDs to genomic information like each gene's chromosome and coordinates. Lastly, related citation metrics are calculated and gene citation hint TSV files are output for each organism.
 
-This approach was pioneered in [gene citation counts by Peter Kerpedjiev](https://github.com/pkerpedjiev/gene-citation-counts), and extended by a team of engineers at the Broad Institute.
+This approach was pioneered in [gene citation counts by Peter Kerpedjiev](https://github.com/pkerpedjiev/gene-citation-counts), and later reimplemented and extended by a team of engineers at the Broad Institute.
 
 After these cite hint TSVs are generated, they are combined with view hint TSVs.  The combined data is then fetched by the gene hints ideogram for display and exploration in genomic context.
 
