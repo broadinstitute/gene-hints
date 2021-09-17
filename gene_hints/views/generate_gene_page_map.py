@@ -3,12 +3,11 @@ from pandas import json_normalize
 import os
 
 output_location = "./wikipedia_trends/"
-filename = 'gene_page_map.tsv'
+filename = "gene_page_map.tsv"
 
 
 def query_wikidata(sparql_query, sparql_service_url):
-    """
-    Query the endpoint with the given query string and return the results as a
+    """Query endpoint with given query string and return the results as a
     pandas Dataframe.
     """
     sparql = SPARQLWrapper(sparql_service_url, agent="chrome")
@@ -21,10 +20,9 @@ def query_wikidata(sparql_query, sparql_service_url):
 
 
 def query_human_genes():
+    """Execute the SPARQL query for human genes
     """
-    Execute the SPARQL query for human genes
-    """
-    print('Querying human genes...')
+    print("Querying human genes...")
     endpoint_url = "https://query.wikidata.org/sparql"
     query = """
     SELECT DISTINCT ?item ?ncbi_gene ?itemLabel ?titleLabel WHERE {
@@ -42,10 +40,9 @@ def query_human_genes():
 
 
 def save_human_genes(data, name):
+    """Save results of the gene locally
     """
-    Saves results of the gene locally
-    """
-    print('Saving results of gene locally...')
+    print("Saving results of gene locally...")
     data[["titleLabel.value", "itemLabel.value"]].rename(
         columns=lambda col: col.replace("Label.value", "")
     ).to_csv(name, sep="\t", index=False)
