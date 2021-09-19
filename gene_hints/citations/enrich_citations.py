@@ -289,7 +289,7 @@ def write_summary(sorted_genes_list, organism, num_days):
         tsv_writer = csv.writer(f, delimiter="\t")
 
         header = [
-            "# gene_symbol",
+            "# gene",
             "chromosome", "start", "length", "color",
             "full_name", "days_in_timeframe",
             "cites", "prev_cites", "cite_delta", "cite_rank",

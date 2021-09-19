@@ -150,7 +150,7 @@ def save_counts_to_file(gene_counts):
     # Overwrite the file with new data
     with open(output_path, "w") as f:
         headers = [
-            "gene",
+            "# gene",
             "views",
             "view_delta",
             "view_rank",
