@@ -275,7 +275,6 @@ def pretty_print_table(raw_rows, num_rows):
     for row in rows:
         print("  ".join((val.ljust(width) for val, width in zip(row, widths))))
 
-
 def write_summary(sorted_genes_list, organism, num_days):
     """Write TSV file that combines citation and genomic data
     """
