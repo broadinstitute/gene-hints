@@ -1,10 +1,19 @@
+"""Output TSV of English Wikipedia article names to gene symbols
+
+For example, the page https://en.wikipedia.org/wiki/Tumor_necrosis_factor maps
+to the gene symbol "TNF".  This is output as:
+
+Tumor_necrosis_factor	TNF
+
+in `gene_page_map.tsv`.  This script uses the Wikidata Query Service
+(https://query.wikidata.org/) to make a SPARQL query linking articles to
+genes symbols.  The output TSV is used by `views.py`.
+"""
+
 from SPARQLWrapper import SPARQLWrapper, JSON
 from pandas import json_normalize
-import os
 
-output_location = "./wikipedia_trends/"
-filename = "gene_page_map.tsv"
-
+output_path = "./gene_hints/views/gene_page_map.tsv"
 
 def query_wikidata(sparql_query, sparql_service_url):
     """Query endpoint with given query string and return the results as a
@@ -18,9 +27,8 @@ def query_wikidata(sparql_query, sparql_service_url):
     result = sparql.query().convert()
     return json_normalize(result["results"]["bindings"])
 
-
 def query_human_genes():
-    """Execute the SPARQL query for human genes
+    """Execute SPARQL query for map of article names for all human genes
     """
     print("Querying human genes...")
     endpoint_url = "https://query.wikidata.org/sparql"
@@ -38,15 +46,15 @@ def query_human_genes():
 
     return query_wikidata(query, endpoint_url)
 
-
-def save_human_genes(data, name):
-    """Save results of the gene locally
+def save_human_genes(data, output_path):
+    """Save results of the gene query locally
     """
-    print("Saving results of gene locally...")
+    print("Saving results of gene query locally...")
     data[["titleLabel.value", "itemLabel.value"]].rename(
         columns=lambda col: col.replace("Label.value", "")
-    ).to_csv(name, sep="\t", index=False)
+    ).to_csv(output_path, sep="\t", index=False)
+    print("Results saved to: " + output_path)
 
 
 genes = query_human_genes()
-save_human_genes(genes, os.path.join(output_location, filename))
+save_human_genes(genes, output_path)

@@ -1,4 +1,9 @@
 """Output TSV of Wikipedia page views for all human genes in last 24 hours
+
+This module downloads Wikipedia view counts for a pre-computed list of pages
+(English Wikipedia articles) that have been mapped to gene symbols.
+For example, the page https://en.wikipedia.org/wiki/Tumor_necrosis_factor maps
+to the gene symbol TNF.  The map is made by `generate_gene_page_map.py`.
 """
 
 import argparse
