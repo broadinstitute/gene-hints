@@ -1,11 +1,11 @@
 """Combine TSVs of Wikipedia views and PubMed citations into one TSV file
 
 Example usage:
-python3 combine-trend-data.py --citations-path=data/homo-sapiens-pubmed-citations.tsv --views-path=data/homo-sapiens-wikipedia-views.tsv --output-path=data/homo-sapiens-gene-hints.tsv
+python3 gene_hints/merge_hints.py --citations-path=data/homo-sapiens-pubmed-citations.tsv --views-path=data/homo-sapiens-wikipedia-views.tsv --output-path=data/homo-sapiens-gene-hints.tsv
 """
 
-import csv
 import argparse
+import csv
 
 def tsv_to_dict(tsv_path):
     print("Processing " + tsv_path)
@@ -37,7 +37,7 @@ def merge_dicts(tsv_dict_1, tsv_dict_2):
         if gene in tsv_dict_2.keys():
             tsv_dict_1[gene] = tsv_dict_1[gene] + tsv_dict_2[gene]
         else:
-            empty_views_data = ["0", "0"] # as strings to match the rest of the data
+            empty_views_data = ["0", "0"] # as strings to match rest of data
             tsv_dict_1[gene] = tsv_dict_1[gene] + empty_views_data
             unmatched_rows_counter = unmatched_rows_counter + 1
     print("unmatched_rows_counter: " + str(unmatched_rows_counter))
@@ -76,7 +76,7 @@ def merge_hints(citations_path, views_path, output_path):
     citations_data, citations_headers = tsv_to_dict(citations_path)
     views_data, views_headers = tsv_to_dict(views_path)
 
-    # Citation data has more rows than views data, so use that as the "base" TSV
+    # Citation data has more rows than views data, so use it as "base" TSV
     merged_dict = merge_dicts(citations_data, views_data)
     merged_headers = merge_headers(citations_headers, views_headers)
 
@@ -88,9 +88,9 @@ if __name__ == "__main__":
         description=__doc__, # Output docs atop this file
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    parser.add_argument("--citations-path", help="Path to PubMed citation hints TSV file")
-    parser.add_argument("--views-path", help="Path to Wikipedia view hints TSV file")
-    parser.add_argument("--output-path", help="Path for TSV output file")
+    parser.add_argument("--citations-path", help="Path to PubMed citation hints TSV")
+    parser.add_argument("--views-path", help="Path to Wikipedia view hints TSV")
+    parser.add_argument("--output-path", help="Path for TSV output")
     args = parser.parse_args()
 
     merge_hints(args.citations_path, args.views_path, args.output_path)
