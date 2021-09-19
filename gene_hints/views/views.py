@@ -24,7 +24,7 @@ output_path = "./data/homo-sapiens-wikipedia-views.tsv"
 num_hours_to_process = 24
 
 # One hour before the current time in UTC
-most_recent_datetime = datetime.now(timezone.utc) - timedelta(hours=1)
+hour_before_present = datetime.now(timezone.utc) - timedelta(hours=1)
 
 # override CSV field limits, to handle errors in wiki views files
 # (which will break the whole script otherwise)
@@ -68,7 +68,7 @@ def download_views_file(file_num):
     if not os.path.exists(downloads_dir):
         os.makedirs(downloads_dir)
     # Generate the hourly views filename and URL
-    views_datetime = most_recent_datetime + timedelta(hours=-file_num)
+    views_datetime = hour_before_present + timedelta(hours=-file_num)
     pageviews_url = get_pageviews_download_url(views_datetime)
     friendly_time = views_datetime.strftime("%m/%d/%Y, %H:00")
     print("Processing the views file from", friendly_time)
@@ -92,7 +92,7 @@ def add_row_to_gene_count(counts_dict, row, page_to_gene_map):
     # process the row
     else:
         page_name = row[1].lower()
-        if row[0] == "en" and page_to_gene_map.get(page_name) is not None:
+        if row[0] == "en" and page_name in page_to_gene_map:
             gene = page_to_gene_map[page_name]
             view_count = int(row[2])
             counts_dict[gene] += view_count
