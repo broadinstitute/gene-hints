@@ -1,3 +1,7 @@
+"""Output TSV of Wikipedia page views for all human genes in last 24 hours
+"""
+
+import argparse
 import csv
 from datetime import datetime, timedelta, timezone
 import gzip
@@ -14,7 +18,7 @@ wiki_views_dir = "./gene_hints/views/"
 name_map_tsv_path =  wiki_views_dir + "gene_page_map.tsv"
 downloads_dir = wiki_views_dir + "downloads/"
 pageviews_download_path = downloads_dir + "pageviews{count}.gz"
-output_file_path = "./data/homo-sapiens-wikipedia-views.tsv"
+output_path = "./data/homo-sapiens-wikipedia-views.tsv"
 
 # Other global variables and settings
 num_hours_to_process = 24
@@ -26,7 +30,6 @@ most_recent_datetime = datetime.now(timezone.utc) - timedelta(hours=1)
 # (which will break the whole script otherwise)
 csv.field_size_limit(sys.maxsize)
 
-
 def init_gene_counts(page_to_gene_map):
     """Initialize map of page views by gene symbol
     """
@@ -35,7 +38,6 @@ def init_gene_counts(page_to_gene_map):
         gene_counts[gene] = 0
     print("\tFound", len(gene_counts), "genes.")
     return gene_counts
-
 
 def load_page_name_to_gene_map():
     """Load a map from Wikipedia page names to gene symbols from file.
@@ -53,12 +55,11 @@ def load_page_name_to_gene_map():
             line_count += 1
     return name_map
 
-
 def get_pageviews_download_url(time):
     directory = time.strftime("/%Y/%Y-%m/") # format like /2021/2021-07/
-    filename = time.strftime("pageviews-%Y%m%d-%H0000.gz") # format like pageviews-20210712-130000.gz
+    # format like pageviews-20210712-130000.gz
+    filename = time.strftime("pageviews-%Y%m%d-%H0000.gz")
     return wiki_pageviews_base_url + directory + filename
-
 
 def download_views_file(file_num):
     """Download and save Wikipedia views dump file
@@ -69,14 +70,14 @@ def download_views_file(file_num):
     # Generate the hourly views filename and URL
     views_datetime = most_recent_datetime + timedelta(hours=-file_num)
     pageviews_url = get_pageviews_download_url(views_datetime)
-    print("Processing the views file from", views_datetime.strftime("%m/%d/%Y, %H:00"))
+    friendly_time = views_datetime.strftime("%m/%d/%Y, %H:00")
+    print("Processing the views file from", friendly_time)
     # Download the file
     print("\tDownloading Wikipedia views hourly data...")
     with requests.Session() as s:
         response = s.get(pageviews_url)
-        with open(pageviews_download_path.format(count=file_num), "wb") as f:
-            f.write(response.content)
-
+    with open(pageviews_download_path.format(count=file_num), "wb") as f:
+        f.write(response.content)
 
 def add_row_to_gene_count(counts_dict, row, page_to_gene_map):
     """Check a given row from Wikipedia pageview dump file, and add any
@@ -92,10 +93,9 @@ def add_row_to_gene_count(counts_dict, row, page_to_gene_map):
     else:
         page_name = row[1].lower()
         if row[0] == "en" and page_to_gene_map.get(page_name) is not None:
-            gene_symbol = page_to_gene_map[page_name]
+            gene = page_to_gene_map[page_name]
             view_count = int(row[2])
-            counts_dict[gene_symbol] += view_count
-
+            counts_dict[gene] += view_count
 
 def process_views_file(gene_counts, page_to_gene_map, file_num):
     """Process the downloaded and zipped views file by adding all
@@ -109,50 +109,52 @@ def process_views_file(gene_counts, page_to_gene_map, file_num):
             line_count += 1
             add_row_to_gene_count(gene_counts, row, page_to_gene_map)
             if line_count % 1000000 == 0:
-                print("\t-- Processed", int(line_count / 1000000), " million lines. --")
+                million_lines = str(int(line_count / 1000000))
+                print("\t-- Processed " + million_lines + " million lines. --")
 
-
-def save_counts_to_file(view_counts):
+def save_counts_to_file(gene_counts):
     """Read the existing TSV file, and update the gene counts
     The file rows should be of the format:
-    ["gene_symbol", "daily_page_views", "prev_daily_page_views"]
+    ["gene", "views", "prev_views"]
     """
 
     # Order the gene counts
-    ordered_counts = sorted(gene_counts.items(), key=lambda x: x[1], reverse=True)
+    ordered_counts = sorted(
+        gene_counts.items(), key=lambda x: x[1], reverse=True
+    )
     print("Top viewed gene pages:", dict(ordered_counts[:10]))
 
     # Read existing data
-    prev_view_counts = {}
+    prev_gene_views = {}
     prev_gene_ranks = {}
 
-    if os.path.exists(output_file_path):
-        with open(output_file_path, "rt") as f:
+    if os.path.exists(output_path):
+        with open(output_path, "rt") as f:
             reader = csv.reader(f, delimiter="\t")
             line_count = 0
             for row in reader:
                 if line_count > 0:
-                    gene_symbol = row[0]
-                    view_count = int(row[1])
-                    prev_view_counts[gene_symbol] = view_count
-                    prev_gene_ranks[gene_symbol] = line_count
+                    gene = row[0]
+                    views = int(row[1])
+                    prev_gene_views[gene] = views
+                    prev_gene_ranks[gene] = line_count
                 line_count += 1
 
     print("Updating Wikipedia views output file...")
 
     # Overwrite the file with new data
-    with open(output_file_path, "w") as f:
+    with open(output_path, "w") as f:
         headers = [
-            "gene_symbol",
-            "wikipedia_daily_page_views",
-            "wikipedia_daily_page_views_change_from_previous_day",
+            "gene",
+            "views",
+            "view_delta",
             "view_rank",
             "view_rank_delta"
         ]
         f.write("\t".join(headers) + "\n")
         rank = 1
         for gene, views in ordered_counts:
-            prev_views = prev_view_counts.get(gene, 0)
+            prev_views = prev_gene_views.get(gene, 0)
             # delta is 0 if the record did not exist before
             rank_delta = prev_gene_ranks.get(gene, rank) - rank
             columns = [gene, views, prev_views, rank, rank_delta]
@@ -160,17 +162,30 @@ def save_counts_to_file(view_counts):
             f.write("\t".join(columns) + "\n")
             rank += 1
 
+def gene_views():
+    """Output TSV of Wikipedia page views for all human genes in last 24 hours
+    """
+    start_time = perf_counter()
 
-# Run everything!
-start_time = perf_counter()
+    page_to_gene_map = load_page_name_to_gene_map()
+    gene_counts = init_gene_counts(page_to_gene_map)
 
-page_to_gene_map = load_page_name_to_gene_map()
-gene_counts = init_gene_counts(page_to_gene_map)
+    for file_num in range(num_hours_to_process):
+        download_views_file(file_num)
+        process_views_file(gene_counts, page_to_gene_map, file_num)
 
-for file_num in range(num_hours_to_process):
-    # download_views_file(file_num)
-    process_views_file(gene_counts, page_to_gene_map, file_num)
+    save_counts_to_file(gene_counts)
 
-save_counts_to_file(gene_counts)
+    print("Finished in", int(perf_counter() - start_time), "seconds.")
 
-print("Finished in", int(perf_counter() - start_time), "seconds.")
+# Command-line handler
+if __name__ == "__main__":
+
+    # Output docs atop this file upon invoking --help via CLI
+    argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    ).parse_args()
+
+    # Run everything!
+    gene_views()
