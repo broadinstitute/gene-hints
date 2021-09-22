@@ -275,7 +275,10 @@ def pretty_print_table(raw_rows, num_rows):
     for row in rows:
         print("  ".join((val.ljust(width) for val, width in zip(row, widths))))
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> ew-refactor-wikipedia
 def write_summary(sorted_genes_list, organism, num_days):
     """Write TSV file that combines citation and genomic data
     """
@@ -289,7 +292,11 @@ def write_summary(sorted_genes_list, organism, num_days):
         tsv_writer = csv.writer(f, delimiter="\t")
 
         header = [
+<<<<<<< HEAD
             "# gene_symbol",
+=======
+            "# gene",
+>>>>>>> ew-refactor-wikipedia
             "chromosome", "start", "length", "color",
             "full_name", "days_in_timeframe",
             "cites", "prev_cites", "cite_delta", "cite_rank",
