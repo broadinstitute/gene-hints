@@ -1,10 +1,6 @@
 name: UpdateTrendsData
 
-<<<<<<< HEAD
 # Controls when the action will run.
-=======
-# Controls when the action will run.
->>>>>>> ew-refactor-wikipedia
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   # CRON scheduled at 6am UTC (2am EST)
