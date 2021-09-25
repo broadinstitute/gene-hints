@@ -20,7 +20,8 @@ from time import perf_counter
 class Views:
 
     def __init__(self):
-        # URLs and directory paths
+        """Define relevant URLs and directories, do other setup
+        """
         self.base_url = "https://dumps.wikimedia.org/other/pageviews"
         wiki_views_dir = "./gene_hints/views/"
         self.name_map_tsv_path =  wiki_views_dir + "gene_page_map.tsv"
@@ -29,12 +30,12 @@ class Views:
         self.output_path = "./data/homo-sapiens-wikipedia-views.tsv"
         self.prev_output_path = "./data/homo-sapiens-wikipedia-views-prev.tsv"
 
-        # Ensure that the downloads directory exists
+        # Ensure downloads directory exists
         if not os.path.exists(downloads_dir):
             os.makedirs(downloads_dir)
 
-        # override CSV field limits, to handle errors in wiki views files
-        # (which will break the whole script otherwise)
+        # Override CSV field limits, to handle errors in wiki pageviews files
+        # (which breaks module otherwise)
         csv.field_size_limit(sys.maxsize)
 
     def init_views_by_gene(self, genes_by_page):
