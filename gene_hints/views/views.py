@@ -19,20 +19,29 @@ from time import perf_counter
 
 class Views:
 
-    def __init__(self):
+    def __init__(
+            self,
+            views_dir="./gene_hints/views/",
+            output_dir="./data/"
+        ):
         """Define relevant URLs and directories, do other setup
         """
-        self.base_url = "https://dumps.wikimedia.org/other/pageviews"
-        wiki_views_dir = "./gene_hints/views/"
-        self.name_map_tsv_path =  wiki_views_dir + "gene_page_map.tsv"
-        downloads_dir = wiki_views_dir + "downloads/"
+        self.name_map_tsv_path =  views_dir + "gene_page_map.tsv"
+        downloads_dir = views_dir + "downloads/"
         self.pageviews_path = downloads_dir + "pageviews{count}.gz"
-        self.output_path = "./data/homo-sapiens-wikipedia-views.tsv"
-        self.prev_output_path = "./data/homo-sapiens-wikipedia-views-prev.tsv"
 
-        # Ensure downloads directory exists
+        # Ensure needed directory exist
         if not os.path.exists(downloads_dir):
             os.makedirs(downloads_dir)
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
+        self.output_dir = output_dir
+        self.output_path =\
+            self.output_dir + "homo-sapiens-wikipedia-views.tsv"
+        self.prev_output_path =\
+            self.output_dir + "homo-sapiens-wikipedia-views-prev.tsv"
+
 
         # Override CSV field limits, to handle errors in wiki pageviews files
         # (which breaks module otherwise)
@@ -67,7 +76,8 @@ class Views:
         directory = time.strftime("/%Y/%Y-%m/") # format like /2021/2021-07/
         # format like pageviews-20210712-130000.gz
         filename = time.strftime("pageviews-%Y%m%d-%H0000.gz")
-        return self.base_url + directory + filename
+        base_url = "https://dumps.wikimedia.org/other/pageviews"
+        return base_url + directory + filename
 
     def download_views_file(self, day, hour):
         """Download and save Wikipedia views dump file
