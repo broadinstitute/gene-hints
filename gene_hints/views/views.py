@@ -195,7 +195,7 @@ class Views:
 
         print(f"Wrote Wikipedia views output file to {path}")
 
-    def gene_views(self):
+    def run(self):
         """Output TSV of recent Wikipedia page views for all human genes
         """
         start_time = perf_counter()
@@ -224,4 +224,4 @@ if __name__ == "__main__":
     ).parse_args()
 
     # Run everything!
-    Views().gene_views()
+    Views().run()

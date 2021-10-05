@@ -196,7 +196,7 @@ class Citations():
         # TODO: Is data parsed from gene_info available in UCSC GTF files?
         self.fetch_gene_info(organisms)
 
-    def gene_citations(self, num_days):
+    def run(self, num_days):
         """Output TSV of gene citation counts and related metrics over `num_days`
         """
 
@@ -225,4 +225,4 @@ if __name__ == "__main__":
 
     citations = Citations()
 
-    citations.gene_citations(num_days)
+    citations.run(num_days)
