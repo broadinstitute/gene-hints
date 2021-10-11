@@ -16,14 +16,14 @@ import gzip
 import os
 import requests
 import glob
+import sys
 
-from .lib import read_organisms
-from .enrich_citations import EnrichCitations
-from .pmids_by_date import pmids_by_date
+if __name__ == "__main__":
+    sys.path.append('../..')
 
-# cites_dir = "./pubmed_citations/"
-# data_dir = cites_dir + "data/"
-# tmp_dir = data_dir + "tmp/"
+from lib import read_organisms
+from enrich_citations import EnrichCitations
+from pmids_by_date import pmids_by_date
 
 def format_date(days_before=None):
     """Get date strings in YYYY/MM/DD format, as expected by NCBI E-utils

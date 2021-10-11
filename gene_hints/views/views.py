@@ -140,7 +140,7 @@ class Views:
                     print("\t* Processed " + million_lines + " million lines")
         return views_by_gene
 
-    def save_counts_to_file(self, views_by_gene, day):
+    def save_to_file(self, views_by_gene, day):
         """Read the existing TSV file, and update the gene counts
         The file rows should be of the format:
         ["gene", "views", "prev_views"]
@@ -210,7 +210,7 @@ class Views:
                     views_by_gene, genes_by_page, day, hour
                 )
 
-            self.save_counts_to_file(views_by_gene, day)
+            self.save_to_file(views_by_gene, day)
 
         print("Finished in", int(perf_counter() - start_time), "seconds.")
 

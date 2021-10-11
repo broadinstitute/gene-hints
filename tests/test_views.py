@@ -15,7 +15,7 @@ sys.path.append('..')
 
 from gene_hints.views.views import Views
 
-def test_save_counts_to_file(tmpdir):
+def test_save_to_file(tmpdir):
 
     # About tmpdir:
     # https://docs.pytest.org/en/6.2.x/tmpdir.html#the-tmpdir-fixture
@@ -26,8 +26,8 @@ def test_save_counts_to_file(tmpdir):
     two_days_ago = {"INS": 901, "OXT": 25, "FOO": 60}
 
     # Save counts (and derived metrics) for yesterday and day before
-    views.save_counts_to_file(day_ago, 0)
-    views.save_counts_to_file(two_days_ago, 1)
+    views.save_to_file(day_ago, 0)
+    views.save_to_file(two_days_ago, 1)
 
     # Parse output
     output_path = tmpdir + "homo-sapiens-wikipedia-views.tsv"

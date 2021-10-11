@@ -7,7 +7,7 @@ import os
 import csv
 import argparse
 
-from .lib import read_organisms
+from lib import read_organisms
 
 # cites_dir = './pubmed_citations/'
 # data_dir = cites_dir + 'data/'
@@ -106,10 +106,14 @@ def pretty_org_name(org_name):
 class EnrichCitations():
     def __init__(
         self,
-        data_dir='./pubmed_citations/data/',
+        data_dir="./pubmed_citations/data/",
+        output_dir="./data/"
     ):
         self.data_dir = data_dir
+        self.output_dir = output_dir
 
+    def get_output_path(self, organism):
+        return f"{self.output_dir}/{organism}-pubmed-citations.tsv"
 
     def get_genes_by_pmid(self, organism):
         """Map PubMed IDs (PMIDs) to gene IDs
@@ -296,13 +300,11 @@ class EnrichCitations():
 
         return genes_by_symbol
 
-    def write_summary(self, sorted_genes_list, organism, num_days):
+    def save_to_file(self, sorted_genes_list, organism, num_days):
         """Write TSV file that combines citation and genomic data
         """
-        output_path = f"data/{organism}-pubmed-citations.tsv"
-
+        output_path = self.get_output_path(organism)
         no_coordinates = []
-
         rows = []
 
         with open(output_path, "wt") as f:
@@ -404,7 +406,7 @@ class EnrichCitations():
 
             cite_hints = sort_genes(mapped_genes, "cite_rank_delta")
 
-            self.write_summary(cite_hints, organism, num_days)
+            self.save_to_file(cite_hints, organism, num_days)
 
 # Command-line handler
 if __name__ == "__main__":
