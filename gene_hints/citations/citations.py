@@ -17,9 +17,9 @@ import os
 import requests
 import glob
 
-from lib import read_organisms
-from enrich_citations import enrich_citations
-from pmids_by_date import pmids_by_date
+from .lib import read_organisms
+from .enrich_citations import EnrichCitations
+from .pmids_by_date import pmids_by_date
 
 # cites_dir = "./pubmed_citations/"
 # data_dir = cites_dir + "data/"
@@ -207,7 +207,7 @@ class Citations():
         self.download_data(pmid_dates_path, prev_pmid_dates_path, num_days)
 
         # Combine that downloaded data, compute statistics, and write to TSV
-        enrich_citations(pmid_dates_path, prev_pmid_dates_path, num_days)
+        EnrichCitations().run(pmid_dates_path, prev_pmid_dates_path, num_days)
 
 # Command-line handler
 if __name__ == "__main__":

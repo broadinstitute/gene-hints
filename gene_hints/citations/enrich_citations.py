@@ -7,7 +7,7 @@ import os
 import csv
 import argparse
 
-from lib import read_organisms
+from .lib import read_organisms
 
 # cites_dir = './pubmed_citations/'
 # data_dir = cites_dir + 'data/'
@@ -296,7 +296,7 @@ class EnrichCitations():
 
         return genes_by_symbol
 
-    def write_summary(sorted_genes_list, organism, num_days):
+    def write_summary(self, sorted_genes_list, organism, num_days):
         """Write TSV file that combines citation and genomic data
         """
         output_path = f"data/{organism}-pubmed-citations.tsv"
