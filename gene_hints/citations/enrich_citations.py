@@ -96,12 +96,12 @@ def pretty_print_table(raw_rows, num_rows):
     for row in rows:
         print("  ".join((val.ljust(width) for val, width in zip(row, widths))))
 
-
 def pretty_org_name(org_name):
     """Convert e.g. "homo-sapiens" to "Homo sapiens"
     """
     first_letter = org_name[0].upper()
     return first_letter + org_name[1:].replace("-", " ")
+
 
 class EnrichCitations():
     def __init__(

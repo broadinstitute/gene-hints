@@ -14,9 +14,9 @@ class GeneHints():
 
     def run(self, num_days, excludes=None):
         if not excludes or "views" not in excludes:
-            views = Views().run()
+            Views().run()
         if not excludes or "citations" not in excludes:
-            cites = Citations().run(num_days)
+            Citations().run(num_days)
 
 # Command-line handler
 if __name__ == "__main__":
@@ -34,7 +34,6 @@ if __name__ == "__main__":
         help="Number of days to analyze",
         default=180
     )
-
     parser.add_argument(
         "--excludes",
         nargs="*",
