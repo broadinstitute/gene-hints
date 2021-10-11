@@ -218,11 +218,10 @@ if __name__ == "__main__":
     parser.add_argument(
         "--num-days",
         type=int,
-        help="How many days for which to analyze citations"
+        help="Number of days to analyze",
+        default=180
     )
     args = parser.parse_args()
     num_days = args.num_days
 
-    citations = Citations()
-
-    citations.run(num_days)
+    Citations().run(num_days)
