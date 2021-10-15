@@ -7,16 +7,19 @@ from citations.citations import Citations
 from views.views import Views
 
 class GeneHints():
-    def __init__(
-        self
-    ):
-        pass
+    def __init__(self, num_days, excludes=None):
+        self.num_days = num_days
+        self.excludes = excludes
 
-    def run(self, num_days, excludes=None):
+    def fetch_hints(self):
+        excludes = self.excludes
         if not excludes or "views" not in excludes:
             Views().run()
         if not excludes or "citations" not in excludes:
-            Citations().run(num_days)
+            Citations().run(self.num_days)
+
+    def run(self):
+        self.fetch_hints()
 
 # Command-line handler
 if __name__ == "__main__":
@@ -44,4 +47,4 @@ if __name__ == "__main__":
     num_days = args.num_days
     excludes = args.excludes
 
-    GeneHints().run(num_days, excludes)
+    GeneHints(num_days, excludes).run()
