@@ -1,10 +1,11 @@
-"""Output TSVs of Wikipedia views and PubMed citations for genes
+"""Output TSVs gene popularity by Wikipedia views and PubMed citations
 """
 
 import argparse
 
 from citations.citations import Citations
 from views.views import Views
+from merge_hints import merge_hints
 
 class GeneHints():
     def __init__(self, num_days, excludes=None):
@@ -19,7 +20,17 @@ class GeneHints():
             Citations().run(self.num_days)
 
     def run(self):
+        """Output TSVs gene popularity by Wikipedia views and PubMed citations
+        """
         self.fetch_hints()
+
+        print("\n")
+
+        stem = "data/homo-sapiens-"
+        cite_path = f"{stem}pubmed-citations.tsv"
+        view_path = f"{stem}wikipedia-views.tsv"
+        hint_path = f"{stem}gene-hints.tsv"
+        merge_hints(cite_path, view_path, hint_path)
 
 # Command-line handler
 if __name__ == "__main__":

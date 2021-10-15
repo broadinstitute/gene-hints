@@ -1,62 +1,63 @@
 # gene	chromosome	start	length	color	full_name	days_in_timeframe	cites	prev_cites	cite_delta	cite_rank	prev_cite_rank	cite_rank_delta	gene_id
-ADRB3	16	27566781	1194	#73af42	adrenoceptor beta 3	180	5	0	5	7	58	51	442979
-TP53	5	32633900	3742	#73af42	tumor protein p53	180	4	0	4	9	58	49	403869
-CTNNB1	23	10656868	13195	#73af42	catenin beta 1	180	0	3	-3	10	57	47	477032
-SPHK2	1	-1	-1	#73af42	sphingosine kinase 2	180	0	3	-3	10	57	47	484401
-TRPV4	26	18683516	20647	#73af42	transient receptor potential cation channel subfamily V member 4	180	0	3	-3	10	57	47	486308
-AGER	12	1575531	2855	#73af42	advanced glycosylation end-product specific receptor	180	0	4	-4	10	50	40	403168
-RPE65	6	77031835	23906	#73af42	retinoid isomerohydrolase RPE65	180	0	4	-4	10	50	40	403803
-PDGFRA	13	-1	-1	#73af42	platelet derived growth factor receptor alpha	180	0	4	-4	10	50	40	442860
-PHLPP1	1	-1	-1	#73af42	PH domain and leucine rich repeat protein phosphatase 1	180	0	4	-4	10	50	40	476179
-KDR	13	47729487	41625	#73af42	kinase insert domain receptor	180	0	4	-4	10	50	40	482154
-CTSA	24	33151886	6150	#73af42	cathepsin A	180	0	4	-4	10	50	40	611146
-FGFR1	16	-1	-1	#73af42	fibroblast growth factor receptor 1	180	0	4	-4	10	50	40	100856477
+ADRB3	16	27566781	1194	#73af42	adrenoceptor beta 3	180	5	0	5	7	59	52	442979
+TP53	5	32633900	3742	#73af42	tumor protein p53	180	4	0	4	10	59	49	403869
+CTNNB1	23	10656868	13195	#73af42	catenin beta 1	180	0	3	-3	11	58	47	477032
+SPHK2	1	-1	-1	#73af42	sphingosine kinase 2	180	0	3	-3	11	58	47	484401
+TRPV4	26	18683516	20647	#73af42	transient receptor potential cation channel subfamily V member 4	180	0	3	-3	11	58	47	486308
+AGER	12	1575531	2855	#73af42	advanced glycosylation end-product specific receptor	180	0	4	-4	11	51	40	403168
+RPE65	6	77031835	23906	#73af42	retinoid isomerohydrolase RPE65	180	0	4	-4	11	51	40	403803
+PDGFRA	13	-1	-1	#73af42	platelet derived growth factor receptor alpha	180	0	4	-4	11	51	40	442860
+PHLPP1	1	-1	-1	#73af42	PH domain and leucine rich repeat protein phosphatase 1	180	0	4	-4	11	51	40	476179
+KDR	13	47729487	41625	#73af42	kinase insert domain receptor	180	0	4	-4	11	51	40	482154
+CTSA	24	33151886	6150	#73af42	cathepsin A	180	0	4	-4	11	51	40	611146
+FGFR1	16	-1	-1	#73af42	fibroblast growth factor receptor 1	180	0	4	-4	11	51	40	100856477
+CLN5	22	30548135	7314	#73af42	CLN5 intracellular trafficking protein	180	5	5	0	7	25	18	485498
 JPH2	24	-1	-1	#73af42	junctophilin 2	180	5	5	0	7	25	18	610874
-PTGER4	4	68929030	13239	#73af42	prostaglandin E receptor 4	180	0	5	-5	10	25	15	403589
-CTLA4	37	12541354	6162	#73af42	cytotoxic T-lymphocyte associated protein 4	180	0	5	-5	10	25	15	403696
-NFKB1	32	24122163	117573	#73af42	nuclear factor kappa B subunit 1	180	0	5	-5	10	25	15	442859
-PDGFRB	4	59195608	35935	#73af42	platelet derived growth factor receptor beta	180	0	5	-5	10	25	15	442985
-PDGFB	10	26264832	18309	#73af42	platelet derived growth factor subunit B	180	0	5	-5	10	25	15	442986
-HMOX1	10	29255139	6820	#73af42	heme oxygenase 1	180	0	5	-5	10	25	15	442987
-CDKN1A	12	-1	-1	#73af42	cyclin dependent kinase inhibitor 1A	180	0	5	-5	10	25	15	474890
-CCDC66	20	33430153	44763	#73af42	coiled-coil domain containing 66	180	0	5	-5	10	25	15	476582
-ACSL5	28	-1	-1	#73af42	acyl-CoA synthetase long chain family member 5	180	0	5	-5	10	25	15	477820
-SUV39H2	2	-1	-1	#73af42	SUV39H2 histone lysine methyltransferase	180	0	5	-5	10	25	15	477995
-TTN	36	-1	-1	#73af42	titin	180	0	5	-5	10	25	15	478820
-LOC479668	5	-1	-1	#73af42	haptoglobin-like	180	0	5	-5	10	25	15	479668
-LCAT	5	-1	-1	#73af42	lecithin-cholesterol acyltransferase	180	0	5	-5	10	25	15	479680
-PDK4	14	-1	-1	#73af42	pyruvate dehydrogenase kinase 4	180	0	5	-5	10	25	15	482310
-CD274	1	93771527	18006	#73af42	CD274 molecule	180	0	5	-5	10	25	15	484186
-HAPLN1	3	-1	-1	#73af42	hyaluronan and proteoglycan link protein 1	180	0	5	-5	10	25	15	488921
-CNTNAP1	9	-1	-1	#73af42	contactin associated protein 1	180	0	5	-5	10	25	15	490960
-ITIH4	20	-1	-1	#73af42	inter-alpha-trypsin inhibitor heavy chain 4	180	0	5	-5	10	25	15	607088
-TYMS	7	67230668	9767	#73af42	thymidylate synthetase	180	0	5	-5	10	25	15	607417
-NCL	25	-1	-1	#73af42	nucleolin	180	0	5	-5	10	25	15	608445
-IGFBP5	37	-1	-1	#73af42	insulin like growth factor binding protein 5	180	0	5	-5	10	25	15	610316
-CDKN2A	11	-1	-1	#73af42	cyclin-dependent kinase inhibitor 2A	180	0	5	-5	10	25	15	100271861
-MKI67	28	-1	-1	#73af42	marker of proliferation Ki-67	180	0	5	-5	10	25	15	100686578
-NEFL	25	-1	-1	#73af42	neurofilament light chain	180	0	5	-5	10	25	15	100856220
+PTGER4	4	68929030	13239	#73af42	prostaglandin E receptor 4	180	0	5	-5	11	25	14	403589
+CTLA4	37	12541354	6162	#73af42	cytotoxic T-lymphocyte associated protein 4	180	0	5	-5	11	25	14	403696
+NFKB1	32	24122163	117573	#73af42	nuclear factor kappa B subunit 1	180	0	5	-5	11	25	14	442859
+PDGFRB	4	59195608	35935	#73af42	platelet derived growth factor receptor beta	180	0	5	-5	11	25	14	442985
+PDGFB	10	26264832	18309	#73af42	platelet derived growth factor subunit B	180	0	5	-5	11	25	14	442986
+HMOX1	10	29255139	6820	#73af42	heme oxygenase 1	180	0	5	-5	11	25	14	442987
+CDKN1A	12	-1	-1	#73af42	cyclin dependent kinase inhibitor 1A	180	0	5	-5	11	25	14	474890
+CCDC66	20	33430153	44763	#73af42	coiled-coil domain containing 66	180	0	5	-5	11	25	14	476582
+ACSL5	28	-1	-1	#73af42	acyl-CoA synthetase long chain family member 5	180	0	5	-5	11	25	14	477820
+SUV39H2	2	-1	-1	#73af42	SUV39H2 histone lysine methyltransferase	180	0	5	-5	11	25	14	477995
+TTN	36	-1	-1	#73af42	titin	180	0	5	-5	11	25	14	478820
+LOC479668	5	-1	-1	#73af42	haptoglobin-like	180	0	5	-5	11	25	14	479668
+LCAT	5	-1	-1	#73af42	lecithin-cholesterol acyltransferase	180	0	5	-5	11	25	14	479680
+PDK4	14	-1	-1	#73af42	pyruvate dehydrogenase kinase 4	180	0	5	-5	11	25	14	482310
+CD274	1	93771527	18006	#73af42	CD274 molecule	180	0	5	-5	11	25	14	484186
+HAPLN1	3	-1	-1	#73af42	hyaluronan and proteoglycan link protein 1	180	0	5	-5	11	25	14	488921
+CNTNAP1	9	-1	-1	#73af42	contactin associated protein 1	180	0	5	-5	11	25	14	490960
+ITIH4	20	-1	-1	#73af42	inter-alpha-trypsin inhibitor heavy chain 4	180	0	5	-5	11	25	14	607088
+TYMS	7	67230668	9767	#73af42	thymidylate synthetase	180	0	5	-5	11	25	14	607417
+NCL	25	-1	-1	#73af42	nucleolin	180	0	5	-5	11	25	14	608445
+IGFBP5	37	-1	-1	#73af42	insulin like growth factor binding protein 5	180	0	5	-5	11	25	14	610316
+CDKN2A	11	-1	-1	#73af42	cyclin-dependent kinase inhibitor 2A	180	0	5	-5	11	25	14	100271861
+MKI67	28	-1	-1	#73af42	marker of proliferation Ki-67	180	0	5	-5	11	25	14	100686578
+NEFL	25	-1	-1	#73af42	neurofilament light chain	180	0	5	-5	11	25	14	100856220
 GSTP1	18	50040622	3016	#73af42	glutathione S-transferase pi 1	180	6	6	0	4	10	6	476005
 TG	13	29431959	248645	#73af42	thyroglobulin	180	6	6	0	4	10	6	482047
 VDR	27	-1	-1	#73af42	vitamin D receptor	180	6	6	0	4	10	6	486588
-COL7A1	20	40242306	30500	#73af42	collagen type VII alpha 1 chain	180	0	6	-6	10	10	0	403467
-COL6A1	31	-1	-1	#73af42	collagen type VI alpha 1 chain	180	0	6	-6	10	10	0	403668
 KIT	13	47394262	81492	#73af42	KIT proto-oncogene, receptor tyrosine kinase	180	7	7	0	2	2	0	403811
 MITF	20	21572611	31104	#73af42	melanocyte inducing transcription factor	180	8	9	-1	1	1	0	415126
-P2RX4	26	-1	-1	#73af42	purinergic receptor P2X 4	180	0	6	-6	10	10	0	448783
-BRCA2	25	7730811	63355	#73af42	BRCA2 DNA repair associated	180	0	6	-6	10	10	0	474180
-CYB5R3	10	23282809	27947	#73af42	cytochrome b5 reductase 3	180	0	6	-6	10	10	0	474479
-KLF7	37	-1	-1	#73af42	Kruppel like factor 7	180	0	6	-6	10	10	0	478885
-RGN	X	-1	-1	#73af42	regucalcin	180	0	6	-6	10	10	0	480893
-RAB19	16	-1	-1	#73af42	RAB19, member RAS oncogene family	180	0	6	-6	10	10	0	482767
-P2RY2	21	-1	-1	#73af42	purinergic receptor P2Y2	180	0	6	-6	10	10	0	485203
-LOC486151	25	-1	-1	#73af42	thiamine transporter 2	180	0	6	-6	10	10	0	486151
-ANK2	32	-1	-1	#73af42	ankyrin 2	180	0	6	-6	10	10	0	487908
-PRL	35	20591756	9976	#73af42	prolactin	180	0	6	-6	10	10	0	488241
 LHX3	9	48905665	5394	#73af42	LIM homeobox 3	180	7	7	0	2	2	0	607584
-IL4	11	20477129	8856	#73af42	interleukin 4	180	0	7	-7	10	2	-8	403785
-IL2	19	17821680	5604	#73af42	interleukin 2	180	0	7	-7	10	2	-8	403989
-NRG3	4	-1	-1	#73af42	neuregulin 3	180	0	7	-7	10	2	-8	479263
-ERBB4	37	-1	-1	#73af42	erb-b2 receptor tyrosine kinase 4	180	0	7	-7	10	2	-8	488508
-MC1R	5	63942798	953	#73af42	melanocortin 1 receptor	180	0	7	-7	10	2	-8	489652
-NR5A1	9	-1	-1	#73af42	nuclear receptor subfamily 5 group A member 1	180	0	7	-7	10	2	-8	119863935
+COL7A1	20	40242306	30500	#73af42	collagen type VII alpha 1 chain	180	0	6	-6	11	10	-1	403467
+COL6A1	31	-1	-1	#73af42	collagen type VI alpha 1 chain	180	0	6	-6	11	10	-1	403668
+P2RX4	26	-1	-1	#73af42	purinergic receptor P2X 4	180	0	6	-6	11	10	-1	448783
+BRCA2	25	7730811	63355	#73af42	BRCA2 DNA repair associated	180	0	6	-6	11	10	-1	474180
+CYB5R3	10	23282809	27947	#73af42	cytochrome b5 reductase 3	180	0	6	-6	11	10	-1	474479
+KLF7	37	-1	-1	#73af42	Kruppel like factor 7	180	0	6	-6	11	10	-1	478885
+RGN	X	-1	-1	#73af42	regucalcin	180	0	6	-6	11	10	-1	480893
+RAB19	16	-1	-1	#73af42	RAB19, member RAS oncogene family	180	0	6	-6	11	10	-1	482767
+P2RY2	21	-1	-1	#73af42	purinergic receptor P2Y2	180	0	6	-6	11	10	-1	485203
+LOC486151	25	-1	-1	#73af42	thiamine transporter 2	180	0	6	-6	11	10	-1	486151
+ANK2	32	-1	-1	#73af42	ankyrin 2	180	0	6	-6	11	10	-1	487908
+PRL	35	20591756	9976	#73af42	prolactin	180	0	6	-6	11	10	-1	488241
+IL4	11	20477129	8856	#73af42	interleukin 4	180	0	7	-7	11	2	-9	403785
+IL2	19	17821680	5604	#73af42	interleukin 2	180	0	7	-7	11	2	-9	403989
+NRG3	4	-1	-1	#73af42	neuregulin 3	180	0	7	-7	11	2	-9	479263
+ERBB4	37	-1	-1	#73af42	erb-b2 receptor tyrosine kinase 4	180	0	7	-7	11	2	-9	488508
+MC1R	5	63942798	953	#73af42	melanocortin 1 receptor	180	0	7	-7	11	2	-9	489652
+NR5A1	9	-1	-1	#73af42	nuclear receptor subfamily 5 group A member 1	180	0	7	-7	11	2	-9	119863935

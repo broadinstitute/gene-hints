@@ -81,6 +81,7 @@ def merge_hints(citations_path, views_path, output_path):
     merged_headers = merge_headers(citations_headers, views_headers)
 
     dict_to_tsv(merged_dict, merged_headers, output_path)
+    print("Output TSV for human gene views and citations to: " + output_path)
 
 # Command-line handler
 if __name__ == "__main__":
