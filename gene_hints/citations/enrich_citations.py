@@ -345,6 +345,7 @@ if __name__ == "__main__":
         type=int,
         help="Days in the timeframe"
     )
+    parser.add_argument(
     args = parser.parse_args()
     pmid_dates_path = args.pmid_dates_path
     prev_pmid_dates_path = args.prev_pmid_dates_path

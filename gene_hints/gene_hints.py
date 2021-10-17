@@ -8,15 +8,15 @@ from views.views import Views
 from merge_hints import merge_hints
 
 class GeneHints():
-    def __init__(self, num_days, excludes=None):
+    def __init__(self, num_days, only=None):
         self.num_days = num_days
-        self.excludes = excludes
+        self.only = only
 
     def fetch_hints(self):
-        excludes = self.excludes
-        if not excludes or "views" not in excludes:
+        only = self.only
+        if not only or "views" not in only:
             Views().run()
-        if not excludes or "citations" not in excludes:
+        if not only or "citations" not in only:
             Citations().run(self.num_days)
 
     def run(self):
@@ -49,13 +49,13 @@ if __name__ == "__main__":
         default=180
     )
     parser.add_argument(
-        "--excludes",
+        "--only",
         nargs="*",
-        help="Data types to exclude",
+        help="Data types to include",
         choices=["views", "citations"]
     )
     args = parser.parse_args()
     num_days = args.num_days
-    excludes = args.excludes
+    only = args.only
 
-    GeneHints(num_days, excludes).run()
+    GeneHints(num_days, only).run()
