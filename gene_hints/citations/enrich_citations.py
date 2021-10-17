@@ -3,15 +3,10 @@
 Inspired by https://github.com/pkerpedjiev/gene-citation-counts
 """
 
-import os
 import csv
 import argparse
 
 from lib import read_organisms
-
-# cites_dir = './pubmed_citations/'
-# data_dir = cites_dir + 'data/'
-
 
 def get_pmids_with_genes_in_timeframe(genes_by_pmid, pmid_dates_path):
     """Return PMIDs in genes_by_pmid that were published in a timeframe
@@ -63,15 +58,6 @@ def rank_counts(counts_by_key):
         ranks_by_key[key] = ranks_by_count[count]
 
     return ranks_by_key
-
-def parse_gtf_info_key(gtf_info, key):
-    """Extract value from an unparsed GTF "info" string
-
-    key example: "gene_id"
-    """
-    start_index = gtf_info.find(key) + len(key + ' "')
-    end_index = gtf_info[start_index:].find('"') + start_index
-    return gtf_info[start_index:end_index]
 
 def sort_genes(gene_dict, key):
     """Return list of genes ordered by key, in descending order
@@ -219,8 +205,6 @@ class EnrichCitations():
                 # Genomic data, from gene_info_file
                 gene_id = str(row[1])
                 symbol = str(row[2])
-                chromosome = str(row[6])
-                full_name = str(row[8])
 
                 if (
                     gene_id not in cites_by_gene and
@@ -241,64 +225,13 @@ class EnrichCitations():
 
                 enriched_genes[symbol] = {
                     "symbol": symbol,
-                    "gene_id": gene_id,
-                    "chromosome": chromosome,
-                    "full_name": full_name,
                     "cites": cites,
-                    "prev_cites": prev_cites,
                     "cite_delta": cite_delta,
                     "cite_rank": cite_rank,
-                    "prev_cite_rank": prev_cite_rank,
                     "cite_rank_delta": cite_rank_delta
                 }
 
         return enriched_genes
-
-    def add_coordinates(self, organism, genes_by_symbol):
-        """Add genomic coordinates for each gene
-        """
-
-        organism_dir = self.data_dir + organism
-
-        for file in os.listdir(organism_dir):
-            # Since the reference file is uniquely named and could not be
-            # hard-coded, this will filter out files that are not .gtf files to
-            # read the reference file
-            if not file.endswith(".gtf"):
-                continue
-
-            # This file has no headers so here's an example instead:
-            #chr6    refGene transcript      26086290        26091034        .       -       .       gene_id "LOC108783645"; transcript_id "NR_144383";  gene_name "LOC108783645";
-            # which parses to:
-            #['chr6', 'refGene', 'transcript', '26086290', '26091034', '.', '-', '.', 'gene_id "LOC108783645"; transcript_id "NR_144383";  gene_name "LOC108783645";']
-            org_geneinfo = f"{organism_dir}/{file}"
-            with open(org_geneinfo) as fd:
-                rd = csv.reader(fd, delimiter='\t')
-                for row in rd:
-                    # File lacks column headers so these are guesses based on the data
-                    # E.g.: transcript, exon, 3utr, cds ...
-                    type = str(row[2])
-                    if type != "transcript":
-                        continue
-
-                    info = str(row[8])
-                    symbol = parse_gtf_info_key(info, "gene_id")
-                    if symbol not in genes_by_symbol:
-                        # print('symbol not in genes_by_symbol', symbol)
-                        continue
-                    start_coordinate = int(row[3])
-                    end_coordinate = int(row[4])
-                    coordinate_length = abs(end_coordinate - start_coordinate)
-
-                    genes_by_symbol[symbol].update({
-                        "start_coordinate": start_coordinate,
-                        "coordinate_length": coordinate_length,
-                    })
-
-        # print('genes_by_symbol with coordinates')
-        # print( next(iter( genes_by_symbol.items() )) )
-
-        return genes_by_symbol
 
     def save_to_file(self, sorted_genes_list, organism, num_days):
         """Write TSV file that combines citation and genomic data
@@ -311,11 +244,8 @@ class EnrichCitations():
             tsv_writer = csv.writer(f, delimiter="\t")
 
             header = [
-                "# gene",
-                "chromosome", "start", "length", "color",
-                "full_name", "days_in_timeframe",
-                "cites", "prev_cites", "cite_delta", "cite_rank",
-                "prev_cite_rank", "cite_rank_delta", "gene_id",
+                "# gene", "days", "cites", "cite_delta", "cite_rank",
+                "cite_rank_delta"
             ]
             # Add header row to the TSV
             tsv_writer.writerow(header)
@@ -326,30 +256,14 @@ class EnrichCitations():
                 # Add the gene information to the TSV
                 symbol = item[0]
                 gene = item[1]
-                gene_id = gene["gene_id"]
-                chromosome = gene["chromosome"]
-                # print('gene', gene)
-                if "start_coordinate" in gene:
-                    start = gene["start_coordinate"]
-                    length = gene["coordinate_length"]
-                else:
-                    no_coordinates.append(symbol)
-                    start = -1
-                    length = -1
-                color = "#73af42"
-                full_name = gene["full_name"]
                 cites = gene["cites"]
-                prev_cites = gene["prev_cites"]
                 cite_delta = gene["cite_delta"]
                 cite_rank = gene["cite_rank"]
-                prev_cite_rank = gene["prev_cite_rank"]
                 cite_rank_delta = gene["cite_rank_delta"]
                 row = [
-                    symbol,
-                    chromosome, start, length, color,
-                    full_name, num_days, cites, prev_cites,
-                    cite_delta, cite_rank, prev_cite_rank,
-                    cite_rank_delta, gene_id
+                    symbol, num_days, cites,
+                    cite_delta, cite_rank,
+                    cite_rank_delta
                 ]
                 row = [str(item) for item in row]
                 rows.append(row)
@@ -402,9 +316,7 @@ class EnrichCitations():
                 prev_cite_rank
             )
 
-            mapped_genes = self.add_coordinates(organism, enriched_genes)
-
-            cite_hints = sort_genes(mapped_genes, "cite_rank_delta")
+            cite_hints = sort_genes(enriched_genes, "cite_rank_delta")
 
             self.save_to_file(cite_hints, organism, num_days)
 
