@@ -1,14 +1,13 @@
 # gene	chromosome	start	length	color	full_name	days_in_timeframe	cites	prev_cites	cite_delta	cite_rank	prev_cite_rank	cite_rank_delta	gene_id
-UGDH	B1	-1	-1	#73af42	UDP-glucose 6-dehydrogenase	180	0	4	-4	2	8	6	101083081
-PRNP	A3	-1	-1	#73af42	prion protein	180	0	4	-4	2	8	6	101087310
-C5	D4	-1	-1	#73af42	complement C5	180	0	4	-4	2	8	6	101090401
-IGIP	A1	-1	-1	#73af42	IgA inducing protein	180	0	4	-4	2	8	6	101092824
-FBXW7	B1	-1	-1	#73af42	F-box and WD repeat domain containing 7	180	0	4	-4	2	8	6	101096146
-ALMS1	A3	-1	-1	#73af42	ALMS1 centrosome and basal body associated protein	180	0	4	-4	2	8	6	101098372
-TGFB1	E2	-1	-1	#73af42	transforming growth factor beta 1	180	0	5	-5	2	7	5	768263
-ORM2	D4	-1	-1	#73af42	orosomucoid 2	180	0	6	-6	2	4	2	100144393
-MKI67	D2	-1	-1	#73af42	marker of proliferation Ki-67	180	0	6	-6	2	4	2	101084831
-RGN	X	-1	-1	#73af42	regucalcin	180	0	6	-6	2	4	2	101096640
-MYBPC3	D1	-1	-1	#73af42	myosin binding protein C3	180	7	7	0	1	1	0	101094698
-MYH7	B3	-1	-1	#73af42	myosin heavy chain 7	180	7	7	0	1	1	0	101096736
+MYBPC3	D1	-1	-1	#73af42	myosin binding protein C3	180	7	0	7	1	6	5	101094698
+MYH7	B3	-1	-1	#73af42	myosin heavy chain 7	180	7	0	7	1	6	5	101096736
+UGDH	B1	-1	-1	#73af42	UDP-glucose 6-dehydrogenase	180	0	4	-4	2	5	3	101083081
+PRNP	A3	-1	-1	#73af42	prion protein	180	0	4	-4	2	5	3	101087310
+C5	D4	-1	-1	#73af42	complement C5	180	0	4	-4	2	5	3	101090401
+IGIP	A1	-1	-1	#73af42	IgA inducing protein	180	0	4	-4	2	5	3	101092824
+FBXW7	B1	-1	-1	#73af42	F-box and WD repeat domain containing 7	180	0	4	-4	2	5	3	101096146
+ALMS1	A3	-1	-1	#73af42	ALMS1 centrosome and basal body associated protein	180	0	4	-4	2	5	3	101098372
+TGFB1	E2	-1	-1	#73af42	transforming growth factor beta 1	180	0	5	-5	2	4	2	768263
+MKI67	D2	-1	-1	#73af42	marker of proliferation Ki-67	180	0	6	-6	2	2	0	101084831
+RGN	X	-1	-1	#73af42	regucalcin	180	0	6	-6	2	2	0	101096640
 APOBEC3Z3	B4	134878275	2309	#73af42	apolipoprotein B mRNA editing enzyme, catalytic polypeptide-like 3Z3	180	0	7	-7	2	1	-1	100127022
