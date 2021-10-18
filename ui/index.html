@@ -398,7 +398,9 @@
         const pubmedCitations = {
           days: parseInt(columnsInRow[1]), // days_in_timeframe
           count: parseInt(columnsInRow[2]), // cites
-          delta: parseInt(columnsInRow[3]) // cites_delta
+          delta: parseInt(columnsInRow[3]), // cite_delta
+          rank: parseInt(columnsInRow[4]), // cite_rank
+          rankDelta: parseInt(columnsInRow[5]), // cite_rank_delta
         };
 
         _trendsByGene[gene] = {pubmedCitations};
@@ -408,12 +410,37 @@
           const wikipediaViews = {
             count: parseInt(columnsInRow[6]), // views
             delta: parseInt(columnsInRow[7]), // views_delta
+            rank: parseInt(columnsInRow[8]), // views_rank
+            rankDelta: parseInt(columnsInRow[9]), // views_rank_delta
           }
           _trendsByGene[gene].wikipediaViews = wikipediaViews
         }
       });
 
       return _trendsByGene;
+    }
+
+    // From https://stackoverflow.com/a/31615643
+    function getNumberWithOrdinal(n) {
+      var s = ["th", "st", "nd", "rd"],
+          v = n % 100;
+      return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    }
+
+    function getPopularityHeader(source, pubmed) {
+      const style = 'style="text-decoration: underline dashed #BBB;"'
+
+      let name
+      let hoverTitle
+      if (source === 'pubmed') {
+        name = 'Citations'
+        hoverTitle = `Citations in PubMed over ${pubmed.days} days`
+      } else {
+        name = 'Views'
+        hoverTitle = 'Page views in Wikipedia over 24 hours'
+      }
+
+      return `<span ${style} title="${hoverTitle}">${name}</span>:`
     }
 
     function formatDelta(delta) {
@@ -442,21 +469,29 @@
           const annot = ideogram.annotDescriptions.annots[gene]
 
           const trendsHeader =
-            `<div style="font-weight: bold">Recent trends</div>`
+            `<div style="font-weight: bold">Popularity</div>`
+
 
           const pmDelta = formatDelta(pubmed.delta)
+          const pmRank = getNumberWithOrdinal(pubmed.rank)
+          const pmHeader = getPopularityHeader('pubmed', pubmed)
+
           let padding = '<br/><br/>';
           if (annot.description === '') padding = '' // Don't double-pad search gene
           let newDesc =
             `${annot.description}${padding}` +
             trendsHeader +
-            `Citations in PubMed: ${pubmed.count} ${pmDelta}`;
+            `${pmHeader} ${pubmed.count} ${pmDelta}`;
+            // `${pmRank} in citations`;
 
           if ('wikipediaViews' in trendsByGene[gene]) {
             const wikipedia = trendsByGene[gene].wikipediaViews
             const wpDelta = formatDelta(wikipedia.delta)
+            const wpRank = getNumberWithOrdinal(wikipedia.rank)
+            const wpHeader = getPopularityHeader('wikipedia')
             newDesc +=
-              `<br/>Views in Wikipedia: ${wikipedia.count} ${wpDelta}`
+              `<br/>${wpHeader} ${wikipedia.count} ${wpDelta}`
+              // `, ${wpRank} in views`
           }
 
           annot.description = newDesc
