@@ -436,6 +436,8 @@
         }
       });
 
+      console.log('_trendsByGene', _trendsByGene)
+      window._trendsByGene = _trendsByGene
       return _trendsByGene;
     }
 
@@ -447,15 +449,18 @@
     }
 
     function getPopularityHeader(source, meta) {
-      const style = 'style="text-decoration: underline dashed #BBB;"'
+      // const style = 'style="text-decoration: underline dashed #BBB;"'
+      const style = ''
 
       let name
       let hoverTitle
       if (source === 'pubmed') {
-        name = 'Citations'
+        // name = 'Citations'
+        name = 'Citations in PubMed'
         hoverTitle = `Citations in PubMed over ${meta.cite_days} days`
       } else {
-        name = 'Views'
+        // name = 'Views'
+        name = 'Views in Wikipedia'
         hoverTitle = 'Page views in Wikipedia over 24 hours'
       }
 
@@ -477,8 +482,21 @@
       return `(<span style="${style}">${arrow}</span> ${Math.abs(deltaInt)})`
     }
 
+    // TODO: Remove this kludge
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     async function setTrends() {
+
+      // TODO: Remove this kludge
+      const numDescriptions = Object.keys(ideogram.annotDescriptions.annots).length
+      if (numDescriptions !== ideogram.relatedAnnots.length) {
+        await sleep(200)
+      }
+
       showIdeogram()
+
       const trendsByGene = await fetchTrendsByGene()
 
       // const updatedAnnots = {}
@@ -488,8 +506,8 @@
           const annot = ideogram.annotDescriptions.annots[gene]
 
           const trendsHeader =
-            `<div style="font-weight: bold">Popularity</div>`
-
+            // `<div style="font-weight: bold">Popularity</div>`
+            `<div style="font-weight: bold">Recent trends</div>`
 
           const pmDelta = formatDelta(pubmed.delta)
           const pmRank = getNumberWithOrdinal(pubmed.rank)
@@ -509,10 +527,10 @@
             const wpRank = getNumberWithOrdinal(wikipedia.rank)
             const wpHeader = getPopularityHeader('wikipedia')
             newDesc +=
+              // `<br/>${wpHeader} ${wikipedia.count} ${wpDelta}`
               `<br/>${wpHeader} ${wikipedia.count} ${wpDelta}`
               // `, ${wpRank} in views`
           }
-
           annot.description = newDesc
           ideogram.annotDescriptions.annots[gene] = annot
         }
