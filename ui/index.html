@@ -405,11 +405,11 @@
 
         if (ideogram.config.organism === 'homo-sapiens') {
           const wpDelta = parseInt(columnsInRow[12]) - parseInt(columnsInRow[11])
-          const wikipediaPageViews = {
+          const wikipediaViews = {
             count: parseInt(columnsInRow[6]), // views
             delta: parseInt(columnsInRow[7]), // views_delta
           }
-          _trendsByGene[gene].wikipediaPageViews = wikipediaPageViews
+          _trendsByGene[gene].wikipediaViews = wikipediaViews
         }
       });
 
@@ -428,7 +428,7 @@
         color = 'green'
       }
       const style = `font-weight: bold; color:${color}`
-      return `(<span style="${style}">${arrow}</span> ${delta})`
+      return `(<span style="${style}">${arrow}</span> ${Math.abs(deltaInt)})`
     }
 
     async function setTrends() {
@@ -452,11 +452,11 @@
             trendsHeader +
             `Citations in PubMed: ${pubmed.count} ${pmDelta}`;
 
-          if ('wikipediaPageViews' in trendsByGene[gene]) {
-            const wikipedia = trendsByGene[gene].wikipediaPageViews
+          if ('wikipediaViews' in trendsByGene[gene]) {
+            const wikipedia = trendsByGene[gene].wikipediaViews
             const wpDelta = formatDelta(wikipedia.delta)
             newDesc +=
-              `<br/>Page views in Wikipedia: ${wikipedia.count} ${wpDelta}`
+              `<br/>Views in Wikipedia: ${wikipedia.count} ${wpDelta}`
           }
 
           annot.description = newDesc
