@@ -8,8 +8,9 @@ from views.views import Views
 from merge_hints import merge_hints
 
 class GeneHints():
-    def __init__(self, num_days, only=None):
+    def __init__(self, num_days, sort_by="count", only=None):
         self.num_days = num_days
+        self.sort_by = sort_by
         self.only = only
 
     def fetch_hints(self):
@@ -17,7 +18,7 @@ class GeneHints():
         if not only or "views" not in only:
             Views().run()
         if not only or "citations" not in only:
-            Citations().run(self.num_days)
+            Citations().run(self.num_days, self.sort_by)
 
     def run(self):
         """Output TSVs gene popularity by Wikipedia views and PubMed citations
@@ -54,8 +55,15 @@ if __name__ == "__main__":
         help="Data types to include",
         choices=["views", "citations"]
     )
+    parser.add_argument(
+        "--sort-by",
+        help="Metric by which to sort PubMed citations",
+        choices=["count", "delta", "rank", "rank_delta"],
+        default="count"
+    )
     args = parser.parse_args()
     num_days = args.num_days
+    sort_by = args.sort_by
     only = args.only
 
-    GeneHints(num_days, only).run()
+    GeneHints(num_days, sort_by, only).run()

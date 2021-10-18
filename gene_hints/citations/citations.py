@@ -196,7 +196,7 @@ class Citations():
         # TODO: Is data parsed from gene_info available in UCSC GTF files?
         self.fetch_gene_info(organisms)
 
-    def run(self, num_days):
+    def run(self, num_days, sort_by="count"):
         """Output TSV of gene citation counts and related metrics over `num_days`
         """
 
@@ -207,7 +207,9 @@ class Citations():
         self.download_data(pmid_dates_path, prev_pmid_dates_path, num_days)
 
         # Combine that downloaded data, compute statistics, and write to TSV
-        EnrichCitations().run(pmid_dates_path, prev_pmid_dates_path, num_days)
+        EnrichCitations().run(
+            pmid_dates_path, prev_pmid_dates_path, num_days, sort_by
+        )
 
 # Command-line handler
 if __name__ == "__main__":
@@ -221,7 +223,14 @@ if __name__ == "__main__":
         help="Number of days to analyze",
         default=180
     )
+    parser.add_argument(
+        "--sort-by",
+        help="Metric by which to sort PubMed citations",
+        choices=["count", "delta", "rank", "rank_delta"],
+        default="count"
+    )
     args = parser.parse_args()
     num_days = args.num_days
+    sort_by = args.sort_by
 
-    Citations().run(num_days)
+    Citations().run(num_days, sort_by)

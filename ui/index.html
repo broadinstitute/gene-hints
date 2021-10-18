@@ -375,10 +375,14 @@
       const _trendsByGene = {};
 
       const organism = ideogram.config.organism
-      let citesUrl = `../data/${organism}-citation-information.tsv`
+      let citesUrl = `../data/${organism}-pubmed-citations.tsv`
       if (organism === 'homo-sapiens') {
-        citesUrl = '../data/homo-sapiens-gene-details.tsv';
+        citesUrl = '../data/homo-sapiens-gene-hints.tsv';
       }
+      // let citesUrl = `../data/${organism}-pubmed-citations_no-coordinates.tsv`
+      // if (organism === 'homo-sapiens') {
+      //   citesUrl = '../data/homo-sapiens-gene-hints_no-coordinates.tsv';
+      // }
       const response = await fetch(citesUrl);
       const data = await response.text();
       const lines = data.split('\n');
@@ -392,9 +396,9 @@
         // gene_symbol	chromosome	start	length	color	full_name	days_in_timeframe	recent_timeframe_citation_count	prior_timeframe_citation_count	citation_count_delta	significance
         const gene = columnsInRow[0];
         const pubmedCitations = {
-          days: parseInt(columnsInRow[6]), // days_in_timeframe
-          count: parseInt(columnsInRow[7]), // prior_timeframe_citation_count
-          delta: parseInt(columnsInRow[9]) // citation_count_delta
+          days: parseInt(columnsInRow[1]), // days_in_timeframe
+          count: parseInt(columnsInRow[2]), // cites
+          delta: parseInt(columnsInRow[3]) // cites_delta
         };
 
         _trendsByGene[gene] = {pubmedCitations};
@@ -402,8 +406,8 @@
         if (ideogram.config.organism === 'homo-sapiens') {
           const wpDelta = parseInt(columnsInRow[12]) - parseInt(columnsInRow[11])
           const wikipediaPageViews = {
-            count: parseInt(columnsInRow[11]), // wikipedia_daily_page_views
-            delta: wpDelta // wikipedia_daily_page_views_change_from_previous_day
+            count: parseInt(columnsInRow[6]), // views
+            delta: parseInt(columnsInRow[7]), // views_delta
           }
           _trendsByGene[gene].wikipediaPageViews = wikipediaPageViews
         }

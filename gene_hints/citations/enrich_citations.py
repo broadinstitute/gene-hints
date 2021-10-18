@@ -279,10 +279,19 @@ class EnrichCitations():
         print(f"Wrote { len(rows) } gene citation hints to {output_path}")
         pretty_print_table(rows, 10)
 
-    def run(self, pmid_dates_path, prev_pmid_dates_path, num_days):
+    def run(
+        self, pmid_dates_path, prev_pmid_dates_path, num_days, sort_by="count"
+    ):
         """Construct cite hints, write to TSV.  Intended for use in other modules.
         """
         organisms = read_organisms()
+        sort_map = {
+            "count": "cites",
+            "delta": "cite_delta",
+            "rank": "cite_rank",
+            "rank_delta": "cite_rank_delta"
+        }
+        sort_key = sort_map[sort_by]
 
         for org in organisms:
             organism = org["scientific_name"]
@@ -316,7 +325,7 @@ class EnrichCitations():
                 prev_cite_rank
             )
 
-            cite_hints = sort_genes(enriched_genes, "cite_rank_delta")
+            cite_hints = sort_genes(enriched_genes, sort_key)
 
             self.save_to_file(cite_hints, organism, num_days)
 
@@ -346,10 +355,16 @@ if __name__ == "__main__":
         help="Days in the timeframe"
     )
     parser.add_argument(
+        "--sort-by",
+        help="Metric by which to sort PubMed citations",
+        choices=["count", "delta", "rank", "rank_delta"],
+        default="count"
+    )
     args = parser.parse_args()
     pmid_dates_path = args.pmid_dates_path
     prev_pmid_dates_path = args.prev_pmid_dates_path
     num_days = args.num_days
+    sort_by = args.sort_by
 
     enrich_citations = EnrichCitations()
-    enrich_citations.run(pmid_dates_path, prev_pmid_dates_path, num_days)
+    enrich_citations.run(pmid_dates_path, prev_pmid_dates_path, num_days, sort_by)
