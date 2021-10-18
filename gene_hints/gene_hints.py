@@ -14,6 +14,9 @@ class GeneHints():
         self.only = only
         self.debug = debug
 
+        if self.num_days == 180 and self.debug == True:
+            self.num_days = 2
+
     def call_subpipelines(self):
         only = self.only
         if not only or "views" in only:
@@ -47,7 +50,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--num-days",
         type=int,
-        help="Number of days to analyze",
+        help="Number of days to analyze.",
         default=180
     )
     parser.add_argument(
