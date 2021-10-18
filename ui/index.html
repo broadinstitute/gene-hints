@@ -372,7 +372,9 @@
 
 
     async function fetchTrendsByGene() {
-      const _trendsByGene = {};
+      const _trendsByGene = {
+        meta: {}
+      };
 
       const organism = ideogram.config.organism
       let citesUrl = `../data/${organism}-pubmed-citations.tsv`
@@ -390,28 +392,45 @@
       console.log('table', table);
 
       table.forEach(columnsInRow => {
-        if (columnsInRow[0][0] === '#') return; // Skip header
+        if (columnsInRow[0][0] === '#') {
+          if (columnsInRow[0][1] === '#') {
+            // Parse meta-information lines
+            const meta1 = columnsInRow[0].split('##')[1].trim()
+
+            // e.g. cite_days=2
+            const keyValue = meta1.split('=')
+            _trendsByGene.meta[keyValue[0]] = keyValue[1]
+          } else {
+            return; // Skip column headers
+          }
+        }
 
         // eslint-disable-next-line
-        // gene_symbol	chromosome	start	length	color	full_name	days_in_timeframe	recent_timeframe_citation_count	prior_timeframe_citation_count	citation_count_delta	significance
+        //
+        // human format:
+        // ## cite_days=2
+        // # gene	cites	cite_delta	cite_rank	cite_rank_delta	views	view_delta	view_rank	view_rank_delta
+        //
+        // non-human format:
+        // ## cite_days=2
+        // # gene	cites	cite_delta	cite_rank	cite_rank_delta
         const gene = columnsInRow[0];
         const pubmedCitations = {
-          days: parseInt(columnsInRow[1]), // days_in_timeframe
-          count: parseInt(columnsInRow[2]), // cites
-          delta: parseInt(columnsInRow[3]), // cite_delta
-          rank: parseInt(columnsInRow[4]), // cite_rank
-          rankDelta: parseInt(columnsInRow[5]), // cite_rank_delta
+          count: parseInt(columnsInRow[1]), // cites
+          delta: parseInt(columnsInRow[2]), // cite_delta
+          rank: parseInt(columnsInRow[3]), // cite_rank
+          rankDelta: parseInt(columnsInRow[4]), // cite_rank_delta
         };
 
         _trendsByGene[gene] = {pubmedCitations};
 
         if (ideogram.config.organism === 'homo-sapiens') {
-          const wpDelta = parseInt(columnsInRow[12]) - parseInt(columnsInRow[11])
+          const wpDelta = parseInt(columnsInRow[11]) - parseInt(columnsInRow[11])
           const wikipediaViews = {
-            count: parseInt(columnsInRow[6]), // views
-            delta: parseInt(columnsInRow[7]), // views_delta
-            rank: parseInt(columnsInRow[8]), // views_rank
-            rankDelta: parseInt(columnsInRow[9]), // views_rank_delta
+            count: parseInt(columnsInRow[5]), // views
+            delta: parseInt(columnsInRow[6]), // views_delta
+            rank: parseInt(columnsInRow[7]), // views_rank
+            rankDelta: parseInt(columnsInRow[8]), // views_rank_delta
           }
           _trendsByGene[gene].wikipediaViews = wikipediaViews
         }
@@ -427,14 +446,14 @@
       return n + (s[(v - 20) % 10] || s[v] || s[0]);
     }
 
-    function getPopularityHeader(source, pubmed) {
+    function getPopularityHeader(source, meta) {
       const style = 'style="text-decoration: underline dashed #BBB;"'
 
       let name
       let hoverTitle
       if (source === 'pubmed') {
         name = 'Citations'
-        hoverTitle = `Citations in PubMed over ${pubmed.days} days`
+        hoverTitle = `Citations in PubMed over ${meta.cite_days} days`
       } else {
         name = 'Views'
         hoverTitle = 'Page views in Wikipedia over 24 hours'
@@ -474,7 +493,7 @@
 
           const pmDelta = formatDelta(pubmed.delta)
           const pmRank = getNumberWithOrdinal(pubmed.rank)
-          const pmHeader = getPopularityHeader('pubmed', pubmed)
+          const pmHeader = getPopularityHeader('pubmed', trendsByGene.meta)
 
           let padding = '<br/><br/>';
           if (annot.description === '') padding = '' // Don't double-pad search gene
