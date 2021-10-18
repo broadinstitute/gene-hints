@@ -54,7 +54,7 @@ def pmids_by_date(
         # Call NCBI E-utils / Entrez API
         # https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.mindate_maxdate
         link = f"{eutils_base}&mindate={date}&maxdate={date}&retmax=100000"
-        time.sleep(1)
+        time.sleep(1.5)
         fin = ur.urlopen(link)
 
         # Parse the result

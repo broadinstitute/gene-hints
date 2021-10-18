@@ -1,0 +1,929 @@
+# gene	chromosome	start	length	color	full_name	days_in_timeframe	cites	prev_cites	cite_delta	cite_rank	prev_cite_rank	cite_rank_delta	gene_id
+Mir485	6	133885299	78	#73af42	microRNA 485	180	8	0	8	10	892	882	100314086
+Tgfb3	6	109913757	21776	#73af42	transforming growth factor, beta 3	180	7	0	7	22	892	870	25717
+Erbb4	9	75021808	1157128	#73af42	erb-b2 receptor tyrosine kinase 4	180	7	0	7	22	892	870	59323
+Vegfc	16	40440371	114807	#73af42	vascular endothelial growth factor C	180	7	0	7	22	892	870	114111
+Kcnq3	7	106714479	295160	#73af42	potassium voltage-gated channel subfamily Q member 3	180	6	0	6	73	892	819	29682
+Kcnq2	3	176589906	55045	#73af42	potassium voltage-gated channel subfamily Q member 2	180	6	0	6	73	892	819	170848
+Adipoq	11	81330845	13643	#73af42	adiponectin, C1Q and collagen domain containing	180	6	0	6	73	892	819	246253
+Slc9a8	3	164174357	47970	#73af42	solute carrier family 9 member A8	180	6	0	6	73	892	819	311651
+Tslp	18	-1	-1	#73af42	thymic stromal lymphopoietin	180	6	0	6	73	892	819	688621
+Egfr	14	99919485	179309	#73af42	epidermal growth factor receptor	180	5	0	5	182	892	710	24329
+Cpt2	5	127505646	17370	#73af42	carnitine palmitoyltransferase 2	180	5	0	5	182	892	710	25413
+Lrat	2	181896304	9062	#73af42	lecithin retinol acyltransferase	180	5	0	5	182	892	710	64047
+Asic1	7	141326321	28616	#73af42	acid sensing ion channel subunit 1	180	5	0	5	182	892	710	79123
+Pias3	2	198823369	8164	#73af42	protein inhibitor of activated STAT, 3	180	5	0	5	182	892	710	83614
+Cs	7	2752680	26283	#73af42	citrate synthase	180	5	0	5	182	892	710	170587
+Plxnb3	X	157015297	13137	#73af42	plexin B3	180	5	0	5	182	892	710	363517
+Phlda3	13	52588917	3085	#73af42	pleckstrin homology-like domain, family A, member 3	180	5	0	5	182	892	710	363989
+Mir451a	10	65291204	71	#73af42	microRNA 451a	180	5	0	5	182	892	710	100314070
+Cdkn2a	5	107823323	9082	#73af42	cyclin-dependent kinase inhibitor 2A	180	4	0	4	264	892	628	25163
+Abcc2	1	263554426	58130	#73af42	ATP binding cassette subfamily C member 2	180	4	0	4	264	892	628	25303
+Kl	12	942974	44232	#73af42	Klotho	180	4	0	4	264	892	628	83504
+Hspa4	10	38601624	40773	#73af42	heat shock protein family A (Hsp70) member 4	180	4	0	4	264	892	628	266759
+Cobll1	3	-1	-1	#73af42	cordon-bleu WH2 repeat protein-like 1	180	4	0	4	264	892	628	311088
+Gabrb1	14	38643383	469209	#73af42	gamma-aminobutyric acid type A receptor subunit beta1	180	0	3	-3	265	891	626	25450
+Irs1	9	88033668	52820	#73af42	insulin receptor substrate 1	180	0	3	-3	265	891	626	25467
+Numb	6	107279917	45428	#73af42	NUMB, endocytic adaptor protein	180	0	3	-3	265	891	626	29419
+Kcnj16	10	99388130	1769	#73af42	potassium inwardly-rectifying channel, subfamily J, member 16	180	0	3	-3	265	891	626	29719
+Slco1a5	4	176445924	60428	#73af42	solute carrier organic anion transporter family, member 1A5	180	0	3	-3	265	891	626	80900
+Pgf	6	108994016	10582	#73af42	placental growth factor	180	0	3	-3	265	891	626	94203
+Cplx2	17	10757782	8471	#73af42	complexin 2	180	0	3	-3	265	891	626	116657
+Lonp1	9	10428853	12326	#73af42	lon peptidase 1, mitochondrial	180	0	3	-3	265	891	626	170916
+Abcc4	15	103696542	231050	#73af42	ATP binding cassette subfamily C member 4	180	0	3	-3	265	891	626	170924
+Wwox	19	46761469	296879	#73af42	WW domain-containing oxidoreductase	180	0	3	-3	265	891	626	292041
+Prex1	3	163329580	148242	#73af42	phosphatidylinositol-3,4,5-trisphosphate-dependent Rac exchange factor 1	180	0	3	-3	265	891	626	311647
+Ski	5	-1	-1	#73af42	SKI proto-oncogene	180	0	3	-3	265	891	626	313757
+Taar9	1	22319353	1016	#73af42	trace amine-associated receptor 9	180	0	3	-3	265	891	626	319107
+Mir128-1	13	44916534	81	#73af42	microRNA 128-1	180	0	3	-3	265	891	626	100314026
+Mir128-2	8	120378945	83	#73af42	microRNA 128-2	180	0	3	-3	265	891	626	100314027
+Hspb1	12	23839390	1661	#73af42	heat shock protein family B (small) member 1	180	5	4	1	182	773	591	24471
+Aqp4	18	6766009	15832	#73af42	aquaporin 4	180	5	4	1	182	773	591	25293
+Pmp22	10	49538588	29994	#73af42	peripheral myelin protein 22	180	4	4	0	264	773	509	24660
+Tsc2	10	13962006	34559	#73af42	TSC complex subunit 2	180	4	4	0	264	773	509	24855
+Itpr1	4	140247335	333414	#73af42	inositol 1,4,5-trisphosphate receptor, type 1	180	4	4	0	264	773	509	25262
+Tnfrsf11b	7	93798580	28006	#73af42	TNF receptor superfamily member 11B	180	4	4	0	264	773	509	25341
+Dlg4	10	56627547	26054	#73af42	discs large MAGUK scaffold protein 4	180	4	4	0	264	773	509	29495
+Nr4a2	3	43111936	5470	#73af42	nuclear receptor subfamily 4, group A, member 2	180	4	4	0	264	773	509	54278
+Des	9	82556582	7705	#73af42	desmin	180	4	4	0	264	773	509	64362
+Klf15	4	122365093	12595	#73af42	Kruppel-like factor 15	180	4	4	0	264	773	509	85497
+Fgf23	4	159622404	7678	#73af42	fibroblast growth factor 23	180	4	4	0	264	773	509	170583
+Nme1	10	81657153	9370	#73af42	NME/NM23 nucleoside diphosphate kinase 1	180	4	4	0	264	773	509	191575
+Dsg4	18	12056113	36745	#73af42	desmoglein 4	180	4	4	0	264	773	509	291754
+Sesn1	20	46667454	90851	#73af42	sestrin 1	180	4	4	0	264	773	509	294518
+Meox1	10	89797011	19480	#73af42	mesenchyme homeobox 1	180	4	4	0	264	773	509	363684
+Rorc	2	-1	-1	#73af42	RAR-related orphan receptor C	180	4	4	0	264	773	509	368158
+Mir147	3	114775343	78	#73af42	microRNA 147	180	4	4	0	264	773	509	100314100
+Mir497	10	56844977	68	#73af42	microRNA 497	180	4	4	0	264	773	509	100314259
+Qki	1	-1	-1	#73af42	QKI, KH domain containing, RNA binding	180	4	4	0	264	773	509	100910212
+Cftr	4	42693658	167018	#73af42	CF transmembrane conductance regulator	180	0	4	-4	265	773	508	24255
+Htr1a	2	36246628	1268	#73af42	5-hydroxytryptamine receptor 1A	180	0	4	-4	265	773	508	24473
+Klk1	1	100131562	3994	#73af42	kallikrein 1	180	0	4	-4	265	773	508	24523
+Pdgfrb	18	56364677	41704	#73af42	platelet derived growth factor receptor beta	180	0	4	-4	265	773	508	24629
+Pomc	6	28382949	5820	#73af42	proopiomelanocortin	180	0	4	-4	265	773	508	24664
+Rara	10	86870530	12904	#73af42	retinoic acid receptor, alpha	180	0	4	-4	265	773	508	24705
+Vamp2	10	55675537	3868	#73af42	vesicle-associated membrane protein 2	180	0	4	-4	265	773	508	24803
+Syn1	X	1321315	57887	#73af42	synapsin I	180	0	4	-4	265	773	508	24949
+Lta	20	4852671	2005	#73af42	lymphotoxin alpha	180	0	4	-4	265	773	508	25008
+Apoa4	8	50536983	2388	#73af42	apolipoprotein A4	180	0	4	-4	265	773	508	25080
+Cd1d1	2	186330298	3507	#73af42	CD1d1 molecule	180	0	4	-4	265	773	508	25109
+Grk2	1	219536220	8109	#73af42	G protein-coupled receptor kinase 2	180	0	4	-4	265	773	508	25238
+Rxra	3	6211816	83538	#73af42	retinoid X receptor alpha	180	0	4	-4	265	773	508	25271
+Cycs	4	80331226	2100	#73af42	cytochrome c, somatic	180	0	4	-4	265	773	508	25309
+Il10	13	47739526	3866	#73af42	interleukin 10	180	0	4	-4	265	773	508	25325
+Col2a1	7	139455242	28755	#73af42	collagen type II alpha 1 chain	180	0	4	-4	265	773	508	25412
+Cryab	8	55178543	4003	#73af42	crystallin, alpha B	180	0	4	-4	265	773	508	25420
+Eef2k	1	190798705	40988	#73af42	eukaryotic elongation factor-2 kinase	180	0	4	-4	265	773	508	25435
+Fgf10	2	51673480	74053	#73af42	fibroblast growth factor 10	180	0	4	-4	265	773	508	25443
+Id2	6	44360077	1831	#73af42	inhibitor of DNA binding 2	180	0	4	-4	265	773	508	25587
+Dnase1	10	11757681	2939	#73af42	deoxyribonuclease 1	180	0	4	-4	265	773	508	25633
+Il1r1	9	46997798	37477	#73af42	interleukin 1 receptor type 1	180	0	4	-4	265	773	508	25663
+Gjb1	X	71272030	7938	#73af42	gap junction protein, beta 1	180	0	4	-4	265	773	508	29584
+Cask	X	9815652	340503	#73af42	calcium/calmodulin dependent serine protein kinase	180	0	4	-4	265	773	508	29647
+Atp2a2	12	39553903	49423	#73af42	ATPase sarcoplasmic/endoplasmic reticulum Ca2+ transporting 2	180	0	4	-4	265	773	508	29693
+Slc6a8	X	157129988	9303	#73af42	solute carrier family 6 member 8	180	0	4	-4	265	773	508	50690
+Tgm2	3	154597166	30091	#73af42	transglutaminase 2	180	0	4	-4	265	773	508	56083
+Mcl1	2	197786212	2780	#73af42	MCL1 apoptosis regulator, BCL2 family member	180	0	4	-4	265	773	508	60430
+Pln	20	34633157	9747	#73af42	phospholamban	180	0	4	-4	265	773	508	64672
+Kcnn4	1	81230847	15133	#73af42	potassium calcium-activated channel subfamily N member 4	180	0	4	-4	265	773	508	65206
+Mcam	8	48472824	8179	#73af42	melanoma cell adhesion molecule	180	0	4	-4	265	773	508	78967
+Gas5	13	78852523	3321	#73af42	growth arrest specific 5	180	0	4	-4	265	773	508	81714
+Ocln	2	30527328	49890	#73af42	occludin	180	0	4	-4	265	773	508	83497
+Apba1	1	241594565	201939	#73af42	amyloid beta precursor protein binding family A member 1	180	0	4	-4	265	773	508	83589
+Calb1	5	29538380	24394	#73af42	calbindin 1	180	0	4	-4	265	773	508	83839
+Kcnq1	1	216293087	337252	#73af42	potassium voltage-gated channel subfamily Q member 1	180	0	4	-4	265	773	508	84020
+Bmp7	3	170879972	75848	#73af42	bone morphogenetic protein 7	180	0	4	-4	265	773	508	85272
+Chi3l1	13	51023137	7660	#73af42	chitinase 3 like 1	180	0	4	-4	265	773	508	89824
+Hcn2	7	12851730	18357	#73af42	hyperpolarization activated cyclic nucleotide gated potassium and sodium channel 2	180	0	4	-4	265	773	508	114244
+Timp1	X	1364786	4598	#73af42	TIMP metallopeptidase inhibitor 1	180	0	4	-4	265	773	508	116510
+Pcsk5	1	236031988	281870	#73af42	proprotein convertase subtilisin/kexin type 5	180	0	4	-4	265	773	508	116548
+Csnk2a1	3	147713883	43864	#73af42	casein kinase 2 alpha 1	180	0	4	-4	265	773	508	116549
+Rtn1	6	94951019	226458	#73af42	reticulon 1	180	0	4	-4	265	773	508	116644
+Cdk5r1	10	67862064	1191	#73af42	cyclin-dependent kinase 5 regulatory subunit 1	180	0	4	-4	265	773	508	116671
+F2rl1	2	25222324	12951	#73af42	F2R like trypsin receptor 1	180	0	4	-4	265	773	508	116677
+Ptpn6	4	157239141	24749	#73af42	protein tyrosine phosphatase, non-receptor type 6	180	0	4	-4	265	773	508	116689
+Calb2	19	41482743	26874	#73af42	calbindin 2	180	0	4	-4	265	773	508	117059
+Hrk	12	44008879	20332	#73af42	harakiri, BCL2 interacting protein	180	0	4	-4	265	773	508	117271
+Mmp3	8	5676608	21971	#73af42	matrix metallopeptidase 3	180	0	4	-4	265	773	508	171045
+G3bp1	10	40812858	33393	#73af42	G3BP stress granule assembly factor 1	180	0	4	-4	265	773	508	171092
+Slc12a5	3	161433303	31775	#73af42	solute carrier family 12 member 5	180	0	4	-4	265	773	508	171373
+Naip6	2	-1	-1	#73af42	NLR family, apoptosis inhibitory protein 6	180	0	4	-4	265	773	508	191568
+Ss18l1	3	175426754	18468	#73af42	SS18L1 subunit of BAF chromatin remodeling complex	180	0	4	-4	265	773	508	192352
+Mfn1	2	118929738	41951	#73af42	mitofusin 1	180	0	4	-4	265	773	508	192647
+Kcnq5	9	27565869	575245	#73af42	potassium voltage-gated channel subfamily Q member 5	180	0	4	-4	265	773	508	259273
+Aurka	3	170364179	14025	#73af42	aurora kinase A	180	0	4	-4	265	773	508	261730
+Dnah17	10	-1	-1	#73af42	dynein, axonemal, heavy chain 17	180	0	4	-4	265	773	508	287845
+Kiss1	13	50529601	2502	#73af42	KiSS-1 metastasis-suppressor	180	0	4	-4	265	773	508	289023
+Trim52	15	90364605	1679	#73af42	tripartite motif-containing 52	180	0	4	-4	265	773	508	290458
+Tjp1	1	126146489	64950	#73af42	tight junction protein 1	180	0	4	-4	265	773	508	292994
+Eed	1	154189259	27081	#73af42	embryonic ectoderm development	180	0	4	-4	265	773	508	293104
+Far1	1	178364154	45514	#73af42	fatty acyl CoA reductase 1	180	0	4	-4	265	773	508	293173
+Irf7	1	214249388	3067	#73af42	interferon regulatory factor 7	180	0	4	-4	265	773	508	293624
+Slc39a8	2	241029669	62720	#73af42	solute carrier family 39 member 8	180	0	4	-4	265	773	508	295455
+Hsp90aa1	6	135107265	5528	#73af42	heat shock protein 90 alpha family class A member 1	180	0	4	-4	265	773	508	299331
+Smarcc1	8	118206703	117485	#73af42	SWI/SNF related, matrix associated, actin dependent regulator of chromatin, subfamily c, member 1	180	0	4	-4	265	773	508	301020
+Trem2	9	14611561	6452	#73af42	triggering receptor expressed on myeloid cells 2	180	0	4	-4	265	773	508	301227
+Foxo4	X	71155601	6557	#73af42	forkhead box O4	180	0	4	-4	265	773	508	302415
+Cldn4	12	24761210	1797	#73af42	claudin 4	180	0	4	-4	265	773	508	304407
+Sirt4	12	46868416	8176	#73af42	sirtuin 4	180	0	4	-4	265	773	508	304539
+Cxcl14	17	9109731	8021	#73af42	C-X-C motif chemokine ligand 14	180	0	4	-4	265	773	508	306748
+Arid5b	20	21564984	316209	#73af42	AT-rich interaction domain 5B	180	0	4	-4	265	773	508	309728
+Myh7b	3	151126591	23753	#73af42	myosin heavy chain 7B	180	0	4	-4	265	773	508	311570
+Pbx3	3	13241477	194545	#73af42	PBX homeobox 3	180	0	4	-4	265	773	508	311876
+Cd83	17	24416651	19139	#73af42	CD83 molecule	180	0	4	-4	265	773	508	361226
+Il33	1	248132090	14940	#73af42	interleukin 33	180	0	4	-4	265	773	508	361749
+Tor2a	3	11795629	4066	#73af42	torsin family 2, member A	180	0	4	-4	265	773	508	362112
+Elavl1	12	2461502	40930	#73af42	ELAV like RNA binding protein 1	180	0	4	-4	265	773	508	363854
+Slc22a12	1	221910787	7114	#73af42	solute carrier family 22 member 12	180	0	4	-4	265	773	508	365398
+Arid2	7	-1	-1	#73af42	AT-rich interaction domain 2	180	0	4	-4	265	773	508	366980
+Gjb2	15	37377314	5975	#73af42	gap junction protein, beta 2	180	0	4	-4	265	773	508	394266
+Btla	11	60525934	21063	#73af42	B and T lymphocyte associated	180	0	4	-4	265	773	508	407756
+Kcnk18	1	280383613	14094	#73af42	potassium two pore domain channel subfamily K member 18	180	0	4	-4	265	773	508	445371
+Slc2a9	14	77079402	113300	#73af42	solute carrier family 2 member 9	180	0	4	-4	265	773	508	501925
+Angptl3	5	117698785	4687	#73af42	angiopoietin-like 3	180	0	4	-4	265	773	508	502970
+Muc5ac	1	-1	-1	#73af42	mucin 5AC, oligomeric mucus/gel-forming	180	0	4	-4	265	773	508	682837
+Lbh	6	24160011	23802	#73af42	LBH regulator of WNT signaling pathway	180	0	4	-4	265	773	508	683626
+Kcnc4	2	210220908	20539	#73af42	potassium voltage-gated channel subfamily C member 4	180	0	4	-4	265	773	508	684516
+Mir130b	11	88129773	81	#73af42	microRNA 130b	180	0	4	-4	265	773	508	100314028
+Mir363	X	140117098	86	#73af42	microRNA 363	180	0	4	-4	265	773	508	100314169
+Mir324	10	56621126	82	#73af42	microRNA 324	180	0	4	-4	265	773	508	100314181
+Mir20b	X	140117518	71	#73af42	microRNA 20b	180	0	4	-4	265	773	508	100314201
+Mir130a	3	72141037	87	#73af42	microRNA 130a	180	0	4	-4	265	773	508	100314238
+Mir207	5	57028859	77	#73af42	microRNA 207	180	0	4	-4	265	773	508	100314253
+Mir873	5	52481076	76	#73af42	microRNA 873	180	0	4	-4	265	773	508	100314267
+Prdm14	5	-1	-1	#73af42	PR/SET domain 14	180	0	4	-4	265	773	508	100365184
+Mir216b	14	113101078	101	#73af42	microRNA 216b	180	0	4	-4	265	773	508	100526583
+Faah	5	134330204	18852	#73af42	fatty acid amide hydrolase	180	0	4	-4	265	773	508	100911581
+Mir6324	11	36383529	120	#73af42	microRNA 6324	180	0	4	-4	265	773	508	102466624
+Mir30c1	5	139699877	88	#73af42	microRNA 30c-1	180	7	5	2	22	488	466	100314009
+Mir30c2	9	29562376	83	#73af42	microRNA 30c-2	180	7	5	2	22	488	466	100314012
+Raf1	4	147532040	60659	#73af42	Raf-1 proto-oncogene, serine/threonine kinase	180	6	5	1	73	488	415	24703
+Prkce	6	9483408	489988	#73af42	protein kinase C, epsilon	180	6	5	1	73	488	415	29340
+Casp9	5	160356210	17564	#73af42	caspase 9	180	6	5	1	73	488	415	58918
+Casp8	9	65614142	47964	#73af42	caspase 8	180	6	5	1	73	488	415	64044
+Calca	1	184186041	2870	#73af42	calcitonin-related polypeptide alpha	180	5	5	0	182	488	306	24241
+Grm4	20	6745682	348948	#73af42	glutamate metabotropic receptor 4	180	5	5	0	182	488	306	24417
+Abcb1b	4	22225461	81992	#73af42	ATP-binding cassette, subfamily B (MDR/TAP), member 1B	180	5	5	0	182	488	306	24646
+Ppp3ca	2	241909832	275030	#73af42	protein phosphatase 3 catalytic subunit alpha	180	5	5	0	182	488	306	24674
+Drd5	14	77220579	1427	#73af42	dopamine receptor D5	180	5	5	0	182	488	306	25195
+P2ry1	2	151314818	5494	#73af42	purinergic receptor P2Y1	180	5	5	0	182	488	306	25265
+Npr3	2	61889053	60653	#73af42	natriuretic peptide receptor 3	180	5	5	0	182	488	306	25339
+Atp5if1	5	150719570	3717	#73af42	ATP synthase inhibitory factor subunit 1	180	5	5	0	182	488	306	25392
+Ppard	20	7818289	65193	#73af42	peroxisome proliferator-activated receptor delta	180	5	5	0	182	488	306	25682
+Aqp8	1	193424868	5797	#73af42	aquaporin 8	180	5	5	0	182	488	306	29172
+Mecp2	X	156650389	54661	#73af42	methyl CpG binding protein 2	180	5	5	0	182	488	306	29386
+Aldh2	12	40466495	32262	#73af42	aldehyde dehydrogenase 2 family member	180	5	5	0	182	488	306	29539
+Htr2a	15	56666152	66317	#73af42	5-hydroxytryptamine receptor 2A	180	5	5	0	182	488	306	29595
+Slc18a3	16	8682668	2861	#73af42	solute carrier family 18 member A3	180	5	5	0	182	488	306	60422
+Unc5b	20	30342351	63846	#73af42	unc-5 netrin receptor B	180	5	5	0	182	488	306	60630
+P2ry12	2	149441601	2947	#73af42	purinergic receptor P2Y12	180	5	5	0	182	488	306	64803
+Htr7	1	279934	119365	#73af42	5-hydroxytryptamine receptor 7	180	5	5	0	182	488	306	65032
+Hsf1	7	117538523	26955	#73af42	heat shock transcription factor 1	180	5	5	0	182	488	306	79245
+P2rx3	3	72403992	43809	#73af42	purinergic receptor P2X 3	180	5	5	0	182	488	306	81739
+Prep	20	50172618	97374	#73af42	prolyl endopeptidase	180	5	5	0	182	488	306	83471
+Ikbkb	16	74177232	53577	#73af42	inhibitor of nuclear factor kappa B kinase subunit beta	180	5	5	0	182	488	306	84351
+Abcb1a	4	22339829	85552	#73af42	ATP binding cassette subfamily B member 1A	180	5	5	0	182	488	306	170913
+Nme7	13	82607844	129499	#73af42	NME/NM23 family member 7	180	5	5	0	182	488	306	171566
+Chat	16	8576859	109272	#73af42	choline O-acetyltransferase	180	5	5	0	182	488	306	290567
+Skp2	2	58506146	28065	#73af42	S-phase kinase associated protein 2	180	5	5	0	182	488	306	294790
+Ntn4	7	34533543	115787	#73af42	netrin 4	180	5	5	0	182	488	306	299737
+Pinx1	15	47211682	58426	#73af42	PIN2/TERF1 interacting, telomerase inhibitor 1	180	5	5	0	182	488	306	305963
+Carns1	1	-1	-1	#73af42	carnosine synthase 1	180	5	5	0	182	488	306	309150
+Sik2	8	-1	-1	#73af42	salt-inducible kinase 2	180	5	5	0	182	488	306	315649
+Tfeb	9	15208141	6682	#73af42	transcription factor EB	180	5	5	0	182	488	306	316214
+Epha4	9	83111223	142235	#73af42	Eph receptor A4	180	5	5	0	182	488	306	316539
+Ubqln2	X	18723313	3419	#73af42	ubiquilin 2	180	5	5	0	182	488	306	317396
+Fam107a	15	18399733	16226	#73af42	family with sequence similarity 107, member A	180	5	5	0	182	488	306	361018
+Tead1	1	177495782	211081	#73af42	TEA domain transcription factor 1	180	5	5	0	182	488	306	361630
+Sgo1	9	-1	-1	#73af42	shugoshin 1	180	5	5	0	182	488	306	363174
+Gcdh	19	26000497	6473	#73af42	glutaryl-CoA dehydrogenase	180	5	5	0	182	488	306	364975
+Tigar	4	159635150	18913	#73af42	TP53 induced glycolysis regulatory phosphatase	180	5	5	0	182	488	306	502894
+Ddr2	13	88316405	45277	#73af42	discoidin domain receptor tyrosine kinase 2	180	5	5	0	182	488	306	685781
+Tug1	14	83878757	7034	#73af42	taurine up-regulated 1	180	5	5	0	182	488	306	100125371
+Mir125b2	11	16097346	87	#73af42	microRNA 125b-2	180	5	5	0	182	488	306	100314025
+Mir125b1	8	45798260	86	#73af42	microRNA 125b-1	180	5	5	0	182	488	306	100314156
+Dancr	14	36664036	981	#73af42	differentiation antagonizing non-protein coding RNA	180	5	5	0	182	488	306	100912083
+Slc16a1	2	207108552	20009	#73af42	solute carrier family 16 member 1	180	4	5	-1	264	488	224	25027
+Adcyap1	9	121707926	5198	#73af42	adenylate cyclase activating polypeptide 1	180	0	5	-5	265	488	223	24166
+Agtr1a	17	35907106	50971	#73af42	angiotensin II receptor, type 1a	180	0	5	-5	265	488	223	24180
+Aldh1a1	1	238222689	41692	#73af42	aldehyde dehydrogenase 1 family, member A1	180	0	5	-5	265	488	223	24188
+Drd1	17	11100927	3425	#73af42	dopamine receptor D1	180	0	5	-5	265	488	223	24316
+Ednra	19	33928356	63347	#73af42	endothelin receptor type A	180	0	5	-5	265	488	223	24326
+Erbb2	10	86367596	24132	#73af42	erb-b2 receptor tyrosine kinase 2	180	0	5	-5	265	488	223	24337
+Ephb1	8	110376954	436046	#73af42	Eph receptor B1	180	0	5	-5	265	488	223	24338
+G6pd	X	156274800	19135	#73af42	glucose-6-phosphate dehydrogenase	180	0	5	-5	265	488	223	24377
+Gad2	17	89171576	63192	#73af42	glutamate decarboxylase 2	180	0	5	-5	265	488	223	24380
+Hspa1a	20	4955668	4094	#73af42	heat shock protein family A (Hsp70) member 1A	180	0	5	-5	265	488	223	24472
+Il1a	3	121824712	11410	#73af42	interleukin 1 alpha	180	0	5	-5	265	488	223	24493
+Ngfr	10	83389841	18220	#73af42	nerve growth factor receptor	180	0	5	-5	265	488	223	24596
+Npy	4	79574010	7200	#73af42	neuropeptide Y	180	0	5	-5	265	488	223	24604
+Orm1	5	79179668	3152	#73af42	orosomucoid 1	180	0	5	-5	265	488	223	24614
+Pah	7	28066639	63131	#73af42	phenylalanine hydroxylase	180	0	5	-5	265	488	223	24616
+Pkd1	10	13915214	46794	#73af42	polycystin 1, transient receptor potential channel interacting	180	0	5	-5	265	488	223	24650
+Rarb	15	10120206	142392	#73af42	retinoic acid receptor, beta	180	0	5	-5	265	488	223	24706
+Ccl2	10	69412065	1798	#73af42	C-C motif chemokine ligand 2	180	0	5	-5	265	488	223	24770
+Sftpa1	16	18716019	3385	#73af42	surfactant protein A1	180	0	5	-5	265	488	223	24773
+Thrb	15	8890578	349237	#73af42	thyroid hormone receptor beta	180	0	5	-5	265	488	223	24831
+Bcl2l1	3	148310134	2286	#73af42	Bcl2-like 1	180	0	5	-5	265	488	223	24888
+Slc6a3	1	32323011	40972	#73af42	solute carrier family 6 member 3	180	0	5	-5	265	488	223	24898
+Yy1	6	132702581	24267	#73af42	YY1 transcription factor	180	0	5	-5	265	488	223	24919
+Cth	2	264267029	25987	#73af42	cystathionine gamma-lyase	180	0	5	-5	265	488	223	24962
+Gipr	1	80063049	10174	#73af42	gastric inhibitory polypeptide receptor	180	0	5	-5	265	488	223	25024
+Gip	10	83840303	8095	#73af42	gastric inhibitory polypeptide	180	0	5	-5	265	488	223	25040
+Rgn	X	1833484	15420	#73af42	regucalcin	180	0	5	-5	265	488	223	25106
+Hsd11b1	13	111946626	25977	#73af42	hydroxysteroid 11-beta dehydrogenase 1	180	0	5	-5	265	488	223	25116
+Mas1	1	48077033	31185	#73af42	MAS1 proto-oncogene, G protein-coupled receptor	180	0	5	-5	265	488	223	25153
+Efnb1	X	68891227	12807	#73af42	ephrin B1	180	0	5	-5	265	488	223	25186
+Add3	1	273854248	107734	#73af42	adducin 3	180	0	5	-5	265	488	223	25230
+Onecut1	8	81766030	27549	#73af42	one cut homeobox 1	180	0	5	-5	265	488	223	25231
+Aqp1	4	85551503	12180	#73af42	aquaporin 1	180	0	5	-5	265	488	223	25240
+Gstt1	20	13799102	17425	#73af42	glutathione S-transferase theta 1	180	0	5	-5	265	488	223	25260
+Mapk10	14	8080274	287980	#73af42	mitogen activated protein kinase 10	180	0	5	-5	265	488	223	25272
+Cyp24a1	3	168097484	14436	#73af42	cytochrome P450, family 24, subfamily a, polypeptide 1	180	0	5	-5	265	488	223	25279
+Igfbp5	9	80154230	12583	#73af42	insulin-like growth factor binding protein 5	180	0	5	-5	265	488	223	25285
+Bmp4	15	20776216	3586	#73af42	bone morphogenetic protein 4	180	0	5	-5	265	488	223	25296
+Dcc	18	66523120	1106681	#73af42	DCC netrin 1 receptor	180	0	5	-5	265	488	223	25311
+Egf	2	235049350	127925	#73af42	epidermal growth factor	180	0	5	-5	265	488	223	25313
+Adora2a	20	14265251	17622	#73af42	adenosine A2a receptor	180	0	5	-5	265	488	223	25369
+Anxa1	1	237893983	16019	#73af42	annexin A1	180	0	5	-5	265	488	223	25380
+Arrb2	10	57040251	7794	#73af42	arrestin, beta 2	180	0	5	-5	265	488	223	25388
+Crmp1	14	78266933	45836	#73af42	collapsin response mediator protein 1	180	0	5	-5	265	488	223	25415
+Crp	13	91080448	910	#73af42	C-reactive protein	180	0	5	-5	265	488	223	25419
+Kcnj8	4	176783287	5856	#73af42	potassium inwardly-rectifying channel, subfamily J, member 8	180	0	5	-5	265	488	223	25472
+Pik3r1	2	31746365	70020	#73af42	phosphoinositide-3-kinase regulatory subunit 1	180	0	5	-5	265	488	223	25513
+Ptprs	9	10585360	60845	#73af42	protein tyrosine phosphatase, receptor type, S	180	0	5	-5	265	488	223	25529
+Slc5a1	14	82910448	64855	#73af42	solute carrier family 5 member 1	180	0	5	-5	265	488	223	25552
+Stxbp1	3	11823784	61633	#73af42	syntaxin binding protein 1	180	0	5	-5	265	488	223	25558
+Kdr	14	34727677	59449	#73af42	kinase insert domain receptor	180	0	5	-5	265	488	223	25589
+Pde4a	8	22189533	44503	#73af42	phosphodiesterase 4A	180	0	5	-5	265	488	223	25638
+Hmgcr	2	27480226	20428	#73af42	3-hydroxy-3-methylglutaryl-CoA reductase	180	0	5	-5	265	488	223	25675
+Col10a1	20	-1	-1	#73af42	collagen type X alpha 1 chain	180	0	5	-5	265	488	223	25681
+Rbp4	1	256806476	7202	#73af42	retinol binding protein 4	180	0	5	-5	265	488	223	25703
+Gal	1	218653059	4863	#73af42	galanin and GMAP prepropeptide	180	0	5	-5	265	488	223	29141
+Ftl1	1	101448190	1844	#73af42	ferritin light chain 1	180	0	5	-5	265	488	223	29292
+Gata6	18	2415821	31266	#73af42	GATA binding protein 6	180	0	5	-5	265	488	223	29300
+Adora2b	10	48569566	16800	#73af42	adenosine A2B receptor	180	0	5	-5	265	488	223	29316
+Prdx2	19	26084916	5178	#73af42	peroxiredoxin 2	180	0	5	-5	265	488	223	29338
+Gap43	11	58624198	93718	#73af42	growth associated protein 43	180	0	5	-5	265	488	223	29423
+Aif1	20	5161350	1899	#73af42	allograft inflammatory factor 1	180	0	5	-5	265	488	223	29427
+Hap1	10	88257975	8233	#73af42	huntingtin-associated protein 1	180	0	5	-5	265	488	223	29430
+Neurod1	3	66414321	3296	#73af42	neuronal differentiation 1	180	0	5	-5	265	488	223	29458
+Ddit3	7	70580252	4822	#73af42	DNA-damage inducible transcript 3	180	0	5	-5	265	488	223	29467
+Erbb3	7	2991016	19296	#73af42	erb-b2 receptor tyrosine kinase 3	180	0	5	-5	265	488	223	29496
+Lgals7	1	87045467	1755	#73af42	galectin 7	180	0	5	-5	265	488	223	29518
+Fcgrt	1	101086877	8717	#73af42	Fc fragment of IgG receptor and transporter	180	0	5	-5	265	488	223	29558
+Arntl	1	178039063	98408	#73af42	aryl hydrocarbon receptor nuclear translocator-like	180	0	5	-5	265	488	223	29657
+Eif2ak3	4	98648545	61150	#73af42	eukaryotic translation initiation factor 2 alpha kinase 3	180	0	5	-5	265	488	223	29702
+Kcnj10	13	90723077	29504	#73af42	potassium inwardly-rectifying channel, subfamily J, member 10	180	0	5	-5	265	488	223	29718
+Kcnab1	2	155718359	291170	#73af42	potassium voltage-gated channel subfamily A regulatory beta subunit 1	180	0	5	-5	265	488	223	29737
+Kcnmb1	10	18911938	7702	#73af42	potassium calcium-activated channel subfamily M regulatory beta subunit 1	180	0	5	-5	265	488	223	29747
+Smad4	18	69626682	30691	#73af42	SMAD family member 4	180	0	5	-5	265	488	223	50554
+Gria1	10	42441723	318477	#73af42	glutamate ionotropic receptor AMPA type subunit 1	180	0	5	-5	265	488	223	50592
+Mapk9	10	35333859	40505	#73af42	mitogen-activated protein kinase 9	180	0	5	-5	265	488	223	50658
+Grik2	20	53791428	726263	#73af42	glutamate ionotropic receptor kainate type subunit 2	180	0	5	-5	265	488	223	54257
+Sstr2	10	102136283	7159	#73af42	somatostatin receptor 2	180	0	5	-5	265	488	223	54305
+Itih4	16	6970367	15171	#73af42	inter-alpha-trypsin inhibitor heavy chain 4	180	0	5	-5	265	488	223	54404
+Ccnd1	1	218090750	9522	#73af42	cyclin D1	180	0	5	-5	265	488	223	58919
+Nucb2	1	185106773	36434	#73af42	nucleobindin 2	180	0	5	-5	265	488	223	59295
+Npff	7	144127084	789	#73af42	neuropeptide FF-amide peptide precursor	180	0	5	-5	265	488	223	60337
+Nr1h4	7	30003429	158627	#73af42	nuclear receptor subfamily 1, group H, member 4	180	0	5	-5	265	488	223	60351
+Bcl2l2	15	33544312	4853	#73af42	Bcl2-like 2	180	0	5	-5	265	488	223	60434
+Lif	14	84496470	2774	#73af42	LIF, interleukin 6 family cytokine	180	0	5	-5	265	488	223	60584
+P2ry4	X	70426951	1413	#73af42	pyrimidinergic receptor P2Y4	180	0	5	-5	265	488	223	63843
+Hspd1	9	61680530	10426	#73af42	heat shock protein family D (Hsp60) member 1	180	0	5	-5	265	488	223	63868
+Xiap	X	128416722	36278	#73af42	X-linked inhibitor of apoptosis	180	0	5	-5	265	488	223	63879
+Enpep	2	233667234	76632	#73af42	glutamyl aminopeptidase	180	0	5	-5	265	488	223	64017
+Ddah1	2	251634368	130658	#73af42	dimethylarginine dimethylaminohydrolase 1	180	0	5	-5	265	488	223	64157
+Kcnh1	13	110920737	311532	#73af42	potassium voltage-gated channel subfamily H member 1	180	0	5	-5	265	488	223	65198
+Nr4a1	7	142912309	7906	#73af42	nuclear receptor subfamily 4, group A, member 1	180	0	5	-5	265	488	223	79240
+Fez1	8	39305128	45142	#73af42	fasciculation and elongation protein zeta 1	180	0	5	-5	265	488	223	81730
+Thra	10	86669233	15702	#73af42	thyroid hormone receptor alpha	180	0	5	-5	265	488	223	81812
+Actb	12	13715843	2970	#73af42	actin, beta	180	0	5	-5	265	488	223	81822
+Cirbp	7	12401205	3817	#73af42	cold inducible RNA binding protein	180	0	5	-5	265	488	223	81825
+Vdac1	10	37724915	27912	#73af42	voltage-dependent anion channel 1	180	0	5	-5	265	488	223	83529
+Lgals3	15	24153602	11935	#73af42	galectin 3	180	0	5	-5	265	488	223	83781
+Nrn1	17	27925055	44371	#73af42	neuritin 1	180	0	5	-5	265	488	223	83834
+Hmga2	7	65159944	115464	#73af42	high mobility group AT-hook 2	180	0	5	-5	265	488	223	84017
+Rab6a	1	165625058	39139	#73af42	RAB6A, member RAS oncogene family	180	0	5	-5	265	488	223	84379
+Sf3b1	9	61594620	39890	#73af42	splicing factor 3b, subunit 1	180	0	5	-5	265	488	223	84486
+Slc17a6	1	106998704	40000	#73af42	solute carrier family 17 member 6	180	0	5	-5	265	488	223	84487
+Ciita	10	5213350	38459	#73af42	class II, major histocompatibility complex, transactivator	180	0	5	-5	265	488	223	85483
+Cdk4	7	70345971	6718	#73af42	cyclin-dependent kinase 4	180	0	5	-5	265	488	223	94201
+Sncb	17	10384569	8207	#73af42	synuclein, beta	180	0	5	-5	265	488	223	113893
+Nkx2-5	10	16635989	2769	#73af42	NK2 homeobox 5	180	0	5	-5	265	488	223	114109
+Dlk1	6	133576568	7180	#73af42	delta like non-canonical Notch ligand 1	180	0	5	-5	265	488	223	114587
+Cyp27b1	7	70335061	4944	#73af42	cytochrome P450, family 27, subfamily b, polypeptide 1	180	0	5	-5	265	488	223	114700
+Dusp1	10	16970642	2783	#73af42	dual specificity phosphatase 1	180	0	5	-5	265	488	223	114856
+Usp2	8	48406595	24291	#73af42	ubiquitin specific peptidase 2	180	0	5	-5	265	488	223	115771
+Il13	10	38982909	2557	#73af42	interleukin 13	180	0	5	-5	265	488	223	116553
+Nrxn2	1	221801524	106523	#73af42	neurexin 2	180	0	5	-5	265	488	223	116595
+Sdc3	5	148923098	33306	#73af42	syndecan 3	180	0	5	-5	265	488	223	116673
+Lmnb1	18	51785124	37140	#73af42	lamin B1	180	0	5	-5	265	488	223	116685
+Kcnh2	4	7355601	31640	#73af42	potassium voltage-gated channel subfamily H member 2	180	0	5	-5	265	488	223	117018
+Rhoa	8	117106577	8592	#73af42	ras homolog family member A	180	0	5	-5	265	488	223	117273
+Hnrnpk	17	6667564	9090	#73af42	heterogeneous nuclear ribonucleoprotein K	180	0	5	-5	265	488	223	117282
+Nsmf	3	2262253	8743	#73af42	NMDA receptor synaptonuclear signaling and neuronal migration factor	180	0	5	-5	265	488	223	117536
+Tpm3	2	189430083	19153	#73af42	tropomyosin 3	180	0	5	-5	265	488	223	117557
+Wnt11	1	163797660	16096	#73af42	Wnt family member 11	180	0	5	-5	265	488	223	140584
+Cdk5	4	7282945	4482	#73af42	cyclin-dependent kinase 5	180	0	5	-5	265	488	223	140908
+Il24	13	47618451	5398	#73af42	interleukin 24	180	0	5	-5	265	488	223	170819
+Ythdc1	14	22971836	30175	#73af42	YTH domain containing 1	180	0	5	-5	265	488	223	170956
+Dusp5	1	274245184	13411	#73af42	dual specificity phosphatase 5	180	0	5	-5	265	488	223	171109
+Opa1	11	74720246	73557	#73af42	OPA1, mitochondrial dynamin like GTPase	180	0	5	-5	265	488	223	171116
+Foxc2	19	53044379	2702	#73af42	forkhead box C2	180	0	5	-5	265	488	223	171356
+Sftpb	4	100166896	9042	#73af42	surfactant protein B	180	0	5	-5	265	488	223	192155
+Eml2	1	80087684	31100	#73af42	EMAP like 2	180	0	5	-5	265	488	223	192360
+Cacna1b	3	1740056	184853	#73af42	calcium voltage-gated channel subunit alpha1 B	180	0	5	-5	265	488	223	257648
+Npb	10	109786222	434	#73af42	neuropeptide B	180	0	5	-5	265	488	223	259222
+Npw	10	14021187	1265	#73af42	neuropeptide W	180	0	5	-5	265	488	223	259224
+Gnat3	4	13827764	50362	#73af42	G protein subunit alpha transducin 3	180	0	5	-5	265	488	223	286924
+Myh1	10	53740841	23769	#73af42	myosin heavy chain 1	180	0	5	-5	265	488	223	287408
+Sarm1	10	65742343	23707	#73af42	sterile alpha and TIR motif containing 1	180	0	5	-5	265	488	223	287545
+Retnlg	11	54513102	1339	#73af42	resistin-like gamma	180	0	5	-5	265	488	223	288135
+Mcoln1	12	2054680	14002	#73af42	mucolipin TRP cation channel 1	180	0	5	-5	265	488	223	288371
+Diablo	12	38490230	13114	#73af42	diablo, IAP-binding mitochondrial protein	180	0	5	-5	265	488	223	288753
+Creg1	13	83972226	12449	#73af42	cellular repressor of E1A-stimulated genes 1	180	0	5	-5	265	488	223	289185
+Gdf2	16	10267510	5664	#73af42	growth differentiation factor 2	180	0	5	-5	265	488	223	290921
+Ogn	17	14607442	20495	#73af42	osteoglycin	180	0	5	-5	265	488	223	291015
+Mki67	1	207993895	26559	#73af42	marker of proliferation Ki-67	180	0	5	-5	265	488	223	291234
+Brd8	18	27398938	20349	#73af42	bromodomain containing 8	180	0	5	-5	265	488	223	291691
+Hs2st1	2	250467428	133089	#73af42	heparan sulfate 2-O-sulfotransferase 1	180	0	5	-5	265	488	223	292155
+Mrgprd	1	218487824	959	#73af42	MAS related GPR family member D	180	0	5	-5	265	488	223	293648
+Cisd1	20	18493538	13381	#73af42	CDGSH iron sulfur domain 1	180	0	5	-5	265	488	223	294362
+Clcn6	5	164813662	30759	#73af42	chloride voltage-gated channel 6	180	0	5	-5	265	488	223	295586
+Osbpl2	3	175493698	45267	#73af42	oxysterol binding protein-like 2	180	0	5	-5	265	488	223	296461
+Mkrn1	4	67188158	18115	#73af42	makorin ring finger protein 1	180	0	5	-5	265	488	223	296988
+Nfu1	4	118814284	20671	#73af42	NFU1 iron-sulfur cluster scaffold	180	0	5	-5	265	488	223	297416
+Foxp1	4	131366885	231419	#73af42	forkhead box P1	180	0	5	-5	265	488	223	297480
+Npbwr1	5	13379772	989	#73af42	neuropeptides B and W receptor 1	180	0	5	-5	265	488	223	297795
+Arid1a	5	151904689	43030	#73af42	AT-rich interaction domain 1A	180	0	5	-5	265	488	223	297867
+Hdac1	5	147716664	27059	#73af42	histone deacetylase 1	180	0	5	-5	265	488	223	297893
+Ccl21	5	58197678	1104	#73af42	C-C motif chemokine ligand 21	180	0	5	-5	265	488	223	298006
+Tomm22	7	120901934	1749	#73af42	translocase of outer mitochondrial membrane 22	180	0	5	-5	265	488	223	300075
+Sp7	7	143958858	8626	#73af42	Sp7 transcription factor	180	0	5	-5	265	488	223	300260
+Wnt3a	10	45598901	39134	#73af42	Wnt family member 3A	180	0	5	-5	265	488	223	303181
+Cldn14	11	34132581	10172	#73af42	claudin 14	180	0	5	-5	265	488	223	304073
+Fbxo28	13	100715258	25470	#73af42	F-box protein 28	180	0	5	-5	265	488	223	305105
+Efemp1	14	113202445	92543	#73af42	EGF containing fibulin extracellular matrix protein 1	180	0	5	-5	265	488	223	305604
+Nkx3-1	15	51065316	2592	#73af42	NK3 homeobox 1	180	0	5	-5	265	488	223	305999
+Sirt5	17	23986796	27057	#73af42	sirtuin 5	180	0	5	-5	265	488	223	306840
+Akr1c19	17	69654170	21033	#73af42	aldo-keto reductase family 1, member C19	180	0	5	-5	265	488	223	307096
+Clca2	2	250755976	22293	#73af42	chloride channel accessory 2	180	0	5	-5	265	488	223	308016
+Vkorc1	1	199338785	2521	#73af42	vitamin K epoxide reductase complex, subunit 1	180	0	5	-5	265	488	223	309004
+Rbm20	1	274391932	197884	#73af42	RNA binding motif protein 20	180	0	5	-5	265	488	223	309544
+Tet1	20	-1	-1	#73af42	tet methylcytosine dioxygenase 1	180	0	5	-5	265	488	223	309902
+Traf6	3	91252829	18778	#73af42	TNF receptor associated factor 6	180	0	5	-5	265	488	223	311245
+Nfatc2	3	165245238	115054	#73af42	nuclear factor of activated T-cells 2	180	0	5	-5	265	488	223	311658
+Prex2	5	7627771	247138	#73af42	phosphatidylinositol-3,4,5-trisphosphate-dependent Rac exchange factor 2	180	0	5	-5	265	488	223	312912
+Wasf2	5	151270845	110393	#73af42	WASP family member 2	180	0	5	-5	265	488	223	313024
+Kdm4a	5	136967650	46725	#73af42	lysine demethylase 4A	180	0	5	-5	265	488	223	313539
+Lpin1	6	41799748	70298	#73af42	lipin 1	180	0	5	-5	265	488	223	313977
+Fos	6	109300433	2866	#73af42	Fos proto-oncogene, AP-1 transcription factor subunit	180	0	5	-5	265	488	223	314322
+Parp16	8	70712780	18429	#73af42	poly (ADP-ribose) polymerase family, member 16	180	0	5	-5	265	488	223	315760
+Wnt10a	9	82053581	12466	#73af42	Wnt family member 10A	180	0	5	-5	265	488	223	316527
+Popdc2	11	64936691	15996	#73af42	popeye domain containing 2	180	0	5	-5	265	488	223	360718
+Cdnf	17	78721230	14094	#73af42	cerebral dopamine neurotrophic factor	180	0	5	-5	265	488	223	361276
+Atg12	18	40721799	10327	#73af42	autophagy related 12	180	0	5	-5	265	488	223	361321
+Nfatc3	19	38039729	74274	#73af42	nuclear factor of activated T-cells 3	180	0	5	-5	265	488	223	361400
+Sirt2	1	86949413	22541	#73af42	sirtuin 2	180	0	5	-5	265	488	223	361532
+Srpk1	20	5831322	34532	#73af42	SRSF protein kinase 1	180	0	5	-5	265	488	223	361811
+Map1lc3a	3	150801289	1646	#73af42	microtubule-associated protein 1 light chain 3 alpha	180	0	5	-5	265	488	223	362245
+Cdk2	7	3124953	7504	#73af42	cyclin dependent kinase 2	180	0	5	-5	265	488	223	362817
+Fundc1	X	5549468	16657	#73af42	FUN14 domain containing 1	180	0	5	-5	265	488	223	363442
+Piga	X	31786983	9685	#73af42	phosphatidylinositol glycan anchor biosynthesis, class A	180	0	5	-5	265	488	223	363464
+Havcr2	10	31561895	27048	#73af42	hepatitis A virus cellular receptor 2	180	0	5	-5	265	488	223	363578
+Bves	20	50439885	34793	#73af42	blood vessel epicardial substance	180	0	5	-5	265	488	223	365603
+Runx2	9	18564927	208165	#73af42	RUNX family transcription factor 2	180	0	5	-5	265	488	223	367218
+Brca1	10	89395848	58833	#73af42	BRCA1, DNA repair associated	180	0	5	-5	265	488	223	497672
+Ern1	10	94592320	60338	#73af42	endoplasmic reticulum to nucleus signaling 1	180	0	5	-5	265	488	223	498013
+Smyd3	13	97330121	477692	#73af42	SET and MYND domain containing 3	180	0	5	-5	265	488	223	498295
+RGD1564865	17	69468427	28705	#73af42	similar to 20-alpha-hydroxysteroid dehydrogenase	180	0	5	-5	265	488	223	498789
+Pde4dl1	18	-1	-1	#73af42	phosphodiesterase 4D, cAMP-specific-like 1	180	0	5	-5	265	488	223	498900
+Myb	1	-1	-1	#73af42	MYB proto-oncogene, transcription factor	180	0	5	-5	265	488	223	498982
+Phf24	5	-1	-1	#73af42	PHD finger protein 24	180	0	5	-5	265	488	223	500446
+Lin28a	5	152230343	16989	#73af42	lin-28 homolog A	180	0	5	-5	265	488	223	500562
+Srf	9	16737642	9583	#73af42	serum response factor	180	0	5	-5	265	488	223	501099
+Smim20	14	60057493	12377	#73af42	small integral membrane protein 20	180	0	5	-5	265	488	223	501923
+Kmt2c	4	-1	-1	#73af42	lysine methyltransferase 2C	180	0	5	-5	265	488	223	502710
+Catsper1	1	-1	-1	#73af42	cation channel, sperm associated 1	180	0	5	-5	265	488	223	689349
+Myh2	10	53711895	26269	#73af42	myosin heavy chain 2	180	0	5	-5	265	488	223	691644
+Mir325	X	76334271	97	#73af42	microRNA 325	180	0	5	-5	265	488	223	100313970
+Mir338	10	109195251	65	#73af42	microRNA 338	180	0	5	-5	265	488	223	100313978
+Mirlet7a-2	8	45753264	95	#73af42	microRNA let-7a-2	180	0	5	-5	265	488	223	100313989
+Mir16	2	165606072	94	#73af42	microRNA 16	180	0	5	-5	265	488	223	100313997
+Mir19b2	X	140117379	95	#73af42	microRNA 19b-2	180	0	5	-5	265	488	223	100313999
+Mir124-2	2	102311603	108	#73af42	microRNA 124-2	180	0	5	-5	265	488	223	100314024
+Mir153	6	145105064	86	#73af42	microRNA 153	180	0	5	-5	265	488	223	100314038
+Mir184	8	97175657	76	#73af42	microRNA 184	180	0	5	-5	265	488	223	100314042
+Mir223	X	65367812	109	#73af42	microRNA 223	180	0	5	-5	265	488	223	100314060
+Mir449a	2	44897601	90	#73af42	microRNA 449a	180	0	5	-5	265	488	223	100314068
+Mir215	13	103250850	100	#73af42	microRNA 215	180	0	5	-5	265	488	223	100314074
+Mir384	X	76301763	82	#73af42	microRNA 384	180	0	5	-5	265	488	223	100314105
+Mir425	8	117354821	82	#73af42	microRNA 425	180	0	5	-5	265	488	223	100314108
+Mir30e	5	139702872	91	#73af42	microRNA 30e	180	0	5	-5	265	488	223	100314153
+Mir93	12	19307543	86	#73af42	microRNA 93	180	0	5	-5	265	488	223	100314154
+Mir124-3	3	176406205	86	#73af42	microRNA 124-3	180	0	5	-5	265	488	223	100314155
+Mir208a	15	33613451	82	#73af42	microRNA 208a	180	0	5	-5	265	488	223	100314162
+Mir19b1	15	100180464	86	#73af42	microRNA 19b-1	180	0	5	-5	265	488	223	100314186
+Mir127	6	133713430	96	#73af42	microRNA 127	180	0	5	-5	265	488	223	100314190
+Mir141	4	157236346	93	#73af42	microRNA 141	180	0	5	-5	265	488	223	100314215
+Mir216a	14	113112129	105	#73af42	microRNA 216a	180	0	5	-5	265	488	223	100314216
+Mir346	16	11250054	97	#73af42	microRNA 346	180	0	5	-5	265	488	223	100314221
+Mir106b	12	19307752	81	#73af42	microRNA 106b	180	0	5	-5	265	488	223	100314235
+Mir125a	1	59704827	84	#73af42	microRNA 125a	180	0	5	-5	265	488	223	100314236
+Mir708	1	161221246	87	#73af42	microRNA 708	180	0	5	-5	265	488	223	100314266
+Mir764	X	118123251	107	#73af42	microRNA 764	180	0	5	-5	265	488	223	100314274
+Mir101a	5	120168437	74	#73af42	microRNA 101a	180	0	5	-5	265	488	223	100314279
+Mir195	10	56845301	86	#73af42	microRNA 195	180	0	5	-5	265	488	223	100314281
+Fosb	1	80214691	6726	#73af42	FosB proto-oncogene, AP-1 transcription factor subunit	180	0	5	-5	265	488	223	100360880
+Ndufa4l2	7	70821957	2128	#73af42	NDUFA4, mitochondrial complex associated like 2	180	0	5	-5	265	488	223	100362331
+Hkdc1	20	-1	-1	#73af42	hexokinase domain containing 1	180	0	5	-5	265	488	223	100364027
+Nwd1	16	-1	-1	#73af42	NACHT and WD repeat domain containing 1	180	0	5	-5	265	488	223	100364350
+Xirp1	8	-1	-1	#73af42	xin actin-binding repeat containing 1	180	0	5	-5	265	488	223	100910104
+Mmp2	19	15542771	27818	#73af42	matrix metallopeptidase 2	180	8	6	2	10	226	216	81686
+Nrg1	16	63880428	177006	#73af42	neuregulin 1	180	7	6	1	22	226	204	112400
+Trpa1	5	3783247	53238	#73af42	transient receptor potential cation channel, subfamily A, member 1	180	7	6	1	22	226	204	312896
+Mir137	2	221658106	101	#73af42	microRNA 137	180	7	6	1	22	226	204	100314031
+Adra1b	10	29392762	57882	#73af42	adrenoceptor alpha 1B	180	6	6	0	73	226	153	24173
+Atp1a1	2	204003742	28281	#73af42	ATPase Na+/K+ transporting subunit alpha 1	180	6	6	0	73	226	153	24211
+Bcl2	13	26605426	163948	#73af42	BCL2, apoptosis regulator	180	6	6	0	73	226	153	24224
+Calm1	6	124217241	8051	#73af42	calmodulin 1	180	6	6	0	73	226	153	24242
+Cyp1a2	8	62451360	6884	#73af42	cytochrome P450, family 1, subfamily a, polypeptide 2	180	6	6	0	73	226	153	24297
+Gad1	3	56861440	40699	#73af42	glutamate decarboxylase 1	180	6	6	0	73	226	153	24379
+Gfap	10	90990762	8673	#73af42	glial fibrillary acidic protein	180	6	6	0	73	226	153	24387
+Igf2	1	215828102	6602	#73af42	insulin-like growth factor 2	180	6	6	0	73	226	153	24483
+Pth	1	178215830	2931	#73af42	parathyroid hormone	180	6	6	0	73	226	153	24694
+Acsm3	1	189514553	26680	#73af42	acyl-CoA synthetase medium-chain family member 3	180	6	6	0	73	226	153	24763
+Tcrb	4	-1	-1	#73af42	T-cell receptor beta chain	180	6	6	0	73	226	153	24820
+Comp	16	20798437	8633	#73af42	cartilage oligomeric matrix protein	180	6	6	0	73	226	153	25304
+Faslg	13	79698445	7260	#73af42	Fas ligand	180	6	6	0	73	226	153	25385
+Aqp2	7	141237802	5035	#73af42	aquaporin 2	180	6	6	0	73	226	153	25386
+Cav1	4	44598557	31645	#73af42	caveolin 1	180	6	6	0	73	226	153	25404
+Dio1	5	126894837	16695	#73af42	iodothyronine deiodinase 1	180	6	6	0	73	226	153	25430
+Gabrb2	10	27975353	212015	#73af42	gamma-aminobutyric acid type A receptor subunit beta 2	180	6	6	0	73	226	153	25451
+Parp1	13	98857255	32189	#73af42	poly (ADP-ribose) polymerase 1	180	6	6	0	73	226	153	25591
+Fabp2	2	227080912	2742	#73af42	fatty acid binding protein 2	180	6	6	0	73	226	153	25598
+Otc	X	13524804	76270	#73af42	ornithine transcarbamylase	180	6	6	0	73	226	153	25611
+Smad3	8	68569530	108819	#73af42	SMAD family member 3	180	6	6	0	73	226	153	25631
+Col12a1	8	-1	-1	#73af42	collagen type XII alpha 1 chain	180	6	6	0	73	226	153	25683
+Irs2	16	83824515	24054	#73af42	insulin receptor substrate 2	180	6	6	0	73	226	153	29376
+Adra1d	3	124129558	16008	#73af42	adrenoceptor alpha 1D	180	6	6	0	73	226	153	29413
+Kcnk3	6	27154278	35931	#73af42	potassium two pore domain channel subfamily K member 3	180	6	6	0	73	226	153	29553
+Gabrg2	10	27093025	86229	#73af42	gamma-aminobutyric acid type A receptor subunit gamma 2	180	6	6	0	73	226	153	29709
+Slc8a1	6	4255699	264939	#73af42	solute carrier family 8 member A1	180	6	6	0	73	226	153	29715
+Crhr1	10	92191473	42189	#73af42	corticotropin releasing hormone receptor 1	180	6	6	0	73	226	153	58959
+Tnmd	X	104684676	15497	#73af42	tenomodulin	180	6	6	0	73	226	153	64104
+Hif3a	1	78976324	21545	#73af42	hypoxia inducible factor 3 subunit alpha	180	6	6	0	73	226	153	64345
+Snap23	3	112333982	28979	#73af42	synaptosome associated protein 23	180	6	6	0	73	226	153	64630
+Fabp3	5	148528869	6728	#73af42	fatty acid binding protein 3	180	6	6	0	73	226	153	79131
+Cspg4	8	61532465	35045	#73af42	chondroitin sulfate proteoglycan 4	180	6	6	0	73	226	153	81651
+Pdpk1	10	13451624	63818	#73af42	3-phosphoinositide dependent protein kinase-1	180	6	6	0	73	226	153	81745
+Aifm1	X	135304063	38999	#73af42	apoptosis inducing factor, mitochondria associated 1	180	6	6	0	73	226	153	83533
+Plk2	2	41911143	5758	#73af42	polo-like kinase 2	180	6	6	0	73	226	153	83722
+Pdk1	3	58530870	27159	#73af42	pyruvate dehydrogenase kinase 1	180	6	6	0	73	226	153	116551
+Myo1b	9	54558202	207852	#73af42	myosin Ib	180	6	6	0	73	226	153	117057
+Txnip	2	198683168	3800	#73af42	thioredoxin interacting protein	180	6	6	0	73	226	153	117514
+Il23a	7	2710609	2114	#73af42	interleukin 23 subunit alpha	180	6	6	0	73	226	153	155140
+Ctsd	1	215541570	11876	#73af42	cathepsin D	180	6	6	0	73	226	153	171293
+Cyp3a2	12	10716427	961391	#73af42	cytochrome P450, family 3, subfamily a, polypeptide 2	180	6	6	0	73	226	153	266682
+Wfdc2	3	161018502	5678	#73af42	WAP four-disulfide core domain 2	180	6	6	0	73	226	153	286888
+Hepacam	8	-1	-1	#73af42	hepatic and glial cell adhesion molecule	180	6	6	0	73	226	153	300517
+Myd88	8	128022512	4069	#73af42	MYD88, innate immune signal transduction adaptor	180	6	6	0	73	226	153	301059
+Pdcd1	9	101025313	13312	#73af42	programmed cell death 1	180	6	6	0	73	226	153	301626
+Atp6ap2	X	11137889	26965	#73af42	ATPase H+ transporting accessory protein 2	180	6	6	0	73	226	153	302526
+Tnfrsf12a	10	12995904	2026	#73af42	TNF receptor superfamily member 12A	180	6	6	0	73	226	153	302965
+Alkbh5	10	46906314	21445	#73af42	alkB homolog 5, RNA demethylase	180	6	6	0	73	226	153	303193
+Piezo2	18	-1	-1	#73af42	piezo-type mechanosensitive ion channel component 2	180	6	6	0	73	226	153	307380
+Ubash3a	20	9948710	37302	#73af42	ubiquitin associated and SH3 domain containing, A	180	6	6	0	73	226	153	309666
+Tnfsf12	10	56290780	9297	#73af42	TNF superfamily member 12	180	6	6	0	73	226	153	360548
+Mtf1	5	142797366	44756	#73af42	metal-regulatory transcription factor 1	180	6	6	0	73	226	153	362591
+Rbfox2	7	118157094	239634	#73af42	RNA binding fox-1 homolog 2	180	6	6	0	73	226	153	362950
+Oip5	3	111412488	9722	#73af42	Opa interacting protein 5	180	6	6	0	73	226	153	499873
+Line	3	-1	-1	#73af42	long interspersed repetitive DNA	180	6	6	0	73	226	153	641625
+Ndufa4	4	38233680	7168	#73af42	NDUFA4, mitochondrial complex associated	180	6	6	0	73	226	153	681024
+Mir350	13	43827492	98	#73af42	microRNA 350	180	6	6	0	73	226	153	100313985
+Mir27a	19	25318736	86	#73af42	microRNA 27a	180	6	6	0	73	226	153	100314006
+Mir874	17	7025014	75	#73af42	microRNA 874	180	6	6	0	73	226	153	100314096
+Mir18a	15	100180015	95	#73af42	microRNA 18a	180	6	6	0	73	226	153	100314227
+Mir448	X	118277684	111	#73af42	microRNA 448	180	6	6	0	73	226	153	100314251
+Mir532	X	16109870	78	#73af42	microRNA 532	180	6	6	0	73	226	153	100314265
+Ripk3	15	34470796	8945	#73af42	receptor-interacting serine-threonine kinase 3	180	8	7	1	10	102	92	246240
+Agtr2	X	119391143	1091	#73af42	angiotensin II receptor, type 2	180	7	7	0	22	102	80	24182
+Oxt	3	123106694	839	#73af42	oxytocin/neurophysin I prepropeptide	180	7	7	0	22	102	80	25504
+S100b	20	13130636	12220	#73af42	S100 calcium binding protein B	180	7	7	0	22	102	80	25742
+Capn2	13	100878649	50162	#73af42	calpain 2	180	7	7	0	22	102	80	29154
+Gdf15	16	20555395	2583	#73af42	growth differentiation factor 15	180	7	7	0	22	102	80	29455
+Uchl1	14	43133224	10718	#73af42	ubiquitin C-terminal hydrolase L1	180	7	7	0	22	102	80	29545
+Gabrd	5	172797479	11895	#73af42	gamma-aminobutyric acid type A receptor subunit delta	180	7	7	0	22	102	80	29689
+Gripap1	X	15523929	29771	#73af42	GRIP1 associated protein 1	180	7	7	0	22	102	80	116493
+Pfkfb3	17	70684134	27090	#73af42	6-phosphofructo-2-kinase/fructose-2,6-biphosphatase 3	180	7	7	0	22	102	80	117276
+Olr1	4	163239853	22084	#73af42	oxidized low density lipoprotein receptor 1	180	7	7	0	22	102	80	140914
+Usp15	7	66595742	90456	#73af42	ubiquitin specific peptidase 15	180	7	7	0	22	102	80	171329
+Fas	1	252589785	35005	#73af42	Fas cell surface death receptor	180	7	7	0	22	102	80	246097
+Nptx1	10	108682637	8955	#73af42	neuronal pentraxin 1	180	7	7	0	22	102	80	266777
+Lrp5	1	218816833	103261	#73af42	LDL receptor related protein 5	180	7	7	0	22	102	80	293649
+Wwtr1	2	147577149	115884	#73af42	WW domain containing transcription regulator 1	180	7	7	0	22	102	80	295062
+Rarres2	4	78205810	2957	#73af42	retinoic acid receptor responder 2	180	7	7	0	22	102	80	297073
+Nampt	6	52122085	34388	#73af42	nicotinamide phosphoribosyltransferase	180	7	7	0	22	102	80	297508
+Lats2	15	37943609	40273	#73af42	large tumor suppressor kinase 2	180	7	7	0	22	102	80	305922
+Egln1	19	-1	-1	#73af42	egl-9 family hypoxia-inducible factor 1	180	7	7	0	22	102	80	308913
+Traf2	3	2746075	24545	#73af42	Tnf receptor-associated factor 2	180	7	7	0	22	102	80	311786
+Tlr3	16	50016857	13457	#73af42	toll-like receptor 3	180	7	7	0	22	102	80	364594
+Sik3	8	50310263	210021	#73af42	SIK family kinase 3	180	7	7	0	22	102	80	684112
+Mlkl	19	-1	-1	#73af42	mixed lineage kinase domain like pseudokinase	180	7	7	0	22	102	80	690743
+Spp1	14	6673686	6235	#73af42	secreted phosphoprotein 1	180	5	6	-1	182	226	44	25353
+Mapk3	1	198192773	6202	#73af42	mitogen activated protein kinase 3	180	5	6	-1	182	226	44	50689
+Fgf2	2	124081072	53061	#73af42	fibroblast growth factor 2	180	5	6	-1	182	226	44	54250
+Ghrl	4	145674157	3909	#73af42	ghrelin and obestatin prepropeptide	180	5	6	-1	182	226	44	59301
+Mapk1	11	88207495	65799	#73af42	mitogen activated protein kinase 1	180	5	6	-1	182	226	44	116590
+Asic3	4	7288855	4046	#73af42	acid sensing ion channel subunit 3	180	5	6	-1	182	226	44	286920
+Casp8ap2	5	47853818	37322	#73af42	caspase 8 associated protein 2	180	5	6	-1	182	226	44	313128
+Piezo1	19	55305494	61859	#73af42	piezo-type mechanosensitive ion channel component 1	180	5	6	-1	182	226	44	361430
+Mir34c	8	55492024	76	#73af42	microRNA 34c	180	5	6	-1	182	226	44	100314014
+Mir148a	4	81013269	96	#73af42	microRNA 148a	180	5	6	-1	182	226	44	104795669
+Slc9a1	5	151573122	53238	#73af42	solute carrier family 9 member A1	180	8	8	0	10	53	43	24782
+Asic2	10	68248414	269165	#73af42	acid sensing ion channel subunit 2	180	8	8	0	10	53	43	25364
+Ackr3	9	97355924	11523	#73af42	atypical chemokine receptor 3	180	8	8	0	10	53	43	84348
+Avp	3	123117482	1978	#73af42	arginine vasopressin	180	7	8	-1	22	53	31	24221
+Grm5	1	151218929	564463	#73af42	glutamate metabotropic receptor 5	180	7	8	-1	22	53	31	24418
+Insr	12	1682527	133887	#73af42	insulin receptor	180	7	8	-1	22	53	31	24954
+Ntrk2	17	6114598	130029	#73af42	neurotrophic receptor tyrosine kinase 2	180	7	8	-1	22	53	31	25054
+Pparg	4	147275334	124046	#73af42	peroxisome proliferator-activated receptor gamma	180	7	8	-1	22	53	31	25664
+Oprk1	5	13742656	17804	#73af42	opioid receptor, kappa 1	180	7	8	-1	22	53	31	29335
+Shc1	2	188745503	11563	#73af42	SHC adaptor protein 1	180	7	8	-1	22	53	31	85385
+Sirt3	1	213613506	22006	#73af42	sirtuin 3	180	7	8	-1	22	53	31	293615
+Il17a	9	26841299	3487	#73af42	interleukin 17A	180	7	8	-1	22	53	31	301289
+Tlr2	2	182840726	5335	#73af42	toll-like receptor 2	180	7	8	-1	22	53	31	310553
+Mir181a-1	13	54952742	99	#73af42	microRNA 181a-1	180	7	8	-1	22	53	31	100314195
+Mir26a	8	127714441	89	#73af42	microRNA 26a	180	7	8	-1	22	53	31	100314290
+Slc6a4	10	63153656	21164	#73af42	solute carrier family 6 member 4	180	9	9	0	5	35	30	25553
+Tspo	7	124460358	10252	#73af42	translocator protein	180	6	7	-1	73	102	29	24230
+Grin2b	4	169559949	438499	#73af42	glutamate ionotropic receptor NMDA type subunit 2B	180	6	7	-1	73	102	29	24410
+Tp53	10	56187020	11429	#73af42	tumor protein p53	180	6	7	-1	73	102	29	24842
+Avpr1a	7	67341366	3924	#73af42	arginine vasopressin receptor 1A	180	6	7	-1	73	102	29	25107
+Oxtr	4	144399326	16875	#73af42	oxytocin receptor	180	6	7	-1	73	102	29	25342
+Psap	20	29831314	25562	#73af42	prosaposin	180	6	7	-1	73	102	29	25524
+Il18	8	55009666	6620	#73af42	interleukin 18	180	6	7	-1	73	102	29	29197
+Epas1	6	10306508	78731	#73af42	endothelial PAS domain protein 1	180	6	7	-1	73	102	29	29452
+Slc1a2	3	92640765	24966	#73af42	solute carrier family 1 member 2	180	6	7	-1	73	102	29	29482
+Unc13a	16	20056398	47547	#73af42	unc-13 homolog A	180	6	7	-1	73	102	29	64829
+Cxcl1	14	18743678	1779	#73af42	C-X-C motif chemokine ligand 1	180	6	7	-1	73	102	29	81503
+Ptch1	17	1032242	53643	#73af42	patched 1	180	6	7	-1	73	102	29	89830
+Mettl14	2	227566817	15777	#73af42	methyltransferase like 14	180	6	7	-1	73	102	29	295428
+Panx1	8	13567186	38854	#73af42	Pannexin 1	180	6	7	-1	73	102	29	315435
+Hdac4	9	99057086	242629	#73af42	histone deacetylase 4	180	6	7	-1	73	102	29	363287
+Rac1	12	13090372	20220	#73af42	Rac family small GTPase 1	180	6	7	-1	73	102	29	363875
+Mir132	10	62014995	100	#73af42	microRNA 132	180	6	7	-1	73	102	29	100314029
+Mir221	X	3684480	108	#73af42	microRNA 221	180	6	7	-1	73	102	29	100314163
+Mir181a2	3	23150352	116	#73af42	microRNA 181a-2	180	6	7	-1	73	102	29	100314292
+Gabra1	10	27311264	54977	#73af42	gamma-aminobutyric acid type A receptor subunit alpha 1	180	8	9	-1	10	35	25	29705
+Prkaa2	5	124574079	68490	#73af42	protein kinase AMP-activated catalytic subunit alpha 2	180	8	9	-1	10	35	25	78975
+Mir210	1	214208355	109	#73af42	microRNA 210	180	8	10	-2	10	26	16	100314053
+Adra1a	15	43299385	93046	#73af42	adrenoceptor alpha 1A	180	7	9	-2	22	35	13	29412
+Mir139	1	166589545	67	#73af42	microRNA 139	180	7	9	-2	22	35	13	100314240
+Drd2	8	53678777	64865	#73af42	dopamine receptor D2	180	9	11	-2	5	16	11	24318
+Hmox1	19	14508634	6822	#73af42	heme oxygenase 1	180	9	11	-2	5	16	11	24451
+Il6	4	3043231	4576	#73af42	interleukin 6	180	9	12	-3	5	11	6	24498
+Tnf	20	4855829	2617	#73af42	tumor necrosis factor	180	8	11	-3	10	16	6	24835
+Hif1a	6	96811185	44865	#73af42	hypoxia inducible factor 1 subunit alpha	180	11	16	-5	2	6	4	29560
+Nfe2l2	3	62497571	27423	#73af42	nuclear factor, erythroid 2-like 2	180	12	21	-9	1	2	1	83619
+Tlr4	5	82587424	13632	#73af42	toll-like receptor 4	180	11	21	-10	2	2	0	29260
+Vegfa	9	17347765	7915	#73af42	vascular endothelial growth factor A	180	8	13	-5	10	9	-1	83785
+Bdnf	3	100769839	49375	#73af42	brain-derived neurotrophic factor	180	8	15	-7	10	7	-3	24225
+Nlrp3	10	45893018	24269	#73af42	NLR family, pyrin domain containing 3	180	10	23	-13	4	1	-3	287362
+Sirt1	20	26831972	14171	#73af42	sirtuin 1	180	9	21	-12	5	2	-3	309757
+Il1b	3	121876259	6378	#73af42	interleukin 1 beta	180	7	11	-4	22	16	-6	24494
+Yap1	8	6135542	68037	#73af42	Yes1 associated transcriptional regulator	180	7	11	-4	22	16	-6	363014
+Mmp9	3	161413410	8063	#73af42	matrix metallopeptidase 9	180	7	12	-5	22	11	-11	81687
+Foxo1	2	141451234	75782	#73af42	forkhead box O1	180	7	12	-5	22	11	-11	84482
+Stat3	10	88790406	51827	#73af42	signal transducer and activator of transcription 3	180	7	14	-7	22	8	-14	25125
+Tgfb1	1	82480875	16321	#73af42	transforming growth factor, beta 1	180	7	17	-10	22	5	-17	59086
+Casp3	16	48845011	18193	#73af42	caspase 3	180	6	8	-2	73	53	-20	25402
+Notch1	3	3905562	45453	#73af42	notch receptor 1	180	6	8	-2	73	53	-20	25496
+Bace1	8	50140092	22296	#73af42	beta-secretase 1	180	6	8	-2	73	53	-20	29392
+Prkn	1	48880015	1189983	#73af42	parkin RBR E3 ubiquitin protein ligase	180	6	8	-2	73	53	-20	56816
+Gsk3b	11	65066199	142638	#73af42	glycogen synthase kinase 3 beta	180	6	8	-2	73	53	-20	84027
+Ano1	1	217754349	148124	#73af42	anoctamin 1	180	6	8	-2	73	53	-20	309135
+Trpm7	3	119258189	88895	#73af42	transient receptor potential cation channel, subfamily M, member 7	180	6	8	-2	73	53	-20	679906
+Mir29a	4	58343931	87	#73af42	microRNA 29a	180	6	8	-2	73	53	-20	100314230
+Nos3	4	7322088	20312	#73af42	nitric oxide synthase 3	180	6	9	-3	73	35	-38	24600
+Shank3	7	130474274	58856	#73af42	SH3 and multiple ankyrin repeat domains 3	180	4	6	-2	264	226	-38	59312
+Txn1	5	75049735	7998	#73af42	thioredoxin 1	180	4	6	-2	264	226	-38	116484
+H19	1	215744404	2676	#73af42	H19, imprinted maternally expressed transcript (non-protein coding)	180	6	9	-3	73	35	-38	309122
+Postn	2	143656845	31242	#73af42	periostin	180	4	6	-2	264	226	-38	361945
+RGD1566401	6	133658937	32192	#73af42	similar to GTL2, imprinted maternally expressed untranslated	180	6	9	-3	73	35	-38	500717
+Mir143	18	56971273	104	#73af42	microRNA 143	180	6	9	-3	73	35	-38	100314035
+Mir214	13	80130905	109	#73af42	microRNA 214	180	6	9	-3	73	35	-38	100314055
+Agt	19	57321639	11794	#73af42	angiotensinogen	180	0	6	-6	265	226	-39	24179
+Ar	X	67656253	172745	#73af42	androgen receptor	180	0	6	-6	265	226	-39	24208
+Cacna1c	4	150641066	628093	#73af42	calcium voltage-gated channel subunit alpha1 C	180	0	6	-6	265	226	-39	24239
+Camk2d	2	230901126	229210	#73af42	calcium/calmodulin-dependent protein kinase II delta	180	0	6	-6	265	226	-39	24246
+Casr	11	67188630	70159	#73af42	calcium-sensing receptor	180	0	6	-6	265	226	-39	24247
+Comt	11	86715981	19648	#73af42	catechol-O-methyltransferase	180	0	6	-6	265	226	-39	24267
+Cyp1a1	8	62472087	6030	#73af42	cytochrome P450, family 1, subfamily a, polypeptide 1	180	0	6	-6	265	226	-39	24296
+Egr1	18	27657903	2198	#73af42	early growth response 1	180	0	6	-6	265	226	-39	24330
+Gapdh	4	157676396	3872	#73af42	glyceraldehyde-3-phosphate dehydrogenase	180	0	6	-6	265	226	-39	24383
+Gh1	10	94486204	1977	#73af42	growth hormone 1	180	0	6	-6	265	226	-39	24391
+Grin2a	10	5707806	412091	#73af42	glutamate ionotropic receptor NMDA type subunit 2A	180	0	6	-6	265	226	-39	24409
+Hgf	4	15436662	68621	#73af42	hepatocyte growth factor	180	0	6	-6	265	226	-39	24446
+Itgb1	19	61677542	47995	#73af42	integrin subunit beta 1	180	0	6	-6	265	226	-39	24511
+Jak2	1	247398667	58854	#73af42	Janus kinase 2	180	0	6	-6	265	226	-39	24514
+Mst1	8	116857716	4570	#73af42	macrophage stimulating 1	180	0	6	-6	265	226	-39	24566
+Myc	7	102586313	4926	#73af42	MYC proto-oncogene, bHLH transcription factor	180	0	6	-6	265	226	-39	24577
+Nos2	10	66188290	125059	#73af42	nitric oxide synthase 2	180	0	6	-6	265	226	-39	24599
+Oprd1	5	150288126	34937	#73af42	opioid receptor, delta 1	180	0	6	-6	265	226	-39	24613
+Pdgfb	7	121215458	17634	#73af42	platelet derived growth factor subunit B	180	0	6	-6	265	226	-39	24628
+Scn2a	3	51687910	134098	#73af42	sodium voltage-gated channel alpha subunit 2	180	0	6	-6	265	226	-39	24766
+Cxcl12	4	149261044	12847	#73af42	C-X-C motif chemokine ligand 12	180	0	6	-6	265	226	-39	24772
+Ucp1	19	24456976	7832	#73af42	uncoupling protein 1	180	0	6	-6	265	226	-39	24860
+Vhl	4	145580869	6966	#73af42	von Hippel-Lindau tumor suppressor	180	0	6	-6	265	226	-39	24874
+Esr1	1	41323204	267493	#73af42	estrogen receptor 1	180	0	6	-6	265	226	-39	24890
+Gabra3	X	152415134	227404	#73af42	gamma-aminobutyric acid type A receptor subunit alpha 3	180	0	6	-6	265	226	-39	24947
+Snap25	3	129697408	91009	#73af42	synaptosome associated protein 25	180	0	6	-6	265	226	-39	25012
+Eln	12	24978478	43386	#73af42	elastin	180	0	6	-6	265	226	-39	25043
+Glp1r	20	9586075	40153	#73af42	glucagon-like peptide 1 receptor	180	0	6	-6	265	226	-39	25051
+Chrna3	8	59594007	13115	#73af42	cholinergic receptor nicotinic alpha 3 subunit	180	0	6	-6	265	226	-39	25101
+Esr2	6	99164359	49757	#73af42	estrogen receptor 2	180	0	6	-6	265	226	-39	25149
+Sdc1	6	33885576	22462	#73af42	syndecan 1	180	0	6	-6	265	226	-39	25216
+Bdkrb2	6	129399468	30208	#73af42	bradykinin receptor B2	180	0	6	-6	265	226	-39	25245
+Acsl1	16	48937456	44524	#73af42	acyl-CoA synthetase long-chain family member 1	180	0	6	-6	265	226	-39	25288
+Anxa3	14	14371921	54516	#73af42	annexin A3	180	0	6	-6	265	226	-39	25291
+Ninj1	17	15866242	15042	#73af42	ninjurin 1	180	0	6	-6	265	226	-39	25338
+Dpysl2	15	43475640	67253	#73af42	dihydropyrimidinase-like 2	180	0	6	-6	265	226	-39	25416
+Gdnf	2	56887987	22251	#73af42	glial cell derived neurotrophic factor	180	0	6	-6	265	226	-39	25453
+Ocm	12	-1	-1	#73af42	oncomodulin	180	0	6	-6	265	226	-39	25503
+Prkar1b	12	17614565	98991	#73af42	protein kinase cAMP-dependent type I regulatory subunit beta	180	0	6	-6	265	226	-39	25521
+Star	16	71036204	4643	#73af42	steroidogenic acute regulatory protein	180	0	6	-6	265	226	-39	25557
+Chrna4	3	176533182	14783	#73af42	cholinergic receptor nicotinic alpha 4 subunit	180	0	6	-6	265	226	-39	25590
+Tnfrsf1a	4	157864990	12643	#73af42	TNF receptor superfamily member 1A	180	0	6	-6	265	226	-39	25625
+Pkm	8	64481174	21548	#73af42	pyruvate kinase M1/2	180	0	6	-6	265	226	-39	25630
+Htr5a	4	199916	9682	#73af42	5-hydroxytryptamine receptor 5A	180	0	6	-6	265	226	-39	25689
+Hnf4a	3	159902441	62562	#73af42	hepatocyte nuclear factor 4, alpha	180	0	6	-6	265	226	-39	25735
+Kcnb1	3	163850785	84825	#73af42	potassium voltage-gated channel subfamily B member 1	180	0	6	-6	265	226	-39	25736
+Pcna	3	124880698	3872	#73af42	proliferating cell nuclear antigen	180	0	6	-6	265	226	-39	25737
+Ppara	7	126619196	62556	#73af42	peroxisome proliferator activated receptor alpha	180	0	6	-6	265	226	-39	25747
+Aqp7	5	57358327	13912	#73af42	aquaporin 7	180	0	6	-6	265	226	-39	29171
+Snca	4	90782412	99846	#73af42	synuclein alpha	180	0	6	-6	265	226	-39	29219
+Nfib	5	100439080	208218	#73af42	nuclear factor I/B	180	0	6	-6	265	226	-39	29227
+Drd3	11	61822077	52250	#73af42	dopamine receptor D3	180	0	6	-6	265	226	-39	29238
+Tnni3	1	72882806	3684	#73af42	troponin I3, cardiac type	180	0	6	-6	265	226	-39	29248
+Maoa	X	6554698	66024	#73af42	monoamine oxidase A	180	0	6	-6	265	226	-39	29253
+Adora1	13	51043498	32309	#73af42	adenosine A1 receptor	180	0	6	-6	265	226	-39	29290
+Gpx4	7	12516358	2704	#73af42	glutathione peroxidase 4	180	0	6	-6	265	226	-39	29328
+Sigmar1	5	58121826	2773	#73af42	sigma non-opioid intracellular receptor 1	180	0	6	-6	265	226	-39	29336
+Avpr1b	13	48367307	11524	#73af42	arginine vasopressin receptor 1B	180	0	6	-6	265	226	-39	29462
+Trpv2	10	48903540	21496	#73af42	transient receptor potential cation channel, subfamily V, member 2	180	0	6	-6	265	226	-39	29465
+Mapt	10	92289002	97513	#73af42	microtubule-associated protein tau	180	0	6	-6	265	226	-39	29477
+P2rx4	12	39308023	17650	#73af42	purinergic receptor P2X 4	180	0	6	-6	265	226	-39	29659
+Cacna1d	16	6112150	292807	#73af42	calcium voltage-gated channel subunit alpha1 D	180	0	6	-6	265	226	-39	29716
+Pik3r2	16	20416432	8548	#73af42	phosphoinositide-3-kinase regulatory subunit 2	180	0	6	-6	265	226	-39	29741
+Slc7a5	19	54693959	28604	#73af42	solute carrier family 7 member 5	180	0	6	-6	265	226	-39	50719
+Ucp2	1	165506375	6369	#73af42	uncoupling protein 2	180	0	6	-6	265	226	-39	54315
+Adam17	6	43400521	47759	#73af42	ADAM metallopeptidase domain 17	180	0	6	-6	265	226	-39	57027
+Cnr2	5	154265097	3029	#73af42	cannabinoid receptor 2	180	0	6	-6	265	226	-39	57302
+Ntrk1	2	187143568	16805	#73af42	neurotrophic receptor tyrosine kinase 1	180	0	6	-6	265	226	-39	59109
+Phlpp1	13	26172215	222290	#73af42	PH domain and leucine rich repeat protein phosphatase 1	180	0	6	-6	265	226	-39	59265
+Ambra1	3	80634470	195598	#73af42	autophagy and beclin 1 regulator 1	180	0	6	-6	265	226	-39	59319
+Cttn	1	217602698	35454	#73af42	cortactin	180	0	6	-6	265	226	-39	60465
+Cxcr4	13	45314952	3904	#73af42	C-X-C motif chemokine receptor 4	180	0	6	-6	265	226	-39	60628
+Mmp8	8	5768889	8852	#73af42	matrix metallopeptidase 8	180	0	6	-6	265	226	-39	63849
+Slc29a1	9	17784468	14538	#73af42	solute carrier family 29 member 1	180	0	6	-6	265	226	-39	63997
+Pdcd4	1	274629019	18384	#73af42	programmed cell death 4	180	0	6	-6	265	226	-39	64031
+Ccn2	1	21851658	3115	#73af42	cellular communication network factor 2	180	0	6	-6	265	226	-39	64032
+Birc5	10	106856097	8321	#73af42	baculoviral IAP repeat-containing 5	180	0	6	-6	265	226	-39	64041
+Ascl1	7	28038662	1830	#73af42	achaete-scute family bHLH transcription factor 1	180	0	6	-6	265	226	-39	64186
+Mfn2	5	164684508	29637	#73af42	mitofusin 2	180	0	6	-6	265	226	-39	64476
+Slc5a2	1	199682688	6121	#73af42	solute carrier family 5 member 2	180	0	6	-6	265	226	-39	64522
+Ctsb	15	46316741	20872	#73af42	cathepsin B	180	0	6	-6	265	226	-39	64529
+Wnt5a	16	4469451	20820	#73af42	Wnt family member 5A	180	0	6	-6	265	226	-39	64566
+Map1lc3b	19	53635633	8332	#73af42	microtubule-associated protein 1 light chain 3 beta	180	0	6	-6	265	226	-39	64862
+Cldn5	11	86356292	1426	#73af42	claudin 5	180	0	6	-6	265	226	-39	65131
+Kcnd3	2	207923775	216952	#73af42	potassium voltage-gated channel subfamily D member 3	180	0	6	-6	265	226	-39	65195
+Arhgef9	X	64249581	178863	#73af42	Cdc42 guanine nucleotide exchange factor 9	180	0	6	-6	265	226	-39	66013
+Trpv4	12	47698947	38955	#73af42	transient receptor potential cation channel, subfamily V, member 4	180	0	6	-6	265	226	-39	66026
+Htr3a	8	53211438	12366	#73af42	5-hydroxytryptamine receptor 3A	180	0	6	-6	265	226	-39	79246
+Axin1	10	-1	-1	#73af42	axin 1	180	0	6	-6	265	226	-39	79257
+Sost	10	89897087	3044	#73af42	sclerostin	180	0	6	-6	265	226	-39	80722
+Slc16a3	10	110139783	8575	#73af42	solute carrier family 16 member 3	180	0	6	-6	265	226	-39	80878
+Bdkrb1	6	129438158	2416	#73af42	bradykinin receptor B1	180	0	6	-6	265	226	-39	81509
+Ogg1	4	145283043	6265	#73af42	8-oxoguanine DNA glycosylase	180	0	6	-6	265	226	-39	81528
+Grm7	4	142452616	914962	#73af42	glutamate metabotropic receptor 7	180	0	6	-6	265	226	-39	81672
+Ager	20	4363152	2927	#73af42	advanced glycosylation end product-specific receptor	180	0	6	-6	265	226	-39	81722
+Sh3gl1	9	11031829	23457	#73af42	SH3 domain containing GRB2 like 1, endophilin A2	180	0	6	-6	265	226	-39	81922
+Slc12a2	18	52917124	68137	#73af42	solute carrier family 12 member 2	180	0	6	-6	265	226	-39	83629
+Rps6kb1	10	73824200	41164	#73af42	ribosomal protein S6 kinase B1	180	0	6	-6	265	226	-39	83840
+Ttn	3	-1	-1	#73af42	titin	180	0	6	-6	265	226	-39	84015
+Dnmt1	8	21922515	45980	#73af42	DNA methyltransferase 1	180	0	6	-6	265	226	-39	84350
+Slpi	3	160799979	2249	#73af42	secretory leukocyte peptidase inhibitor	180	0	6	-6	265	226	-39	84386
+Tnfaip6	3	37545243	19461	#73af42	TNF alpha induced protein 6	180	0	6	-6	265	226	-39	84397
+Ihh	9	82208223	6217	#73af42	Indian hedgehog signaling molecule	180	0	6	-6	265	226	-39	84399
+Hdac2	20	43084870	23328	#73af42	histone deacetylase 2	180	0	6	-6	265	226	-39	84577
+Nox4	1	150797202	177535	#73af42	NADPH oxidase 4	180	0	6	-6	265	226	-39	85431
+Pdk4	4	30546772	10002	#73af42	pyruvate dehydrogenase kinase 4	180	0	6	-6	265	226	-39	89813
+Hspb8	12	45905371	14643	#73af42	heat shock protein family B (small) member 8	180	0	6	-6	265	226	-39	113906
+Acsl4	X	113596262	63616	#73af42	acyl-CoA synthetase long-chain family member 4	180	0	6	-6	265	226	-39	113976
+Rbm3	X	15098904	3435	#73af42	RNA binding motif protein 3	180	0	6	-6	265	226	-39	114488
+Becn1	10	89209944	15353	#73af42	beclin 1	180	0	6	-6	265	226	-39	114558
+Plce1	1	257157264	306924	#73af42	phospholipase C, epsilon 1	180	0	6	-6	265	226	-39	114633
+Stx1a	12	24682050	27952	#73af42	syntaxin 1A	180	0	6	-6	265	226	-39	116470
+Snap29	11	87827633	30474	#73af42	synaptosome associated protein 29	180	0	6	-6	265	226	-39	116500
+Prdx1	5	135536413	15573	#73af42	peroxiredoxin 1	180	0	6	-6	265	226	-39	117254
+Baiap2	10	109107389	74573	#73af42	BAR/IMD domain containing adaptor protein 2	180	0	6	-6	265	226	-39	117542
+Gpr37	4	51822163	22065	#73af42	G protein-coupled receptor 37	180	0	6	-6	265	226	-39	117549
+Flt3	12	9360439	76564	#73af42	Fms related receptor tyrosine kinase 3	180	0	6	-6	265	226	-39	140635
+Faf1	5	129370769	367624	#73af42	Fas associated factor 1	180	0	6	-6	265	226	-39	140657
+Gabrg1	14	39964588	84754	#73af42	gamma-aminobutyric acid type A receptor subunit gamma 1	180	0	6	-6	265	226	-39	140674
+Bnip3l	15	43643897	23132	#73af42	BCL2 interacting protein 3 like	180	0	6	-6	265	226	-39	140923
+Tmprss2	11	38063914	39407	#73af42	transmembrane serine protease 2	180	0	6	-6	265	226	-39	156435
+Slco1a4	4	-1	-1	#73af42	solute carrier organic anion transporter family, member 1a4	180	0	6	-6	265	226	-39	170698
+Sphk1	10	105500290	4105	#73af42	sphingosine kinase 1	180	0	6	-6	265	226	-39	170897
+Trpm8	9	95398239	84653	#73af42	transient receptor potential cation channel, subfamily M, member 8	180	0	6	-6	265	226	-39	171384
+Map3k2	18	24961250	64237	#73af42	mitogen activated protein kinase kinase kinase 2	180	0	6	-6	265	226	-39	171492
+Serpina12	6	127696501	14737	#73af42	serpin family A member 12	180	0	6	-6	265	226	-39	191570
+Tax1bp1	4	82776746	55840	#73af42	Tax1 binding protein 1	180	0	6	-6	265	226	-39	246244
+Nrp1	19	61332351	151759	#73af42	neuropilin 1	180	0	6	-6	265	226	-39	246331
+Gpr37l1	13	51985698	6849	#73af42	G protein-coupled receptor 37-like 1	180	0	6	-6	265	226	-39	252939
+Msi1	12	46899835	21079	#73af42	musashi RNA-binding protein 1	180	0	6	-6	265	226	-39	259272
+Fndc5	5	147323240	7026	#73af42	fibronectin type III domain containing 5	180	0	6	-6	265	226	-39	260327
+Nalcn	15	109734092	341531	#73af42	sodium leak channel, non-selective	180	0	6	-6	265	226	-39	266760
+Clmp	8	44847157	128302	#73af42	CXADR-like membrane protein	180	0	6	-6	265	226	-39	286939
+Mylk	11	69013060	210098	#73af42	myosin light chain kinase	180	0	6	-6	265	226	-39	288057
+Pgam5	12	52467450	7061	#73af42	PGAM family member 5, mitochondrial serine/threonine protein phosphatase	180	0	6	-6	265	226	-39	288731
+Desi2	13	96111800	42889	#73af42	desumoylating isopeptidase 2	180	0	6	-6	265	226	-39	289277
+Actn2	17	66304531	93116	#73af42	actinin alpha 2	180	0	6	-6	265	226	-39	291245
+Galnt2	19	57064908	50212	#73af42	polypeptide N-acetylgalactosaminyltransferase 2	180	0	6	-6	265	226	-39	292090
+Ffar2	1	89268938	992	#73af42	free fatty acid receptor 2	180	0	6	-6	265	226	-39	292794
+Cuedc2	1	266078107	8192	#73af42	CUE domain containing 2	180	0	6	-6	265	226	-39	294009
+Srxn1	3	147608850	5560	#73af42	sulfiredoxin 1	180	0	6	-6	265	226	-39	296271
+Ndrg3	3	152972055	127034	#73af42	NDRG family member 3	180	0	6	-6	265	226	-39	296318
+Wwp1	5	33609133	87354	#73af42	WW domain containing E3 ubiquitin protein ligase 1	180	0	6	-6	265	226	-39	297930
+Nova1	6	66963510	121880	#73af42	NOVA alternative splicing regulator 1	180	0	6	-6	265	226	-39	298992
+Rora	8	-1	-1	#73af42	RAR-related orphan receptor A	180	0	6	-6	265	226	-39	300807
+Cldn2	X	111122596	10591	#73af42	claudin 2	180	0	6	-6	265	226	-39	300920
+Il18r1	9	47185303	32100	#73af42	interleukin 18 receptor 1	180	0	6	-6	265	226	-39	301365
+Trim16	10	49231961	22687	#73af42	tripartite motif-containing 16	180	0	6	-6	265	226	-39	303214
+Dvl2	10	56610051	9218	#73af42	dishevelled segment polarity protein 2	180	0	6	-6	265	226	-39	303251
+Scarf1	10	63662967	9462	#73af42	scavenger receptor class F, member 1	180	0	6	-6	265	226	-39	303313
+Crb1	13	56270781	192053	#73af42	crumbs cell polarity complex component 1	180	0	6	-6	265	226	-39	304825
+Spred2	14	104191517	98689	#73af42	sprouty-related, EVH1 domain containing 2	180	0	6	-6	265	226	-39	305539
+Spry2	15	90172967	2835	#73af42	sprouty RTK signaling antagonist 2	180	0	6	-6	265	226	-39	306141
+Efnb2	16	86631151	40899	#73af42	ephrin B2	180	0	6	-6	265	226	-39	306636
+Csf1r	18	56431891	26409	#73af42	colony stimulating factor 1 receptor	180	0	6	-6	265	226	-39	307403
+Slc16a12	1	252977974	22650	#73af42	solute carrier family 16, member 12	180	0	6	-6	265	226	-39	309525
+Plk4	2	127686925	18591	#73af42	polo-like kinase 4	180	0	6	-6	265	226	-39	310344
+Ezh2	4	77284404	62607	#73af42	enhancer of zeste 2 polycomb repressive complex 2 subunit	180	0	6	-6	265	226	-39	312299
+Kdm3a	4	99503176	43282	#73af42	lysine demethylase 3A	180	0	6	-6	265	226	-39	312440
+Tlr7	X	28486929	25272	#73af42	toll-like receptor 7	180	0	6	-6	265	226	-39	317468
+Tlr9	8	114916125	4046	#73af42	toll-like receptor 9	180	0	6	-6	265	226	-39	338457
+Mettl3	15	28710299	10828	#73af42	methyltransferase-like 3	180	0	6	-6	265	226	-39	361035
+Stim1	1	167373894	159518	#73af42	stromal interaction molecule 1	180	0	6	-6	265	226	-39	361618
+Fstl5	2	174542667	692168	#73af42	follistatin-like 5	180	0	6	-6	265	226	-39	365823
+Mir25	12	19307340	83	#73af42	microRNA 25	180	0	6	-6	265	226	-39	100314004
+Mir152	10	84719319	84	#73af42	microRNA 152	180	0	6	-6	265	226	-39	100314037
+Mir183	4	57463569	109	#73af42	microRNA 183	180	0	6	-6	265	226	-39	100314041
+Mir186	2	263873759	85	#73af42	microRNA 186	180	0	6	-6	265	226	-39	100314043
+Mir204	1	240403000	109	#73af42	microRNA 204	180	0	6	-6	265	226	-39	100314051
+Mir211	1	125042119	105	#73af42	microRNA 211	180	0	6	-6	265	226	-39	100314054
+Mir374b	X	74443648	67	#73af42	microRNA 374b	180	0	6	-6	265	226	-39	100314088
+Mir503	X	158148476	70	#73af42	microRNA 503	180	0	6	-6	265	226	-39	100314089
+Mir202	1	212295630	71	#73af42	microRNA 202	180	0	6	-6	265	226	-39	100314122
+Mir15b	2	165605923	97	#73af42	microRNA 15b	180	0	6	-6	265	226	-39	100314150
+Mir199a2	13	80125487	109	#73af42	microRNA 199a-2	180	0	6	-6	265	226	-39	100314245
+Mir212	10	62014702	110	#73af42	microRNA 212	180	0	6	-6	265	226	-39	100314247
+Mir409	6	133893419	76	#73af42	microRNA 409	180	0	6	-6	265	226	-39	100314257
+Mir375	9	82161716	74	#73af42	microRNA 375	180	0	6	-6	265	226	-39	100314263
+Mir140	19	39608951	98	#73af42	microRNA 140	180	0	6	-6	265	226	-39	100314276
+Mir124-1	15	47964298	84	#73af42	microRNA 124-1	180	0	6	-6	265	226	-39	100314291
+Mir29b-3	1	38238376	80	#73af42	microRNA mir-29b-3	180	0	6	-6	265	226	-39	104797378
+Crnde	19	16405308	10478	#73af42	colorectal neoplasia differentially expressed	180	0	6	-6	265	226	-39	106456572
+P2rx7	12	39353613	42429	#73af42	purinergic receptor P2X 7	180	6	10	-4	73	26	-47	29665
+Mir34a	5	167092491	101	#73af42	microRNA 34a	180	6	10	-4	73	26	-47	100314015
+Akt1	6	137219131	17070	#73af42	AKT serine/threonine kinase 1	180	6	11	-5	73	16	-57	24185
+Gja1	20	37876650	12444	#73af42	gap junction protein, alpha 1	180	6	11	-5	73	16	-57	24392
+Trpv1	10	59799123	25085	#73af42	transient receptor potential cation channel, subfamily V, member 1	180	6	11	-5	73	16	-57	83810
+Nos1	12	44215746	165644	#73af42	nitric oxide synthase 1	180	5	7	-2	182	102	-80	24598
+Jak3	16	20109360	11315	#73af42	Janus kinase 3	180	5	7	-2	182	102	-80	25326
+Trpc6	8	6811543	105991	#73af42	transient receptor potential cation channel, subfamily C, member 6	180	5	7	-2	182	102	-80	89823
+Bag3	1	199941258	23933	#73af42	BAG cochaperone 3	180	5	7	-2	182	102	-80	293524
+Mir1	18	2054933	86	#73af42	microRNA 1	180	5	7	-2	182	102	-80	100314077
+Mir378	18	56726150	64	#73af42	microRNA 378	180	5	7	-2	182	102	-80	100314258
+Igf1	7	28412198	74411	#73af42	insulin-like growth factor 1	180	5	8	-3	182	53	-129	24482
+Dmd	X	51286704	2232557	#73af42	dystrophin	180	5	8	-3	182	53	-129	24907
+Dnm1l	11	88830968	49210	#73af42	dynamin 1-like	180	5	8	-3	182	53	-129	114114
+Ngf	2	204886202	53321	#73af42	nerve growth factor	180	5	8	-3	182	53	-129	310738
+LOC100911498	X	74324637	17515	#73af42	uncharacterized LOC100911498	180	5	8	-3	182	53	-129	100911498
+Slc2a4	10	56552983	5504	#73af42	solute carrier family 2 member 4	180	5	9	-4	182	35	-147	25139
+Mtor	5	165263818	110149	#73af42	mechanistic target of rapamycin kinase	180	5	9	-4	182	35	-147	56718
+Klf4	5	72283311	4358	#73af42	Kruppel like factor 4	180	5	9	-4	182	35	-147	114505
+Ephb2	5	155024478	179956	#73af42	Eph receptor B2	180	5	9	-4	182	35	-147	313633
+Mir145	18	56969907	87	#73af42	microRNA 145	180	5	9	-4	182	35	-147	100314036
+Ctnnb1	8	129617853	9509	#73af42	catenin beta 1	180	5	10	-5	182	26	-156	84353
+Ahr	6	54963990	37474	#73af42	aryl hydrocarbon receptor	180	4	7	-3	264	102	-162	25690
+Mapk8	16	9620855	88487	#73af42	mitogen-activated protein kinase 8	180	4	7	-3	264	102	-162	116554
+Ace2	X	32050734	45126	#73af42	angiotensin I converting enzyme 2	180	4	7	-3	264	102	-162	302668
+Ascl2	1	216154002	2407	#73af42	achaete-scute family bHLH transcription factor 2	180	0	7	-7	265	102	-163	24209
+B2m	3	114087287	6024	#73af42	beta-2 microglobulin	180	0	7	-7	265	102	-163	24223
+Edn1	17	22137324	6000	#73af42	endothelin 1	180	0	7	-7	265	102	-163	24323
+Grin1	3	2507745	26918	#73af42	glutamate ionotropic receptor NMDA type subunit 1	180	0	7	-7	265	102	-163	24408
+Il6r	2	189205699	48853	#73af42	interleukin 6 receptor	180	0	7	-7	265	102	-163	24499
+Jun	5	114011186	3091	#73af42	Jun proto-oncogene, AP-1 transcription factor subunit	180	0	7	-7	265	102	-163	24516
+Prkca	10	96191133	393814	#73af42	protein kinase C, alpha	180	0	7	-7	265	102	-163	24680
+Vipr1	8	130283453	29978	#73af42	vasoactive intestinal peptide receptor 1	180	0	7	-7	265	102	-163	24875
+Bax	1	101451801	5407	#73af42	BCL2 associated X, apoptosis regulator	180	0	7	-7	265	102	-163	24887
+Fmr1	X	154684929	37385	#73af42	FMRP translational regulator 1	180	0	7	-7	265	102	-163	24948
+Slc2a2	2	114413586	31793	#73af42	solute carrier family 2 member 2	180	0	7	-7	265	102	-163	25351
+Ptk2	7	114436420	153788	#73af42	protein tyrosine kinase 2	180	0	7	-7	265	102	-163	25614
+Scn5a	8	128169191	97448	#73af42	sodium voltage-gated channel alpha subunit 5	180	0	7	-7	265	102	-163	25665
+Syt1	7	50086644	552154	#73af42	synaptotagmin 1	180	0	7	-7	265	102	-163	25716
+Hcrt	10	88669216	1211	#73af42	hypocretin neuropeptide precursor	180	0	7	-7	265	102	-163	25723
+Polb	16	74237001	23271	#73af42	DNA polymerase beta	180	0	7	-7	265	102	-163	29240
+Runx1	11	32769035	89790	#73af42	RUNX family transcription factor 1	180	0	7	-7	265	102	-163	50662
+Txnrd1	7	26946124	77765	#73af42	thioredoxin reductase 1	180	0	7	-7	265	102	-163	58819
+Cd14	18	29560364	1595	#73af42	CD14 molecule	180	0	7	-7	265	102	-163	60350
+Cxcl6	14	18861357	911	#73af42	C-X-C motif chemokine ligand 6	180	0	7	-7	265	102	-163	60665
+Abcc6	1	101959540	53703	#73af42	ATP binding cassette subfamily C member 6	180	0	7	-7	265	102	-163	81642
+Creb1	9	71230108	63327	#73af42	cAMP responsive element binding protein 1	180	0	7	-7	265	102	-163	81646
+Mmp14	15	33074441	9224	#73af42	matrix metallopeptidase 14	180	0	7	-7	265	102	-163	81707
+Rock1	18	1274785	115253	#73af42	Rho-associated coiled-coil containing protein kinase 1	180	0	7	-7	265	102	-163	81762
+Cdkn1b	4	168689163	4801	#73af42	cyclin-dependent kinase inhibitor 1B	180	0	7	-7	265	102	-163	83571
+Rtn4	14	114126966	47493	#73af42	reticulon 4	180	0	7	-7	265	102	-163	83765
+Robo2	11	11062866	522668	#73af42	roundabout guidance receptor 2	180	0	7	-7	265	102	-163	84409
+Socs3	10	106975178	862	#73af42	suppressor of cytokine signaling 3	180	0	7	-7	265	102	-163	89829
+Rtn4r	11	86992665	24426	#73af42	reticulon 4 receptor	180	0	7	-7	265	102	-163	113912
+Nox1	X	104909328	23180	#73af42	NADPH oxidase 1	180	0	7	-7	265	102	-163	114243
+Vip	1	42169501	8080	#73af42	vasoactive intestinal peptide	180	0	7	-7	265	102	-163	117064
+Hsd17b3	17	1579319	31426	#73af42	hydroxysteroid (17-beta) dehydrogenase 3	180	0	7	-7	265	102	-163	117182
+Lef1	2	236233438	94293	#73af42	lymphoid enhancer binding factor 1	180	0	7	-7	265	102	-163	161452
+Mat2a	4	100297478	5569	#73af42	methionine adenosyltransferase 2A	180	0	7	-7	265	102	-163	171347
+Tlr5	13	101381510	4254	#73af42	toll-like receptor 5	180	0	7	-7	265	102	-163	289337
+Foxo3	20	46428078	91078	#73af42	forkhead box O3	180	0	7	-7	265	102	-163	294515
+Gadd45b	7	11646283	2029	#73af42	growth arrest and DNA-damage-inducible, beta	180	0	7	-7	265	102	-163	299626
+Tbk1	7	63655247	32731	#73af42	TANK-binding kinase 1	180	0	7	-7	265	102	-163	299827
+Ppp1r12b	13	51583603	201036	#73af42	protein phosphatase 1, regulatory subunit 12B	180	0	7	-7	265	102	-163	304813
+Atf6	13	89057467	184993	#73af42	activating transcription factor 6	180	0	7	-7	265	102	-163	304962
+Tfap2a	17	24654902	15522	#73af42	transcription factor AP-2 alpha	180	0	7	-7	265	102	-163	306862
+Tet2	2	-1	-1	#73af42	tet methylcytosine dioxygenase 2	180	0	7	-7	265	102	-163	310859
+Setd2	8	118802478	85746	#73af42	SET domain containing 2, histone lysine methyltransferase	180	0	7	-7	265	102	-163	316013
+Bcor	X	11648989	42109	#73af42	BCL6 co-repressor	180	0	7	-7	265	102	-163	317346
+Ppp1r1b	10	86303727	9041	#73af42	protein phosphatase 1, regulatory (inhibitor) subunit 1B	180	0	7	-7	265	102	-163	360616
+Gbp5	2	248178441	18424	#73af42	guanylate binding protein 5	180	0	7	-7	265	102	-163	362050
+Kif1a	9	-1	-1	#73af42	kinesin family member 1A	180	0	7	-7	265	102	-163	363288
+Kdm6b	10	56001626	7956	#73af42	lysine demethylase 6B	180	0	7	-7	265	102	-163	363630
+Adm2	7	130296895	1746	#73af42	adrenomedullin 2	180	0	7	-7	265	102	-163	399475
+Mir30d	7	109286463	81	#73af42	microRNA 30d	180	0	7	-7	265	102	-163	100314010
+Mir98	X	21583875	107	#73af42	microRNA 98	180	0	7	-7	265	102	-163	100314018
+Mir138-1	8	131731726	98	#73af42	microRNA 138-1	180	0	7	-7	265	102	-163	100314033
+Mir142	10	75050839	86	#73af42	microRNA 142	180	0	7	-7	265	102	-163	100314034
+Mir206	9	26791764	83	#73af42	microRNA 206	180	0	7	-7	265	102	-163	100314052
+Mir133b	9	26795649	83	#73af42	microRNA 133b	180	0	7	-7	265	102	-163	100314078
+Mir494	6	133864370	82	#73af42	microRNA 494	180	0	7	-7	265	102	-163	100314082
+Mir495	6	133868288	79	#73af42	microRNA 495	180	0	7	-7	265	102	-163	100314111
+Mir802	11	33570256	95	#73af42	microRNA 802	180	0	7	-7	265	102	-163	100314132
+Mir875	7	74423233	72	#73af42	microRNA 875	180	0	7	-7	265	102	-163	100314134
+Mir7-1	17	-1	-1	#73af42	microRNA 7-1	180	0	7	-7	265	102	-163	100314148
+Mir150	1	101115974	84	#73af42	microRNA 150	180	0	7	-7	265	102	-163	100314158
+Mir335	-	-1	-1	#73af42	microRNA mir-335	180	0	7	-7	265	102	-163	100314182
+Mir29c	13	113782585	87	#73af42	microRNA 29c	180	0	7	-7	265	102	-163	100314187
+Mir200a	5	173489366	88	#73af42	microRNA 200a	180	0	7	-7	265	102	-163	100314194
+Mirlet7a1	17	16417853	93	#73af42	microRNA let-7a-1	180	0	7	-7	265	102	-163	100314213
+Mir340-1	10	35571755	97	#73af42	microRNA mir-340-1	180	0	7	-7	265	102	-163	100314220
+Mir23a	19	25318582	74	#73af42	microRNA 23a	180	0	7	-7	265	102	-163	100314228
+Mir126b	3	4042488	72	#73af42	microRNA 126b	180	0	7	-7	265	102	-163	100314237
+Mir146a	10	28962476	94	#73af42	microRNA 146a	180	0	7	-7	265	102	-163	100314241
+Mir155	11	24176603	64	#73af42	microRNA 155	180	0	7	-7	265	102	-163	102465831
+Kdm6a	X	-1	-1	#73af42	lysine demethylase 6A	180	0	7	-7	265	102	-163	103689969
+Mir340-2	10	35558983	97	#73af42	microRNA mir-340-2	180	0	7	-7	265	102	-163	104797375
+Mir21	10	73902210	91	#73af42	microRNA 21	180	5	11	-6	182	16	-166	100314000
+Mapk14	20	5933303	61834	#73af42	mitogen activated protein kinase 14	180	5	12	-7	182	11	-171	81649
+Kras	4	179486608	25863	#73af42	KRAS proto-oncogene, GTPase	180	0	8	-8	265	53	-212	24525
+Gcg	3	48442635	9015	#73af42	glucagon	180	0	8	-8	265	53	-212	24952
+Chrna7	1	123901064	138129	#73af42	cholinergic receptor nicotinic alpha 7 subunit	180	0	8	-8	265	53	-212	25302
+Cyp1b1	6	2310988	5734	#73af42	cytochrome P450, family 1, subfamily b, polypeptide 1	180	0	8	-8	265	53	-212	25426
+Lep	4	56346978	4840	#73af42	leptin	180	0	8	-8	265	53	-212	25608
+Smad2	18	72550219	61859	#73af42	SMAD family member 2	180	0	8	-8	265	53	-212	29357
+Ednrb	15	88006961	29393	#73af42	endothelin receptor type B	180	0	8	-8	265	53	-212	50672
+Cybb	X	14578330	31719	#73af42	cytochrome b-245 beta chain	180	0	8	-8	265	53	-212	66021
+Ppargc1a	14	63095827	90992	#73af42	PPARG coactivator 1 alpha	180	0	8	-8	265	53	-212	83516
+Keap1	8	22250518	9261	#73af42	Kelch-like ECH-associated protein 1	180	0	8	-8	265	53	-212	117519
+Gper1	12	17309834	1278	#73af42	G protein-coupled estrogen receptor 1	180	0	8	-8	265	53	-212	171104
+Pcsk9	5	126031368	22358	#73af42	proprotein convertase subtilisin/kexin type 9	180	0	8	-8	265	53	-212	298296
+Trem1	9	14727887	11061	#73af42	triggering receptor expressed on myeloid cells 1	180	0	8	-8	265	53	-212	301229
+Trpm3	1	239741572	1016011	#73af42	transient receptor potential cation channel, subfamily M, member 3	180	0	8	-8	265	53	-212	309407
+Atg7	4	146598416	177991	#73af42	autophagy related 7	180	0	8	-8	265	53	-212	312647
+Gpbar1	9	81559605	989	#73af42	G protein-coupled bile acid receptor 1	180	0	8	-8	265	53	-212	338443
+Usp7	10	6975289	43443	#73af42	ubiquitin specific peptidase 7	180	0	8	-8	265	53	-212	360471
+Il27	1	-1	-1	#73af42	interleukin 27	180	0	8	-8	265	53	-212	365368
+Sox2	2	121165137	2408	#73af42	SRY-box transcription factor 2	180	0	8	-8	265	53	-212	499593
+Mir122	18	60755285	84	#73af42	microRNA 122	180	0	8	-8	265	53	-212	100314023
+Mir217	14	113119529	104	#73af42	microRNA 217	180	0	8	-8	265	53	-212	100314056
+Cnr1	5	49311030	22034	#73af42	cannabinoid receptor 1	180	0	9	-9	265	35	-230	25248
+Pink1	5	156677146	12112	#73af42	PTEN induced kinase 1	180	0	9	-9	265	35	-230	298575
+Mir182	4	57459773	61	#73af42	microRNA 182	180	0	9	-9	265	35	-230	100314172
+Oprm1	1	43475420	227856	#73af42	opioid receptor, mu 1	180	4	10	-6	264	26	-238	25601
+Rela	1	220992770	10479	#73af42	RELA proto-oncogene, NF-kB subunit	180	4	10	-6	264	26	-238	309165
+Lrp1b	3	-1	-1	#73af42	LDL receptor related protein 1B	180	4	10	-6	264	26	-238	311926
+Pten	1	251421814	65820	#73af42	phosphatase and tensin homolog	180	0	10	-10	265	26	-239	50557
+Xbp1	14	85753736	5084	#73af42	X-box binding protein 1	180	0	10	-10	265	26	-239	289754
+Sox9	10	101288528	5500	#73af42	SRY-box transcription factor 9	180	0	11	-11	265	16	-249	140586
+Nefl	15	44799378	3873	#73af42	neurofilament light chain	180	4	12	-8	264	11	-253	83613
+Hmgb1	12	37500017	2222	#73af42	high mobility group box 1	180	4	13	-9	264	9	-255	25459
