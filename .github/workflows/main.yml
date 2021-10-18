@@ -33,11 +33,15 @@ jobs:
 
       - name: run-scripts
         run: | # List any number of python scripts below (with a separate line and command for each)
-            python gene_hints/views/views.py
+            python gene_hints/gene_hints.py
       - name: update-repo
         uses: test-room-7/action-update-file@v1
         with:
           file-path: |
-              data/homo-sapiens-wikipedia-views.tsv
-          commit-msg: Automatically update trends data
+              data/homo-sapiens-gene-hints.tsv
+              data/mus-musculus-pubmed-citations.tsv
+              data/rattus-norvegicus-pubmed-citations.tsv
+              data/canis-lupus-familiaris-pubmed-citations.tsv
+              data/felis-catus-pubmed-citations.tsv
+          commit-msg: Automatically update citations and views data
           github-token: ${{ secrets.GITHUB_TOKEN }}
