@@ -225,7 +225,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--sort-by",
-        help="Metric by which to sort PubMed citations",
+        help="Metric by which to sort PubMed citations.  Count is citations.",
         choices=["count", "delta", "rank", "rank_delta"],
         default="count"
     )

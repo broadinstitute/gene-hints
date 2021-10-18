@@ -8,16 +8,17 @@ from views.views import Views
 from merge_hints import merge_hints
 
 class GeneHints():
-    def __init__(self, num_days, sort_by="count", only=None):
+    def __init__(self, num_days, sort_by="count", only=None, debug=False):
         self.num_days = num_days
         self.sort_by = sort_by
         self.only = only
+        self.debug = debug
 
     def fetch_hints(self):
         only = self.only
-        if not only or "views" not in only:
-            Views().run()
-        if not only or "citations" not in only:
+        if not only or "views" in only:
+            Views().run(self.sort_by, self.debug)
+        if not only or "citations" in only:
             Citations().run(self.num_days, self.sort_by)
 
     def run(self):
@@ -61,9 +62,15 @@ if __name__ == "__main__":
         choices=["count", "delta", "rank", "rank_delta"],
         default="count"
     )
+    parser.add_argument(
+        "--debug",
+        help="Get fast but incomplete data.",
+        action="store_true"
+    )
     args = parser.parse_args()
     num_days = args.num_days
     sort_by = args.sort_by
     only = args.only
+    debug = args.debug
 
-    GeneHints(num_days, sort_by, only).run()
+    GeneHints(num_days, sort_by, only, debug).run()

@@ -195,16 +195,19 @@ class Views:
 
         print(f"Wrote Wikipedia views output file to {path}")
 
-    def run(self):
+    def run(self, sort_by="count", debug=False):
         """Output TSV of recent Wikipedia page views for all human genes
         """
         start_time = perf_counter()
+
+        # Get fast but incomplete data if debugging / developing
+        num_hours = 24 if not debug else 2
 
         genes_by_page = self.load_page_to_gene_map()
 
         for day in range(2):
             views_by_gene = self.init_views_by_gene(genes_by_page)
-            for hour in range(24):
+            for hour in range(num_hours):
                 self.download_views_file(day, hour)
                 views_by_gene = self.process_views_file(
                     views_by_gene, genes_by_page, day, hour
@@ -218,10 +221,24 @@ class Views:
 if __name__ == "__main__":
 
     # Output docs atop this file upon invoking --help via CLI
-    argparse.ArgumentParser(
+    parser = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter
     ).parse_args()
+    parser.add_argument(
+        "--sort-by",
+        help="Metric by which to sort Wikipedia views.  Count is views.",
+        choices=["count", "delta", "rank", "rank_delta"],
+        default="count"
+    )
+    parser.add_argument(
+        "--debug",
+        help="Get fast but incomplete data.",
+        action="store_true"
+    )
+    args = parser.parse_args()
+    sort_by = args.sort_by
+    debug = args.debug
 
     # Run everything!
-    Views().run()
+    Views().run(sort_by, debug)
