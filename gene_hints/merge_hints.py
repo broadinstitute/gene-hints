@@ -10,14 +10,18 @@ import csv
 def tsv_to_dict(tsv_path):
     print("Processing " + tsv_path)
     tsv_dict = {}
+    meta = []
     headers = []
     with open(tsv_path) as fd:
         rd = csv.reader(fd, delimiter="\t")
-        is_header_row = True
         for row in rd:
-            if is_header_row: # save headers to be used later
-                is_header_row = False
-                headers = row
+            if row[0][0] == "#":
+                if len(row[0]) > 1 and row[0][1] == "#":
+                    # save meta-information to be used later
+                    meta = row
+                else:
+                    # save column headers to be used later
+                    headers = row
                 continue
             gene = row[0]
             remaining_rows = row[1:] # everything after the gene
@@ -27,7 +31,7 @@ def tsv_to_dict(tsv_path):
     first_dict_entry = tsv_dict[list(tsv_dict.keys())[0]]
     print("first_dict_entry: " + str(first_dict_entry))
 
-    return tsv_dict, headers
+    return tsv_dict, headers, meta
 
 def merge_dicts(tsv_dict_1, tsv_dict_2):
     print("Starting merge_dicts")
@@ -62,25 +66,27 @@ def merge_headers(headers_1, headers_2):
     print("merged_headers list: " + str(merged_headers))
     return merged_headers
 
-def dict_to_tsv(merged_dict, merged_headers, output_path):
+def dict_to_tsv(merged_dict, merged_headers, merged_meta, output_path):
     with open(output_path, "wt") as out_file:
         tsv_writer = csv.writer(out_file, delimiter="\t")
+        tsv_writer.writerow(merged_meta)
         tsv_writer.writerow(merged_headers)
         for key in merged_dict:
             row_data = [key] + merged_dict[key]
             tsv_writer.writerow(row_data)
 
-def merge_hints(citations_path, views_path, output_path):
+def merge_hints(cites_path, views_path, output_path):
     """Combine TSVs of Wikipedia views and PubMed citations into one TSV file
     """
-    citations_data, citations_headers = tsv_to_dict(citations_path)
-    views_data, views_headers = tsv_to_dict(views_path)
+    cites_data, cites_headers, cites_meta = tsv_to_dict(cites_path)
+    views_data, views_headers, views_meta = tsv_to_dict(views_path)
 
     # Citation data has more rows than views data, so use it as "base" TSV
-    merged_dict = merge_dicts(citations_data, views_data)
-    merged_headers = merge_headers(citations_headers, views_headers)
+    merged_dict = merge_dicts(cites_data, views_data)
+    merged_headers = merge_headers(cites_headers, views_headers)
+    merged_meta = cites_meta + views_meta
 
-    dict_to_tsv(merged_dict, merged_headers, output_path)
+    dict_to_tsv(merged_dict, merged_headers, merged_meta, output_path)
     print("Output TSV for human gene views and citations to: " + output_path)
 
 # Command-line handler

@@ -243,8 +243,12 @@ class EnrichCitations():
         with open(output_path, "wt") as f:
             tsv_writer = csv.writer(f, delimiter="\t")
 
+            meta = ["## cite_days=" + str(num_days)]
+            tsv_writer.writerow(meta)
+            rows.append(meta)
+
             header = [
-                "# gene", "days", "cites", "cite_delta", "cite_rank",
+                "# gene", "cites", "cite_delta", "cite_rank",
                 "cite_rank_delta"
             ]
             # Add header row to the TSV
@@ -261,7 +265,7 @@ class EnrichCitations():
                 cite_rank = gene["cite_rank"]
                 cite_rank_delta = gene["cite_rank_delta"]
                 row = [
-                    symbol, num_days, cites,
+                    symbol, cites,
                     cite_delta, cite_rank,
                     cite_rank_delta
                 ]

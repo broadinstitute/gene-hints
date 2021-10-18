@@ -14,7 +14,7 @@ class GeneHints():
         self.only = only
         self.debug = debug
 
-    def fetch_hints(self):
+    def call_subpipelines(self):
         only = self.only
         if not only or "views" in only:
             Views().run(self.sort_by, self.debug)
@@ -24,7 +24,7 @@ class GeneHints():
     def run(self):
         """Output TSVs gene popularity by Wikipedia views and PubMed citations
         """
-        self.fetch_hints()
+        self.call_subpipelines()
 
         print("\n")
 
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--debug",
-        help="Get fast but incomplete data.",
+        help="Get fast but incomplete data.  Useful when developing.",
         action="store_true"
     )
     args = parser.parse_args()
