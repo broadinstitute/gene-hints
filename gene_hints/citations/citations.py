@@ -140,25 +140,6 @@ class Citations():
         print("Split gene2pubmed by organism")
         self.split_ncbi_file_by_org(output_path, output_filename, organisms)
 
-    def fetch_genome_annotations(self, organisms):
-        """Download GTF files from UCSC; these contain genomic coordinates, etc.
-        """
-        print("Download UCSC genome annotations for each organism")
-        for org in organisms:
-            org_name = org["scientific_name"]
-            asm_ucsc_name = org["genome_assembly_ucsc_name"]
-
-            # Construct parameters for fetching UCSC genome annotation files,
-            # e.g. https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz
-            base_url = "https://hgdownload.soe.ucsc.edu/goldenPath/"
-            leaf = "refGene.gtf"
-            if org_name in ["homo-sapiens", "rattus-norvegicus", "felis-catus"]:
-                leaf = asm_ucsc_name + "." + leaf
-            url = base_url + asm_ucsc_name + "/bigZips/genes/" + leaf + ".gz"
-            output_path = self.data_dir + org_name + "/" + leaf
-
-            download_gzip(url, output_path)
-
     def fetch_gene_info(self, organisms):
         print("Download gene_info")
         url = "https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz"
@@ -188,9 +169,6 @@ class Citations():
         # We filter and join the "publications over time" and "publications per
         # organism" lists in `enrich_citations`.
         self.fetch_all_publications_per_organism(organisms)
-
-        # Download GTF files from UCSC; these contain genomic coordinates, etc.
-        self.fetch_genome_annotations(organisms)
 
         # Download more genomic information
         # TODO: Is data parsed from gene_info available in UCSC GTF files?

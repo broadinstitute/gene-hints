@@ -28,8 +28,7 @@ def read_organisms():
             organism = {
                 "common_name": row[0], # e.g. human
                 "scientific_name": name, # e.g. homo-sapiens (see note above)
-                "taxid": row[2], # e.g. 9606 ("NCBI Taxonomy ID")
-                "genome_assembly_ucsc_name": row[3] # e.g. hg38
+                "taxid": row[2] # e.g. 9606 ("NCBI Taxonomy ID")
             }
 
             organisms.append(organism)
