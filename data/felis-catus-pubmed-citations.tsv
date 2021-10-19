@@ -1,11 +1,12 @@
-# gene	chromosome	start	length	color	full_name	days_in_timeframe	cites	prev_cites	cite_delta	cite_rank	prev_cite_rank	cite_rank_delta	gene_id
-MYBPC3	D1	-1	-1	#73af42	myosin binding protein C3	180	7	0	7	1	6	5	101094698
-MYH7	B3	-1	-1	#73af42	myosin heavy chain 7	180	7	0	7	1	6	5	101096736
-PRNP	A3	-1	-1	#73af42	prion protein	180	0	4	-4	2	5	3	101087310
-C5	D4	-1	-1	#73af42	complement C5	180	0	4	-4	2	5	3	101090401
-IGIP	A1	-1	-1	#73af42	IgA inducing protein	180	0	4	-4	2	5	3	101092824
-ALMS1	A3	-1	-1	#73af42	ALMS1 centrosome and basal body associated protein	180	0	4	-4	2	5	3	101098372
-TGFB1	E2	-1	-1	#73af42	transforming growth factor beta 1	180	0	5	-5	2	4	2	768263
-MKI67	D2	-1	-1	#73af42	marker of proliferation Ki-67	180	0	6	-6	2	2	0	101084831
-RGN	X	-1	-1	#73af42	regucalcin	180	0	6	-6	2	2	0	101096640
-APOBEC3Z3	B4	134878275	2309	#73af42	apolipoprotein B mRNA editing enzyme, catalytic polypeptide-like 3Z3	180	0	7	-7	2	1	-1	100127022
+## cite_days=180
+# gene	cites	cite_delta	cite_rank	cite_rank_delta
+MYBPC3	7	7	1	5
+MYH7	7	7	1	5
+TGFB1	0	-5	2	2
+APOBEC3Z3	0	-7	2	-1
+MKI67	0	-6	2	0
+PRNP	0	-4	2	3
+C5	0	-4	2	3
+IGIP	0	-4	2	3
+RGN	0	-6	2	0
+ALMS1	0	-4	2	3
