@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gene Hints</title>
+  <style>
+    body {
+      font: 14px Arial;
+      line-height: 19.6px;
+      padding: 0 15px;
+    }
+    h1, .control-container, .wrapper, .why, .by {
+      display: flex;
+      justify-content: center
+    }
+    h1 {
+      font-size: 32px;
+      margin: 140px auto 60px auto;
+    }
+    h1 small {
+      font-size: 60%;
+      color: #6f6f6f;
+      margin: 4px 0 0 15px;
+    }
+    .container {
+      width: 90%;
+      margin: 0 auto;
+    }
+    .control-container {
+      font-size: 14px;
+      margin-left: 130px;
+    }
+    .wrapper {
+      margin-left: -160px;
+      height: 250px;
+      margin-top: 40px;
+    }
+    .why h3 {
+      color: #333;
+    }
+    .why div {
+      font-size: 16px;
+      text-align: center;
+      color: #6f6f6f;
+      margin: 0 60px;
+    }
+    .by {
+      text-align: center;
+      color: #6f6f6f;
+    }
+
+    a, a:visited {text-decoration: none;}
+    a:hover {text-decoration: underline;}
+    a, a:hover, a:visited, a:active {color: #0366d6;}
+
+    select, optgroup, option {
+      float: left;
+      font-size: 14px;
+    }
+
+    #search-container {
+      height: 26px;
+      float: left;
+      position: relative;
+      top: -4px;
+      margin-left: 10px;
+    }
+
+    #search-genes {
+      padding-left: 3px;
+      width: 200px;
+      height: 20px;
+      border-radius: 3px;
+      border: 1px solid #888;
+      font-size: 14px;
+    }
+
+    #search-button {
+      height: 23px;
+      width: 23px;
+      font-size: 24px;
+      background: #58F;
+      color: #FFF;
+      display: inline-block;
+      position: relative;
+      top: 2px;
+      left: -25px;
+      border-radius: 3px;
+      text-align: center;
+      padding-top: 1px;
+      cursor: pointer;
+    }
+
+  </style>
+  <script type="text/javascript" src="ideogram.min.js"></script>
+<link rel="icon" type="image/x-icon" href="img/ideogram_favicon.ico">
+</head>
+<body>
+  <div class="container">
+    <h1>Gene Hints <small>Discoverability for gene search</small></h1>
+    <div class="control-container">
+      <div>
+        <select>
+          <!-- <optgroup label="Model organisms"></optgroup> -->
+            <optgroup label="Full support">
+              <option value="homo-sapiens" selected>Human (Homo sapiens)</option>
+              <option value="mus-musculus">Mouse (Mus musculus)</option>
+              <option value="rattus-norvegicus">Rat (Rattus norvegicus)</option>
+            </optgroup>
+            <optgroup label="Partial support">
+              <option class="alpha-support" value="felis-catus">Cat (Felis catus)</option>
+              <option class="alpha-support" value="macaca-fascicularis">Cynomolgus monkey (Macaca fascicularis)</option>
+              <option class="alpha-support" value="canis-lupus-familiaris">Dog (Canis lupus familiaris)</option>
+              <option class="alpha-support" value="drosophila-melanogaster">Fly (Drosophila melanogaster)</option>
+            </optgroup>
+
+            <!-- <option class="alpha-support" value="anopheles-gambiae">Mosquito (Anopheles gambiae)</option>
+            <option class="alpha-support" value="plasmodium-falciparum">Malaria parasite (Plasmodium falciparum)</option> -->
+
+            <!-- <option value="drosophila-melanogaster">Fly (Drosophila melanogaster)</option> -->
+            <!-- <option value="caenorhabditis-elegans">Worm (Caenorhabditis elegans)</option> -->
+            <!-- <option value="danio-rerio">Zebrafish (Danio rerio)</option> -->
+            <!-- <option value="arabidopsis-thaliana">Thale cress (Arabidopsis thaliana)</option> -->
+            <!-- <option value="saccharomyces-cerevisiae">Yeast (Saccharomyces cerevisiae)</option> -->
+          <!-- </optgroup>
+          <optgroup label="Vertebrates">
+            <option value="pan-troglodytes">Chimpanzee (Pan troglodytes)</option>
+            <option value="macaca-mulatta">Macaque (Macaca mulatta)</option>
+            <option value="macaca-fascicularis">Crab-eating macaque (Macaca fascicularis)</option>
+            <option value="felis-catus">Cat (Felis catus)</option>
+            <option value="canis-lupus-familiaris">Dog (Canis lupus familiaris)</option>
+            <option value="equus-caballus">Horse (Equus caballus)</option>
+            <option value="bos-taurus">Cow (Bos taurus)</option>
+            <option value="sus-scrofa">Pig (Sus scrofa)</option> -->
+            <!-- <option value="petromyzon-marinus">Lamprey (Petromyzon marinus)</option> -->
+          <!-- </optgroup> -->
+          <!-- <optgroup label="Plants">
+            <option value="zea-mays">Maize (Zea mays)</option>
+            <option value="oryza-sativa">Rice (Oryza sativa)</option>
+            <option value="solanum-lycopersicum">Tomato (Solanum lycopersicum)</option>
+            <option value="musa-acuminata">Banana (Musa acuminata)</option>
+            <option value="vitis-vinifera">Grape (Vitis vinifera)</option>
+            <option value="micromonas-commoda">Green algae (Micromonas commoda)</option>
+          </optgroup>
+          <optgroup label="Insects">
+            <option value="anopheles-gambiae">Mosquito (Anopheles gambiae)</option>
+          </optgroup>
+          <optgroup label="Protozoa">
+            <option value="plasmodium falciparum">Malaria parasite (Plasmodium falciparum)</option>
+            <option value="leishmania donovani">Leishmania parasite (Leishmania donovani)</option>
+          </optgroup> -->
+        </select>
+      </div>
+      <div style="float: left; width: 350px;">
+        <label for="search-genes" id="search-container">
+          <input id="search-genes" autocomplete="off" placeholder="Search gene"/>
+          <span id="search-button">
+            <svg width="12" height="13"><g stroke-width="2" stroke="#FFF" fill="none"><path d="M11.29 11.71l-4-4"/><circle cx="5" cy="5" r="4"/></g></svg>
+          </span>
+          <div id="examples" style="font-size: 12px"></div>
+        </label>
+      </div>
+    </div>
+    <div class="wrapper">
+      <div id="ideogram-container" style="visibility: hidden;"></div>
+    </div>
+    <div class="why">
+      <div><h3>Easy</h3> Provide an effortless way to discover interesting genes to search.  Show related genes to foster exploration.  Describe with human-friendly terms.</div>
+      <div><h3>Visual</h3> Engage users with interactive, graphical landmarks across the genome.  Complement existing gene search in any web application.</div>
+      <div><h3>Robust</h3> Build atop <a href="https://github.com/eweitz/ideogram" target="_blank">Ideogram.js</a>, a reusable genomic UI component.  Use genomic data processed from <a href="https://ncbi.nlm.nih.gov/pubmed" target="_blank">PubMed</a> and other databases, without&nbsp;managing a backend.</div>
+    </div>
+    <div style="margin-top: 80px;">
+      <p class="by">Gene Hints is&nbsp;<a href="https://github.com/broadinstitute/gene-hints/graphs/contributors">developed</a>&nbsp;at the Broad Institute of MIT and Harvard.</p>
+      <p class="by"><a href="https://github.com/broadinstitute/gene-hints" target="_blank">Source code</a>&nbsp;is on GitHub.  For help, bug reports, or feature requests, please&nbsp;<a href="https://github.com/broadinstitute/gene-hints/issues" target="_blank">open an issue</a>!</p>
+    </div>
+  </div>
+  <script type="text/javascript">
+
+    const examplesByOrganism = {
+      'homo-sapiens': ['ACE2', 'RAD51', 'APP'],
+      'mus-musculus': ['Pten', 'Rad51', 'Sox2'],
+      'rattus-norvegicus': ['Rad51', 'Pten', 'Sox2'],
+      'drosophila-melanogaster': ['dpp', 'N', 'tim'],
+      'saccharomyces-cerevisiae': ['rad51', 'atp6', 'cytb'],
+      'arabidopsis-thaliana': ['PHYA', 'FLC', 'FT'],
+      'danio-rerio': ['bmp4', 'myod1', 'cyp1a'],
+      'macaca-mulatta': ['ACE2', 'RAD51', 'APP'],
+      'macaca-fascicularis': ['ACE2', 'RAD51', 'APP'],
+      'felis-catus': ['OXTR', 'MAPK9', 'FGF5'],
+      'canis-lupus-familiaris': ['OXTR', 'MAPK9', 'FGF5'],
+      'equus-caballus': ['RAD51', 'CD4', 'APOE'],
+      'bos-taurus': ['ACE2', 'RAD51', 'APP'],
+      'sus-scrofa': ['ACE2', 'RAD51', 'APP'],
+      'anopheles-gambiae': ['ND1', 'CYTB', 'ATP6'],
+      'plasmodium-falciparum': ['coxIII', 'PFBI', 'PFFE1']
+    }
+
+    const urlParams = parseUrlParams();
+
+    const organism = 'org' in urlParams ? urlParams.org : 'homo-sapiens';
+
+    document.querySelector(`[value="${organism}"]`).selected = true;
+    document.querySelector('select').addEventListener('change', handleOrganism);
+
+    if ('q' in urlParams) {
+      document.querySelector('#search-genes').value = urlParams['q'];
+    }
+
+    document.querySelector('#search-button').addEventListener('click', handleSearch);
+    document.querySelector('#search-genes').addEventListener('keyup', handleSearch);
+
+    function parseUrlParams() {
+      let rawParams = document.location.search;
+      const urlParams = {};
+      var param, key, value;
+      if (rawParams !== '') {
+        rawParams = rawParams.split('?')[1].split('&');
+        rawParams.forEach(rawParam => {
+          param = rawParam.split('=');
+          key = param[0];
+          value = param[1];
+          urlParams[key] = value;
+        });
+      }
+      return urlParams;
+    }
+
+    // Record app state in URL
+    function updateUrl() {
+      const params = Object.keys(urlParams).map(key => {
+        return key + '=' + urlParams[key];
+      }).join('&');
+      history.pushState(null, null, '?' + params);
+    }
+
+    function updateExamples(organism) {
+      const rawExamples = examplesByOrganism[organism];
+
+      const examples = rawExamples.map(example => {
+        return `<a href="?q=${example}&org=${organism}">${example}</a>`;
+      });
+
+      const formattedExamples = examples.join(', ');
+
+      document.querySelector('#examples').innerHTML =
+        `Examples: ${formattedExamples}`;
+    }
+
+    function getOrganism() {
+      const selectedOrg =
+        document.querySelector('option:checked').text
+          .split('(')[1].split(')')[0]
+          .replace(/ /g, '-').toLowerCase();
+
+      return selectedOrg;
+    }
+
+    function showIdeogram() {
+      document.querySelector('#ideogram-container').style.visibility = '';
+    }
+
+    async function handleOrganism() {
+
+      const newOrganism = getOrganism();
+      const newGene = getGene();
+
+      urlParams.org = newOrganism;
+      if (typeof newGene === 'undefined') {
+        document.querySelector('#ideogram-container').style.visibility = 'hidden';
+        delete urlParams.q;
+      } else {
+        urlParams.q = newGene;
+      }
+      updateUrl();
+      updateExamples(newOrganism);
+
+      window.organism = urlParams.org;
+
+      // const banded = !['homo sapiens', 'mus musculus'].includes(selectedOrg);
+      // config.showFullyBanded = banded;
+      delete ideogram;
+
+      config.organism = newOrganism
+
+      document.querySelector('#ideogram-container').style.visibility = 'hidden';
+
+
+      config = adjustChrMargin(config)
+
+      config.onPlotRelatedGenes = setTrends
+
+      if ('q' in urlParams) {
+        delete config.annotationsPath
+        config.onLoad = plotGeneFromUrl
+        ideogram = Ideogram.initRelatedGenes(config);
+      } else {
+        if (!isAlpha(newOrganism)) {
+          config.annotationsPath = getAnnotsPath(newOrganism)
+        }
+        ideogram = Ideogram.initGeneHints(config);
+      }
+    }
+
+    function getGene() {
+      const searchInput = document.getElementById('search-genes').value.trim();
+
+      // Handles e.g. "BRCA1,BRCA2", "BRCA1 BRCA2", and "BRCA1, BRCA2"
+      const geneSymbols = searchInput.split(/[, ]/).filter(d => d !== '')
+      const geneSymbol = geneSymbols[0];
+      return geneSymbol;
+    }
+
+    // Process text input for the "Search" field.
+    async function handleSearch(event) {
+      // Ignore non-"Enter" keyups
+      if (event.type === 'keyup' && event.keyCode !== 13) return;
+
+      urlParams.org = getOrganism();
+      urlParams.q = getGene();
+      updateUrl();
+
+      await ideogram.plotRelatedGenes(urlParams.q);
+
+      document.querySelector('#ideogram-container').style.visibility = '';
+    }
+
+    async function plotGeneFromUrl() {
+      if ('q' in urlParams) {
+        await ideogram.plotRelatedGenes(urlParams['q']);
+        document.querySelector('#ideogram-container').style.visibility = '';
+      } else {
+        await ideogram.plotRelatedGenes();
+      }
+    }
+
+    function getAnnotsPath(organism) {
+
+      let fileName = `${organism}-citation-information.tsv`
+      if (organism === 'homo-sapiens') {
+        fileName = 'homo-sapiens-cited-genes.tsv'
+      }
+      const annotsPath = `processed_tsv/${fileName}`;
+
+      return annotsPath
+    }
+
+    function onClickAnnot(annot) {
+      document.querySelector('#search-genes').value = annot.name;
+      urlParams['q'] = annot.name;
+      updateUrl();
+
+      const selector = '#ideogram-container #_ideogramInnerWrap'
+      ideogram.plotRelatedGenes(annot.name);
+    }
+
+    function isAlpha(organism) {
+      const elements = document.querySelectorAll('.alpha-support')
+      const alphaOrgs = Array.from(elements).map(el => el.value)
+      return alphaOrgs.includes(organism)
+    }
+
+    function adjustChrMargin(config) {
+      // console.log('config.organism', config.organism)
+      if (config.organism === 'canis-lupus-familiaris') {
+        config.chrMargin = 2
+      } else if (config.organism === 'drosophila-melanogaster') {
+        config.chrMargin = 40
+      } else {
+        delete config.chrMargin
+      }
+      return config
+    }
+
+
+    async function fetchTrendsByGene() {
+      const _trendsByGene = {
+        meta: {}
+      };
+
+      const organism = ideogram.config.organism
+      let citesUrl = `data/${organism}-pubmed-citations.tsv`
+      if (organism === 'homo-sapiens') {
+        citesUrl = 'data/homo-sapiens-gene-hints.tsv';
+      }
+      // let citesUrl = `../data/${organism}-pubmed-citations_no-coordinates.tsv`
+      // if (organism === 'homo-sapiens') {
+      //   citesUrl = '../data/homo-sapiens-gene-hints_no-coordinates.tsv';
+      // }
+      const response = await fetch(citesUrl);
+      const data = await response.text();
+      const lines = data.split('\n');
+      const table = lines.map(line => line.split('\t'));
+      console.log('table', table);
+
+      table.forEach(columnsInRow => {
+        if (columnsInRow[0][0] === '#') {
+          if (columnsInRow[0][1] === '#') {
+            // Parse meta-information lines
+            const meta1 = columnsInRow[0].split('##')[1].trim()
+
+            // e.g. cite_days=2
+            const keyValue = meta1.split('=')
+            _trendsByGene.meta[keyValue[0]] = keyValue[1]
+          } else {
+            return; // Skip column headers
+          }
+        }
+
+        // eslint-disable-next-line
+        //
+        // human format:
+        // ## cite_days=2
+        // # gene	cites	cite_delta	cite_rank	cite_rank_delta	views	view_delta	view_rank	view_rank_delta
+        //
+        // non-human format:
+        // ## cite_days=2
+        // # gene	cites	cite_delta	cite_rank	cite_rank_delta
+        const gene = columnsInRow[0];
+        const pubmedCitations = {
+          count: parseInt(columnsInRow[1]), // cites
+          delta: parseInt(columnsInRow[2]), // cite_delta
+          rank: parseInt(columnsInRow[3]), // cite_rank
+          rankDelta: parseInt(columnsInRow[4]), // cite_rank_delta
+        };
+
+        _trendsByGene[gene] = {pubmedCitations};
+
+        if (ideogram.config.organism === 'homo-sapiens') {
+          const wpDelta = parseInt(columnsInRow[11]) - parseInt(columnsInRow[11])
+          const wikipediaViews = {
+            count: parseInt(columnsInRow[5]), // views
+            delta: parseInt(columnsInRow[6]), // views_delta
+            rank: parseInt(columnsInRow[7]), // views_rank
+            rankDelta: parseInt(columnsInRow[8]), // views_rank_delta
+          }
+          _trendsByGene[gene].wikipediaViews = wikipediaViews
+        }
+      });
+
+      console.log('_trendsByGene', _trendsByGene)
+      window._trendsByGene = _trendsByGene
+      return _trendsByGene;
+    }
+
+    // From https://stackoverflow.com/a/31615643
+    function getNumberWithOrdinal(n) {
+      var s = ["th", "st", "nd", "rd"],
+          v = n % 100;
+      return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    }
+
+    function getPopularityHeader(source, meta) {
+      // const style = 'style="text-decoration: underline dashed #BBB;"'
+      const style = ''
+
+      let name
+      let hoverTitle
+      if (source === 'pubmed') {
+        // name = 'Citations'
+        name = 'Citations in PubMed'
+        hoverTitle = `Citations in PubMed over ${meta.cite_days} days`
+      } else {
+        // name = 'Views'
+        name = 'Views in Wikipedia'
+        hoverTitle = 'Page views in Wikipedia over 24 hours'
+      }
+
+      return `<span ${style} title="${hoverTitle}">${name}</span>:`
+    }
+
+    function formatDelta(delta) {
+      const deltaInt = parseInt(delta)
+      let arrow = '&rarr;' // right arrow, for 0
+      let color = 'black'
+      if (deltaInt < 0) {
+        arrow = '&darr;' // down arrow
+        color = 'red'
+      } else if (deltaInt > 0) {
+        arrow = '&uarr;' // up arrow
+        color = 'green'
+      }
+      const style = `font-weight: bold; color:${color}`
+      return `(<span style="${style}">${arrow}</span> ${Math.abs(deltaInt)})`
+    }
+
+    // TODO: Remove this kludge
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function setTrends() {
+
+      // TODO: Remove this kludge
+      const numDescriptions = Object.keys(ideogram.annotDescriptions.annots).length
+      if (numDescriptions !== ideogram.relatedAnnots.length) {
+        await sleep(200)
+      }
+
+      showIdeogram()
+
+      const trendsByGene = await fetchTrendsByGene()
+
+      // const updatedAnnots = {}
+      for (gene in ideogram.annotDescriptions.annots) {
+        if (gene in trendsByGene) {
+          const pubmed = trendsByGene[gene].pubmedCitations
+          const annot = ideogram.annotDescriptions.annots[gene]
+
+          const trendsHeader =
+            // `<div style="font-weight: bold">Popularity</div>`
+            `<div style="font-weight: bold">Recent trends</div>`
+
+          const pmDelta = formatDelta(pubmed.delta)
+          const pmRank = getNumberWithOrdinal(pubmed.rank)
+          const pmHeader = getPopularityHeader('pubmed', trendsByGene.meta)
+
+          let padding = '<br/><br/>';
+          if (annot.description === '') padding = '' // Don't double-pad search gene
+          let newDesc =
+            `${annot.description}${padding}` +
+            trendsHeader +
+            `${pmHeader} ${pubmed.count} ${pmDelta}`;
+            // `${pmRank} in citations`;
+
+          if ('wikipediaViews' in trendsByGene[gene]) {
+            const wikipedia = trendsByGene[gene].wikipediaViews
+            const wpDelta = formatDelta(wikipedia.delta)
+            const wpRank = getNumberWithOrdinal(wikipedia.rank)
+            const wpHeader = getPopularityHeader('wikipedia')
+            newDesc +=
+              // `<br/>${wpHeader} ${wikipedia.count} ${wpDelta}`
+              `<br/>${wpHeader} ${wikipedia.count} ${wpDelta}`
+              // `, ${wpRank} in views`
+          }
+          annot.description = newDesc
+          ideogram.annotDescriptions.annots[gene] = annot
+        }
+      }
+    }
+
+    updateExamples(organism);
+
+    config = {
+      organism: organism,
+      container: '#ideogram-container',
+      chrWidth: 9,
+      chrHeight: 100,
+      chrLabelSize: 12,
+      annotationHeight: 7,
+      onLoad: plotGeneFromUrl,
+      onPlotRelatedGenes: setTrends,
+      onClickAnnot
+    }
+
+
+    config = adjustChrMargin(config)
+
+    // annotsInList = ['CDK9', 'CDK19', 'CDK1'];
+    // let ideogram = Ideogram.initRelatedGenes(config, annotsInList)
+    let ideogram;
+    if ('q' in urlParams) {
+      ideogram = Ideogram.initRelatedGenes(config);
+    } else {
+
+      if (isAlpha(organism)) {
+        config.onLoad = showIdeogram
+        ideogram = new Ideogram(config);
+      } else {
+
+        if ('default-hints' in urlParams) {
+          config.annotationsPath = urlParams['default-hints'];
+        } else {
+          config.annotationsPath = getAnnotsPath(organism)
+        }
+
+        ideogram = Ideogram.initGeneHints(config);
+      }
+    }
+  </script>
+</body>
+</html>
