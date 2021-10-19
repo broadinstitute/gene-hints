@@ -8,14 +8,14 @@ from views.views import Views
 from merge_hints import merge_hints
 
 class GeneHints():
-    def __init__(self, num_days, sort_by="count", only=None, debug=0):
-        self.num_days = num_days
+    def __init__(self, days, sort_by="count", only=None, debug=0):
+        self.days = days
         self.sort_by = sort_by
         self.only = only
         self.debug = debug
 
-        if self.num_days == 180 and self.debug > 0:
-            self.num_days = 2
+        if self.days == 180 and self.debug > 0:
+            self.days = 2
 
     def call_subpipelines(self):
         only = self.only
@@ -23,7 +23,7 @@ class GeneHints():
             Views().run(self.sort_by, self.debug)
         if not only or "citations" in only:
             cache = self.debug
-            Citations(cache).run(self.num_days, self.sort_by)
+            Citations(cache).run(self.days, self.sort_by)
 
     def run(self):
         """Output TSVs gene popularity by Wikipedia views and PubMed citations
@@ -41,7 +41,7 @@ class GeneHints():
 # Command-line handler
 if __name__ == "__main__":
     usage = """
-    python3 gene_hints/gene_hints.py --num-days 365
+    python3 gene_hints/gene_hints.py --days 365
     """
     parser = argparse.ArgumentParser(
         description=__doc__,
@@ -49,7 +49,7 @@ if __name__ == "__main__":
         usage=usage
     )
     parser.add_argument(
-        "--num-days",
+        "--days",
         type=int,
         help="Number of days to analyze.  (default: %(default)i)",
         default=180
@@ -72,8 +72,8 @@ if __name__ == "__main__":
         "--debug",
         help=(
             "Get fast but incomplete data.  Useful to develop.  Levels:" +
-                "0: use default `num_days`, don't cache.  " +
-                "1: use `num_days 2`, cache download but not compute.  " +
+                "0: use default `days`, don't cache.  " +
+                "1: use `days 2`, cache download but not compute.  " +
                 "2: like `debug 1`, and cache intermediate compute.  " +
                 "(default: %(default)i)"
         ),
@@ -82,9 +82,9 @@ if __name__ == "__main__":
         default=0
     )
     args = parser.parse_args()
-    num_days = args.num_days
+    days = args.days
     sort_by = args.sort_by
     only = args.only
     debug = args.debug
 
-    GeneHints(num_days, sort_by, only, debug).run()
+    GeneHints(days, sort_by, only, debug).run()

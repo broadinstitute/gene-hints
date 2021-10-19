@@ -233,7 +233,7 @@ class EnrichCitations():
 
         return enriched_genes
 
-    def save_to_file(self, sorted_genes_list, organism, num_days):
+    def save_to_file(self, sorted_genes_list, organism, days):
         """Write TSV file that combines citation and genomic data
         """
         output_path = self.get_output_path(organism)
@@ -243,7 +243,7 @@ class EnrichCitations():
         with open(output_path, "wt") as f:
             tsv_writer = csv.writer(f, delimiter="\t")
 
-            meta = ["## cite_days=" + str(num_days)]
+            meta = ["## cite_days=" + str(days)]
             tsv_writer.writerow(meta)
             rows.append(meta)
 
@@ -284,7 +284,7 @@ class EnrichCitations():
         pretty_print_table(rows, 10)
 
     def run(
-        self, pmid_dates_path, prev_pmid_dates_path, num_days, sort_by="count"
+        self, pmid_dates_path, prev_pmid_dates_path, days, sort_by="count"
     ):
         """Construct cite hints, write to TSV.  Intended for use in other modules.
         """
@@ -313,8 +313,8 @@ class EnrichCitations():
             ):
                 print(
                     f"No publications in PubMed cited genes from {organism} " +
-                    f"in the last {num_days} days.  " +
-                    f"Try increasing the `num_days` value in `citations.py`."
+                    f"in the last {days} days.  " +
+                    f"Try increasing the `days` value in `citations.py`."
                 )
                 continue
 
@@ -331,12 +331,12 @@ class EnrichCitations():
 
             cite_hints = sort_genes(enriched_genes, sort_key)
 
-            self.save_to_file(cite_hints, organism, num_days)
+            self.save_to_file(cite_hints, organism, days)
 
 # Command-line handler
 if __name__ == "__main__":
     usage = """
-    python3 gene_hints/citations/enrich_citations.py --pmid-dates-path ./pubmed_citations/data/pmid_dates.tsv --prev-pmid-dates-path ./pubmed_citations/data/prev_pmid_dates.tsv --num-days 5
+    python3 gene_hints/citations/enrich_citations.py --pmid-dates-path ./pubmed_citations/data/pmid_dates.tsv --prev-pmid-dates-path ./pubmed_citations/data/prev_pmid_dates.tsv --days 5
     """
 
     parser = argparse.ArgumentParser(
@@ -354,7 +354,7 @@ if __name__ == "__main__":
         help="Path to file containing citation counts over previous timeframe"
     )
     parser.add_argument(
-        "--num-days",
+        "--days",
         type=int,
         help="Days in the timeframe"
     )
@@ -367,8 +367,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     pmid_dates_path = args.pmid_dates_path
     prev_pmid_dates_path = args.prev_pmid_dates_path
-    num_days = args.num_days
+    days = args.days
     sort_by = args.sort_by
 
     enrich_citations = EnrichCitations()
-    enrich_citations.run(pmid_dates_path, prev_pmid_dates_path, num_days, sort_by)
+    enrich_citations.run(pmid_dates_path, prev_pmid_dates_path, days, sort_by)

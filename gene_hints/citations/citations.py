@@ -131,12 +131,12 @@ class Citations():
             lines = "\n".join(pmids)
             f.write(lines)
 
-    def fetch_all_publications_over_time(self, path, prev_path, num_days):
-        """Download IDs for articles published in the last `num_days`
+    def fetch_all_publications_over_time(self, path, prev_path, days):
+        """Download IDs for articles published in the last n `days`
         """
-        start_date = format_date(num_days) # E.g. 60 days ago
+        start_date = format_date(days) # E.g. 60 days ago
         end_date = format_date() # Today
-        prev_start_date = format_date(num_days * 2) # E.g. 120 days ago
+        prev_start_date = format_date(days * 2) # E.g. 120 days ago
         prev_end_date = start_date # E.g. 60 days ago
 
         output_dir = self.tmp_dir + "timeframe"
@@ -176,7 +176,7 @@ class Citations():
         print("Split gene_info by organism")
         self.split_ncbi_file_by_org(output_path, output_name, organisms)
 
-    def download_data(self, pmid_dates_path, prev_pmid_dates_path, num_days):
+    def download_data(self, pmid_dates_path, prev_pmid_dates_path, days):
         """Download citation and genomic data, preparing it for enrichment
         """
 
@@ -184,9 +184,9 @@ class Citations():
         if not os.path.exists(self.tmp_dir):
             os.makedirs(self.tmp_dir)
 
-        # Download IDs for articles published in the last `num_days`
+        # Download IDs for articles published in the last `days`
         self.fetch_all_publications_over_time(
-            pmid_dates_path, prev_pmid_dates_path, num_days
+            pmid_dates_path, prev_pmid_dates_path, days
         )
 
         organisms = read_organisms()
@@ -200,19 +200,19 @@ class Citations():
         # TODO: Is data parsed from gene_info available in UCSC GTF files?
         self.fetch_gene_info(organisms)
 
-    def run(self, num_days, sort_by="count"):
-        """Output TSV of gene citation counts and related metrics over `num_days`
+    def run(self, days, sort_by="count"):
+        """Output TSV of gene citation counts and related metrics over `days`
         """
 
         pmid_dates_path = self.data_dir + "pmid_dates.tsv"
         prev_pmid_dates_path = self.data_dir + "prev_pmid_dates.tsv"
 
         # Download citation and genomic data
-        self.download_data(pmid_dates_path, prev_pmid_dates_path, num_days)
+        self.download_data(pmid_dates_path, prev_pmid_dates_path, days)
 
         # Combine that downloaded data, compute statistics, and write to TSV
         EnrichCitations().run(
-            pmid_dates_path, prev_pmid_dates_path, num_days, sort_by
+            pmid_dates_path, prev_pmid_dates_path, days, sort_by
         )
 
 # Command-line handler
@@ -222,7 +222,7 @@ if __name__ == "__main__":
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
     parser.add_argument(
-        "--num-days",
+        "--days",
         type=int,
         help="Number of days to analyze",
         default=180
@@ -246,8 +246,8 @@ if __name__ == "__main__":
         default=0
     )
     args = parser.parse_args()
-    num_days = args.num_days
+    days = args.days
     sort_by = args.sort_by
     cache = args.cache
 
-    Citations(cache).run(num_days, sort_by)
+    Citations(cache).run(days, sort_by)
