@@ -8,13 +8,13 @@ from views.views import Views
 from merge_hints import merge_hints
 
 class GeneHints():
-    def __init__(self, num_days, sort_by="count", only=None, debug=False):
+    def __init__(self, num_days, sort_by="count", only=None, debug=0):
         self.num_days = num_days
         self.sort_by = sort_by
         self.only = only
         self.debug = debug
 
-        if self.num_days == 180 and self.debug == True:
+        if self.num_days == 180 and self.debug > 0:
             self.num_days = 2
 
     def call_subpipelines(self):
@@ -22,7 +22,8 @@ class GeneHints():
         if not only or "views" in only:
             Views().run(self.sort_by, self.debug)
         if not only or "citations" in only:
-            Citations().run(self.num_days, self.sort_by)
+            cache = self.debug
+            Citations(cache).run(self.num_days, self.sort_by)
 
     def run(self):
         """Output TSVs gene popularity by Wikipedia views and PubMed citations
@@ -50,7 +51,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--num-days",
         type=int,
-        help="Number of days to analyze.",
+        help="Number of days to analyze.  (default: %(default)i)",
         default=180
     )
     parser.add_argument(
@@ -61,14 +62,24 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--sort-by",
-        help="Metric by which to sort PubMed citations",
+        help=(
+            "Metric by which to sort PubMed citations.  (default: %(default)s)"
+        ),
         choices=["count", "delta", "rank", "rank_delta"],
         default="count"
     )
     parser.add_argument(
         "--debug",
-        help="Get fast but incomplete data.  Useful when developing.",
-        action="store_true"
+        help=(
+            "Get fast but incomplete data.  Useful to develop.  Levels:" +
+                "0: use default `num_days`, don't cache.  " +
+                "1: use `num_days 2`, cache download but not compute.  " +
+                "2: like `debug 1`, and cache intermediate compute.  " +
+                "(default: %(default)i)"
+        ),
+        type=int,
+        choices=[0, 1, 2],
+        default=0
     )
     args = parser.parse_args()
     num_days = args.num_days

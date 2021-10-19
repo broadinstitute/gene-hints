@@ -11,9 +11,12 @@ from tqdm import tqdm
 import argparse
 from datetime import date as dt_date, timedelta, datetime
 
+from lib import is_cached
+
 def pmids_by_date(
     start_date=None, end_date=None,
-    output_dir="gene_hints/data/tmp"
+    output_dir="gene_hints/data/tmp",
+    cache=0
 ):
     """Query PubMed for citation lists for each day
     """
@@ -51,6 +54,12 @@ def pmids_by_date(
         # Create the citation lists per each day
         date_underscore = date.replace("/", "_")
 
+        output_path = f"{output_dir}/{date_underscore}.tsv"
+
+        # Skip downloading file if cache level is set and cached file exists
+        if is_cached(output_path, cache, 1):
+            continue
+
         # Call NCBI E-utils / Entrez API
         # https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.mindate_maxdate
         link = f"{eutils_base}&mindate={date}&maxdate={date}&retmax=100000"
@@ -66,11 +75,6 @@ def pmids_by_date(
             pmid = pmid_match.group("pmid")
             date_pmid_lines += date_hyphen + "\t" + pmid + "\n"
 
-        # Save the file only if there were publications
-        if len(date_pmid_lines) == 0:
-            continue
-
-        output_path = f"{output_dir}/{date_underscore}.tsv"
         with open(output_path, "w") as f:
             f.write(date_pmid_lines)
 

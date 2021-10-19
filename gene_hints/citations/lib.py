@@ -2,6 +2,7 @@
 """
 
 import csv
+import os
 
 def read_organisms():
     """Read organisms TSV and parse taxon / species data
@@ -34,3 +35,25 @@ def read_organisms():
             organisms.append(organism)
 
     return organisms
+
+def is_cached(path, cache, threshold):
+    """Determine if file path is already available, per cache and threshold.
+
+    `cache` level is set by pipeline user; `threshold` by the calling function.
+
+    See `--help` CLI output for description of `cache` levels.
+    """
+
+    if cache >= threshold:
+        if threshold == 1:
+            action = "download"
+        elif threshold == 2:
+            action = "comput"
+
+        if os.path.exists(path):
+            print(f"Using cached copy of {action}ed file {path}")
+            return True
+        else:
+            print(f"No cached copy exists, so {action}ing {path}")
+            return False
+    return False
