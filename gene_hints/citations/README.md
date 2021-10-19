@@ -22,7 +22,7 @@ pip install -r requirements.txt
 Run `citations.py` from the repo's root directory.
 
 ```
-python3 gene_hints/citations/citations.py --num-days 180
+python3 gene_hints/citations/citations.py --days 180
 ```
 
 The command above covers almost a year: from today until 180 days ago, and 180 days before that.  While human or mouse have gene citations in almost any timeframe, analyzing longer time periods helps pick up gene citations for less intensely studies organisms like dog or cat.  It also picks up more genes in highly-studied organisms.
@@ -32,6 +32,3 @@ Currently, this code produces TSVs for five organisms (a.k.a. taxa or species): 
 
 ###  Set taxid
 Each organism has an NCBI Taxonomy ID, commonly known as a `taxid`.  The taxid for human is 9606, for example.  To get an organism's taxid, search its scientific name (e.g. "Homo sapiens") in https://www.ncbi.nlm.nih.gov/Taxonomy/TaxIdentifier/tax_identifier.cgi.  Add this to the `taxid` column in `organisms.tsv`.
-
-### Set genome assembly UCSC name
-Many organisms have a _genome annotation_ -- a file that indicates the organism's genes and where they are located on its genome.  Using https://hgdownload.soe.ucsc.edu/downloads.html, find your organism's `genome assembly ucsc name` ending in ".gtf.gz". After you find that name, e.g. `hg38` or `rn6`, add it to `organisms.tsv`.

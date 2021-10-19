@@ -21,7 +21,7 @@ import sys
 if __name__ == "__main__":
     sys.path.append('../..')
 
-from lib import read_organisms
+from lib import read_organisms, is_cached
 from enrich_citations import EnrichCitations
 from pmids_by_date import pmids_by_date
 
@@ -34,9 +34,12 @@ def format_date(days_before=None):
     else:
         return now.strftime("%Y/%m/%d")
 
-def download_gzip(url, output_path):
+def download_gzip(url, output_path, cache=0):
     """Download remote gzip file, decompress, write to output path
     """
+    if is_cached(output_path, cache, 1):
+        return
+
     response = requests.get(url)
 
     try:
@@ -49,43 +52,46 @@ def download_gzip(url, output_path):
     with open(output_path, "w") as f:
         f.write(content)
 
-def merge_daily_pmids(output_path, daily_pmid_dir):
-    """Aggregate per-day files into one file, to ease downstream processing
-    """
-    pmids = []
-
-    for fp in glob.glob(daily_pmid_dir + "/*tsv"):
-        with open(fp) as fd:
-            rd = csv.reader(fd, delimiter="\t")
-            for row in rd:
-                year = row[0] # TODO: Remove this column, use filename date
-                pmid = row[1] # PubMed ID, i.e. citation ID
-                pmids.append(year + "\t" + pmid)
-
-    with open(output_path, "w") as f:
-        lines = "\n".join(pmids)
-        f.write(lines)
-
 class Citations():
 
     def __init__(
         self,
+        cache=0,
         cites_dir="./pubmed_citations/"
     ):
         self.cites_dir = cites_dir
         self.data_dir = cites_dir + "data/"
         self.tmp_dir = self.data_dir + "tmp/"
+        print('in init, cache:', cache)
+        self.cache = cache
 
     def split_ncbi_file_by_org(self, input_path, output_filename, organisms):
         """Split a multi-organism file from NCBI into organism-specific files
 
         Input file must be a TSV file with taxid as first column
         """
+
+        all_cached = True
+
+        output_paths_by_org = {}
         org_names_by_taxid = {}
         for org in organisms:
             taxid = org["taxid"]
-            name = org["scientific_name"]
-            org_names_by_taxid[taxid] = name
+            org = org["scientific_name"]
+            org_names_by_taxid[taxid] = org
+
+            output_path = self.data_dir + org + "/" + output_filename
+            output_paths_by_org[org] = output_path
+
+            if not is_cached(output_path, self.cache, 2):
+                all_cached = False
+
+        if all_cached:
+            print(
+                f"All NCBI organism files for {input_path} are cached, " +
+                "so not computing any."
+            )
+            return
 
         with open(input_path, "r") as f:
             lines_by_org = {}
@@ -105,23 +111,43 @@ class Citations():
                 with open(output_path, "w") as f:
                     f.write("\n".join(lines))
 
-    def fetch_all_publications_over_time(self, path, prev_path, num_days):
-        """Download IDs for articles published in the last `num_days`
+    def merge_daily_pmids(self, output_path, daily_pmid_dir, cache=0):
+        """Aggregate per-day files into one file, to ease downstream processing
         """
-        start_date = format_date(num_days) # E.g. 60 days ago
+        pmids = []
+
+        if is_cached(output_path, cache, 2):
+            return
+
+        for fp in glob.glob(daily_pmid_dir + "/*tsv"):
+            with open(fp) as fd:
+                rd = csv.reader(fd, delimiter="\t")
+                for row in rd:
+                    year = row[0] # TODO: Remove this column, use filename date
+                    pmid = row[1] # PubMed ID, i.e. citation ID
+                    pmids.append(year + "\t" + pmid)
+
+        with open(output_path, "w") as f:
+            lines = "\n".join(pmids)
+            f.write(lines)
+
+    def fetch_all_publications_over_time(self, path, prev_path, days):
+        """Download IDs for articles published in the last n `days`
+        """
+        start_date = format_date(days) # E.g. 60 days ago
         end_date = format_date() # Today
-        prev_start_date = format_date(num_days * 2) # E.g. 120 days ago
+        prev_start_date = format_date(days * 2) # E.g. 120 days ago
         prev_end_date = start_date # E.g. 60 days ago
 
         output_dir = self.tmp_dir + "timeframe"
         prev_output_dir= self.tmp_dir + "prev_timeframe"
 
-        pmids_by_date(start_date, end_date, output_dir)
-        pmids_by_date(prev_start_date, prev_end_date, prev_output_dir)
+        pmids_by_date(start_date, end_date, output_dir, self.cache)
+        pmids_by_date(prev_start_date, prev_end_date, prev_output_dir, self.cache)
 
         print("Combine daily publication counts")
-        merge_daily_pmids(path, output_dir)
-        merge_daily_pmids(prev_path, prev_output_dir)
+        self.merge_daily_pmids(path, output_dir)
+        self.merge_daily_pmids(prev_path, prev_output_dir)
 
     def fetch_all_publications_per_organism(self, organisms):
         """Get IDs for articles published about our organisms of interest
@@ -133,43 +159,24 @@ class Citations():
 
         print("Download gene2pubmed")
         url = "https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2pubmed.gz"
-        output_filename = "gene2pubmed"
-        output_path = self.data_dir + output_filename
-        download_gzip(url, output_path)
+        output_name = "gene2pubmed"
+        output_path = self.data_dir + output_name
+        download_gzip(url, output_path, self.cache)
 
         print("Split gene2pubmed by organism")
-        self.split_ncbi_file_by_org(output_path, output_filename, organisms)
-
-    def fetch_genome_annotations(self, organisms):
-        """Download GTF files from UCSC; these contain genomic coordinates, etc.
-        """
-        print("Download UCSC genome annotations for each organism")
-        for org in organisms:
-            org_name = org["scientific_name"]
-            asm_ucsc_name = org["genome_assembly_ucsc_name"]
-
-            # Construct parameters for fetching UCSC genome annotation files,
-            # e.g. https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz
-            base_url = "https://hgdownload.soe.ucsc.edu/goldenPath/"
-            leaf = "refGene.gtf"
-            if org_name in ["homo-sapiens", "rattus-norvegicus", "felis-catus"]:
-                leaf = asm_ucsc_name + "." + leaf
-            url = base_url + asm_ucsc_name + "/bigZips/genes/" + leaf + ".gz"
-            output_path = self.data_dir + org_name + "/" + leaf
-
-            download_gzip(url, output_path)
+        self.split_ncbi_file_by_org(output_path, output_name, organisms)
 
     def fetch_gene_info(self, organisms):
         print("Download gene_info")
         url = "https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz"
-        output_filename = "gene_info"
-        output_path = self.data_dir + output_filename
-        download_gzip(url, output_path)
+        output_name = "gene_info"
+        output_path = self.data_dir + output_name
+        download_gzip(url, output_path, self.cache)
 
         print("Split gene_info by organism")
-        self.split_ncbi_file_by_org(output_path, output_filename, organisms)
+        self.split_ncbi_file_by_org(output_path, output_name, organisms)
 
-    def download_data(self, pmid_dates_path, prev_pmid_dates_path, num_days):
+    def download_data(self, pmid_dates_path, prev_pmid_dates_path, days):
         """Download citation and genomic data, preparing it for enrichment
         """
 
@@ -177,9 +184,9 @@ class Citations():
         if not os.path.exists(self.tmp_dir):
             os.makedirs(self.tmp_dir)
 
-        # Download IDs for articles published in the last `num_days`
+        # Download IDs for articles published in the last `days`
         self.fetch_all_publications_over_time(
-            pmid_dates_path, prev_pmid_dates_path, num_days
+            pmid_dates_path, prev_pmid_dates_path, days
         )
 
         organisms = read_organisms()
@@ -189,25 +196,24 @@ class Citations():
         # organism" lists in `enrich_citations`.
         self.fetch_all_publications_per_organism(organisms)
 
-        # Download GTF files from UCSC; these contain genomic coordinates, etc.
-        self.fetch_genome_annotations(organisms)
-
         # Download more genomic information
         # TODO: Is data parsed from gene_info available in UCSC GTF files?
         self.fetch_gene_info(organisms)
 
-    def run(self, num_days):
-        """Output TSV of gene citation counts and related metrics over `num_days`
+    def run(self, days, sort_by="count"):
+        """Output TSV of gene citation counts and related metrics over `days`
         """
 
         pmid_dates_path = self.data_dir + "pmid_dates.tsv"
         prev_pmid_dates_path = self.data_dir + "prev_pmid_dates.tsv"
 
         # Download citation and genomic data
-        self.download_data(pmid_dates_path, prev_pmid_dates_path, num_days)
+        self.download_data(pmid_dates_path, prev_pmid_dates_path, days)
 
         # Combine that downloaded data, compute statistics, and write to TSV
-        EnrichCitations().run(pmid_dates_path, prev_pmid_dates_path, num_days)
+        EnrichCitations().run(
+            pmid_dates_path, prev_pmid_dates_path, days, sort_by
+        )
 
 # Command-line handler
 if __name__ == "__main__":
@@ -216,12 +222,32 @@ if __name__ == "__main__":
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
     parser.add_argument(
-        "--num-days",
+        "--days",
         type=int,
         help="Number of days to analyze",
         default=180
     )
+    parser.add_argument(
+        "--sort-by",
+        help="Metric by which to sort PubMed citations.  Count is citations.",
+        choices=["count", "delta", "rank", "rank_delta"],
+        default="count"
+    )
+    parser.add_argument(
+        "--cache",
+        help=(
+            "Get fast but incomplete data.  Useful to develop.  Levels:" +
+                "0: Don't cache.  " +
+                "1: Cache download but not compute.  " +
+                "2: like debug=1, and cache intermediate compute.  " +
+                "(default: %(default)i)"
+        ),
+        choices=[0, 1, 2],
+        default=0
+    )
     args = parser.parse_args()
-    num_days = args.num_days
+    days = args.days
+    sort_by = args.sort_by
+    cache = args.cache
 
-    Citations().run(num_days)
+    Citations(cache).run(days, sort_by)

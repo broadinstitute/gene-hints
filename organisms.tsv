@@ -1,7 +1,7 @@
-# common name	scientific name	taxid	genome assembly ucsc name
-human	Homo sapiens	9606	hg38
-mouse	Mus musculus	10090	mm39
-rat	Rattus norvegicus	10116	rn6
-dog	Canis lupus familiaris	9615	canFam5
-cat	Felis catus	9685	felCat9
+# common name	scientific name	taxid
+human	Homo sapiens	9606
+mouse	Mus musculus	10090
+rat	Rattus norvegicus	10116
+dog	Canis lupus familiaris	9615
+cat	Felis catus	9685
 

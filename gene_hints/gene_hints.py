@@ -8,21 +8,27 @@ from views.views import Views
 from merge_hints import merge_hints
 
 class GeneHints():
-    def __init__(self, num_days, excludes=None):
-        self.num_days = num_days
-        self.excludes = excludes
+    def __init__(self, days, sort_by="count", only=None, debug=0):
+        self.days = days
+        self.sort_by = sort_by
+        self.only = only
+        self.debug = debug
 
-    def fetch_hints(self):
-        excludes = self.excludes
-        if not excludes or "views" not in excludes:
-            Views().run()
-        if not excludes or "citations" not in excludes:
-            Citations().run(self.num_days)
+        if self.days == 180 and self.debug > 0:
+            self.days = 2
+
+    def call_subpipelines(self):
+        only = self.only
+        if not only or "views" in only:
+            Views().run(self.sort_by, self.debug)
+        if not only or "citations" in only:
+            cache = self.debug
+            Citations(cache).run(self.days, self.sort_by)
 
     def run(self):
         """Output TSVs gene popularity by Wikipedia views and PubMed citations
         """
-        self.fetch_hints()
+        self.call_subpipelines()
 
         print("\n")
 
@@ -35,7 +41,7 @@ class GeneHints():
 # Command-line handler
 if __name__ == "__main__":
     usage = """
-    python3 gene_hints/gene_hints.py --num-days 365
+    python3 gene_hints/gene_hints.py --days 365
     """
     parser = argparse.ArgumentParser(
         description=__doc__,
@@ -43,19 +49,42 @@ if __name__ == "__main__":
         usage=usage
     )
     parser.add_argument(
-        "--num-days",
+        "--days",
         type=int,
-        help="Number of days to analyze",
+        help="Number of days to analyze.  (default: %(default)i)",
         default=180
     )
     parser.add_argument(
-        "--excludes",
+        "--only",
         nargs="*",
-        help="Data types to exclude",
+        help="Data types to include",
         choices=["views", "citations"]
     )
+    parser.add_argument(
+        "--sort-by",
+        help=(
+            "Metric by which to sort PubMed citations.  (default: %(default)s)"
+        ),
+        choices=["count", "delta", "rank", "rank_delta"],
+        default="count"
+    )
+    parser.add_argument(
+        "--debug",
+        help=(
+            "Get fast but incomplete data.  Useful to develop.  Levels:" +
+                "0: use default `days`, don't cache.  " +
+                "1: use `days 2`, cache download but not compute.  " +
+                "2: like `debug 1`, and cache intermediate compute.  " +
+                "(default: %(default)i)"
+        ),
+        type=int,
+        choices=[0, 1, 2],
+        default=0
+    )
     args = parser.parse_args()
-    num_days = args.num_days
-    excludes = args.excludes
+    days = args.days
+    sort_by = args.sort_by
+    only = args.only
+    debug = args.debug
 
-    GeneHints(num_days, excludes).run()
+    GeneHints(days, sort_by, only, debug).run()
