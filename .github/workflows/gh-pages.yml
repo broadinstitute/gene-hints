@@ -1,4 +1,4 @@
-name: UpdateTrendsData
+name: Update_hints_data
 
 # Controls when the action will run.
 on:
@@ -45,3 +45,5 @@ jobs:
               data/felis-catus-pubmed-citations.tsv
           commit-msg: Automatically update citations and views data
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+
