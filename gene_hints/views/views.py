@@ -28,7 +28,7 @@ class Views:
         """
         self.name_map_tsv_path =  views_dir + "gene_page_map.tsv"
         downloads_dir = views_dir + "downloads/"
-        self.pageviews_path = downloads_dir + "pageviews{count}.gz"
+        self.pageviews_path = downloads_dir + "pageviews_{time}_{count}.gz"
 
         # Ensure needed directory exist
         if not os.path.exists(downloads_dir):
@@ -80,9 +80,8 @@ class Views:
         base_url = "https://dumps.wikimedia.org/other/pageviews"
         return base_url + directory + filename
 
-    def download_views_file(self, day, hour):
-        """Download and save Wikipedia views dump file
-        """
+    def get_times_and_path(self, day, hour):
+        times = {}
         # Generate the hourly views filename and URL
         hours = hour + (day * 24)
 
@@ -91,15 +90,27 @@ class Views:
         hours_before_present = now - timedelta(hours=2)
         views_datetime = hours_before_present + timedelta(hours=-hours)
 
-        friendly_time = views_datetime.strftime("%m/%d/%Y, %H:00")
-        print("Processing the views file from", friendly_time)
+        times = {
+            "machine": views_datetime.strftime("%Y%m%d-%H0000"),
+            "human": views_datetime.strftime("%m/%d/%Y, %H:00")
+        }
+
+        path = self.pageviews_path.format(time=times["machine"], count=hours)
+
+        return times, path, views_datetime
+
+    def download_views_file(self, day, hour):
+        """Download and save Wikipedia views dump file
+        """
+        times, path, views_datetime = self.get_times_and_path(day, hour)
+        print("Processing the views file from", times["human"])
 
         # Download the file
         url = self.get_pageviews_download_url(views_datetime)
         print(f"\tDownloading Wikipedia views hourly data from {url}")
         with requests.Session() as s:
             response = s.get(url)
-        with open(self.pageviews_path.format(count=hours), "wb") as f:
+        with open(path, "wb") as f:
             f.write(response.content)
 
     def update_views(self, views_by_gene, row, genes_by_page):
@@ -125,8 +136,7 @@ class Views:
         """Process the downloaded and zipped views file by adding all
         relevant views to the total count.
         """
-        hours = hour + (day * 24)
-        path = self.pageviews_path.format(count=hours)
+        path = self.get_times_and_path(day, hour)[1]
         print(f"\tProcessing pageview file contents at {path}")
         with gzip.open(path, "rt") as f:
             reader = csv.reader(f.read().splitlines(), delimiter=" ")
