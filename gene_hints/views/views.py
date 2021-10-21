@@ -21,13 +21,12 @@ class Views:
 
     def __init__(
             self,
-            views_dir="./gene_hints/views/",
             output_dir="./data/"
         ):
         """Define relevant URLs and directories, do other setup
         """
-        self.name_map_tsv_path =  views_dir + "gene_page_map.tsv"
-        downloads_dir = views_dir + "downloads/"
+        downloads_dir = output_dir + "tmp/views/"
+        self.name_map_tsv_path =  downloads_dir + "gene_page_map.tsv"
         self.pageviews_path = downloads_dir + "pageviews_{time}_{count}.gz"
 
         # Ensure needed directory exist
@@ -82,16 +81,28 @@ class Views:
 
     def get_times_and_path(self, day, hour):
         times = {}
-        # Generate the hourly views filename and URL
+        # Compute hourly views filename and URL
         hours = hour + (day * 24)
 
-        # Two hours before the current time in UTC
-        now = datetime.now(timezone.utc)
-        hours_before_present = now - timedelta(hours=2)
-        views_datetime = hours_before_present + timedelta(hours=-hours)
+        # Get last hour of yesterday in UTC time.
+        # This aligns with how Wikipedia reports its pageviews, and enables
+        # easily verifying counts we show to users.
+        #
+        # For example, if you want to verify that the counts you show for
+        # human PTEN are correct, compare time shown in Gene Hints UI with:
+        # https://pageviews.toolforge.org/?pages=PTEN_(gene)
+        today = datetime.utcnow().date()
+        yday = today - timedelta(days=1)
+        yesterday_last_hour = datetime(yday.year, yday.month, yday.day, 23)
+
+        # Using 23:00 yesterday as the baseline, iterate back in time hourly
+        views_datetime = yesterday_last_hour - timedelta(hours=hours)
 
         times = {
+            # E.g. 20211014-130000
             "machine": views_datetime.strftime("%Y%m%d-%H0000"),
+
+            # E.g. 10/14/2021 13:00
             "human": views_datetime.strftime("%m/%d/%Y, %H:00")
         }
 
@@ -151,7 +162,7 @@ class Views:
                     print("\t* Processed " + million_lines + " million lines")
         return views_by_gene
 
-    def save_to_file(self, views_by_gene, day):
+    def save_to_file(self, views_by_gene, days_ago):
         """Read the existing TSV file, and update the gene counts
         The file rows should be of the format:
         ["gene", "views", "prev_views"]
@@ -167,7 +178,7 @@ class Views:
         prev_gene_views = {}
         prev_gene_ranks = {}
 
-        if day == 1:
+        if days_ago == 0:
             with open(self.prev_output_path, "rt") as f:
                 reader = csv.reader(f, delimiter="\t")
                 line_count = 0
@@ -179,27 +190,37 @@ class Views:
                         prev_gene_ranks[gene] = line_count
                     line_count += 1
 
-        if day == 0:
+        if days_ago == 1:
             path = self.prev_output_path
         else:
             path = self.output_path
 
         # Overwrite the file with new data
         with open(path, "w") as f:
-            headers = [
-                "# gene",
-                "views",
-                "view_delta",
-                "view_rank",
-                "view_rank_delta"
-            ]
+            if days_ago == 1:
+                headers = [
+                    "# gene",
+                    "views",
+                    "view_rank"
+                ]
+            else:
+                headers = [
+                    "# gene",
+                    "views",
+                    "view_delta",
+                    "view_rank",
+                    "view_rank_delta"
+                ]
             f.write("\t".join(headers) + "\n")
             rank = 1
             for gene, views in ordered_counts:
-                view_delta = views - prev_gene_views.get(gene, 0)
-                # delta is 0 if the record did not exist before
-                rank_delta = rank - prev_gene_ranks.get(gene, rank)
-                columns = [gene, views, view_delta, rank, rank_delta]
+                if days_ago == 1:
+                    columns = [gene, views, rank]
+                else:
+                    view_delta = views - prev_gene_views.get(gene, 0)
+                    # delta is 0 if the record did not exist before
+                    rank_delta = rank - prev_gene_ranks.get(gene, rank)
+                    columns = [gene, views, view_delta, rank, rank_delta]
                 columns = [str(col) for col in columns]
                 f.write("\t".join(columns) + "\n")
                 rank += 1
@@ -216,15 +237,15 @@ class Views:
 
         genes_by_page = self.load_page_to_gene_map()
 
-        for day in range(2):
+        for days_ago in reversed(range(2)):
             views_by_gene = self.init_views_by_gene(genes_by_page)
             for hour in range(num_hours):
-                self.download_views_file(day, hour)
+                self.download_views_file(days_ago, hour)
                 views_by_gene = self.process_views_file(
-                    views_by_gene, genes_by_page, day, hour
+                    views_by_gene, genes_by_page, days_ago, hour
                 )
 
-            self.save_to_file(views_by_gene, day)
+            self.save_to_file(views_by_gene, days_ago)
 
         print("Finished in", int(perf_counter() - start_time), "seconds.")
 
