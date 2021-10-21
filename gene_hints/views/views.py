@@ -137,7 +137,8 @@ class Views:
         # process the row
         else:
             page = row[1].lower()
-            if row[0] == "en" and page in genes_by_page:
+            page_in_en_wp = row[0] in ["en", "en.m"] # Desktop or mobile
+            if page_in_en_wp and page in genes_by_page:
                 gene = genes_by_page[page]
                 views = int(row[2])
                 views_by_gene[gene] += views
