@@ -20,7 +20,7 @@ def get_pmids_with_genes_in_timeframe(genes_by_pmid, pmid_dates_path):
     with open(pmid_dates_path) as fd:
         reader = csv.reader(fd, delimiter="\t")
         for row in reader:
-            if row[0][0] == '#':
+            if row[0][0] == "#":
                 continue
             pmid = str(row[1])
             if pmid in genes_by_pmid:
@@ -115,7 +115,7 @@ class EnrichCitations():
         with open(gene2pubmed_path) as f:
             reader = csv.reader(f, delimiter="\t", quotechar='"')
             for row in reader:
-                if row[0][0] == '#':
+                if row[0][0] == "#":
                     continue
                 gene_id = row[1]
                 pmid = row[2]
@@ -199,7 +199,7 @@ class EnrichCitations():
         with open(gene_info_path) as fd:
             reader = csv.reader(fd, delimiter="\t")
             for row in reader:
-                if row[0][0] == '#':
+                if row[0][0] == "#":
                     continue
 
                 # Genomic data, from gene_info_file

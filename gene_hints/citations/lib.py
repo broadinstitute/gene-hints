@@ -17,14 +17,14 @@ def read_organisms():
     organisms = []
 
     with open("./organisms.tsv") as f:
-        rd = csv.reader(f, delimiter="\t")
-        for row in rd:
-            if len(row) == 0 or row[0][0] == '#':
+        reader = csv.reader(f, delimiter="\t")
+        for row in reader:
+            if len(row) == 0 or row[0][0] == "#":
                 continue
 
             # Convert e.g. "Homo sapiens" to machine-friendlier "homo-sapiens"
             name = row[1]
-            name = name.lower().replace(' ', '-')
+            name = name.lower().replace(" ", "-")
 
             organism = {
                 "common_name": row[0], # e.g. human

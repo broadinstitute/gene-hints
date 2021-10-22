@@ -19,7 +19,7 @@ import glob
 import sys
 
 if __name__ == "__main__":
-    sys.path.append('../..')
+    sys.path.append("../..")
 
 from lib import read_organisms, is_cached
 from enrich_citations import EnrichCitations
@@ -62,7 +62,6 @@ class Citations():
         self.cites_dir = cites_dir
         self.data_dir = cites_dir + "data/"
         self.tmp_dir = self.data_dir + "tmp/"
-        print('in init, cache:', cache)
         self.cache = cache
 
     def split_ncbi_file_by_org(self, input_path, output_filename, organisms):
