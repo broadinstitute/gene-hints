@@ -12,16 +12,16 @@ applications, like the gene hints ideogram at https://broad.io/gene-hints.
 import argparse
 import csv
 from datetime import datetime, timedelta, timezone
-import gzip
 import os
-import requests
 import glob
 import sys
 
+# Enable importing local modules when directly calling as script
 if __name__ == "__main__":
-    sys.path.append("../..")
+    cur_dir = os.path.join(os.path.dirname(__file__))
+    sys.path.append(cur_dir + "/..")
 
-from lib import read_organisms, is_cached
+from lib import read_organisms, is_cached, download_gzip
 from enrich_citations import EnrichCitations
 from pmids_by_date import pmids_by_date
 
@@ -33,24 +33,6 @@ def format_date(days_before=None):
         return (now - timedelta(days=days_before)).strftime("%Y/%m/%d")
     else:
         return now.strftime("%Y/%m/%d")
-
-def download_gzip(url, output_path, cache=0):
-    """Download remote gzip file, decompress, write to output path
-    """
-    if is_cached(output_path, cache, 1):
-        return
-
-    response = requests.get(url)
-
-    try:
-        # Human-readable text, to ease debugging
-        content = gzip.decompress(response.content).decode()
-    except gzip.BadGzipFile as e:
-        print("URL did not respond with a gzipped file: " + url)
-        raise(e)
-
-    with open(output_path, "w") as f:
-        f.write(content)
 
 class Citations():
 

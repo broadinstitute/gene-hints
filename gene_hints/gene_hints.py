@@ -19,10 +19,10 @@ class GeneHints():
 
     def call_subpipelines(self):
         only = self.only
+        cache = self.debug
         if not only or "views" in only:
-            Views().run(self.sort_by, self.debug)
+            Views(cache).run(self.sort_by, self.debug)
         if not only or "citations" in only:
-            cache = self.debug
             Citations(cache).run(self.days, self.sort_by)
 
     def run(self):

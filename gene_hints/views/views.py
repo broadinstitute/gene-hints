@@ -18,17 +18,26 @@ from time import perf_counter
 # TODO: Consider Dask, pandas, or NumPy to speed up TSV processing
 # https://medium.com/featurepreneur/pandas-vs-dask-the-power-of-parallel-computing-994a202a74bd
 
+# Enable importing local modules when directly calling as script
+if __name__ == "__main__":
+    cur_dir = os.path.join(os.path.dirname(__file__))
+    sys.path.append(cur_dir + "/..")
+
+from lib import download_gzip
+
 class Views:
 
     def __init__(
             self,
-            output_dir="./data/"
+            cache=0,
+            output_dir="./data/",
         ):
         """Define relevant URLs and directories, do other setup
         """
         downloads_dir = output_dir + "tmp/views/"
         self.name_map_tsv_path =  downloads_dir + "gene_page_map.tsv"
         self.pageviews_path = downloads_dir + "pageviews_{time}_{count}.gz"
+        self.cache = cache
 
         # Ensure needed directory exist
         if not os.path.exists(downloads_dir):
@@ -119,10 +128,8 @@ class Views:
         # Download the file
         url = self.get_pageviews_download_url(views_datetime)
         print(f"\tDownloading Wikipedia views hourly data from {url}")
-        with requests.Session() as s:
-            response = s.get(url)
-        with open(path, "wb") as f:
-            f.write(response.content)
+
+        download_gzip(url, path, cache=self.cache)
 
     def update_views(self, views_by_gene, row, genes_by_page):
         """Check a given row from Wikipedia pageview dump file, and add any
@@ -150,7 +157,7 @@ class Views:
         """
         path = self.get_times_and_path(day, hour)[1]
         print(f"\tProcessing pageview file contents at {path}")
-        with gzip.open(path, "rt") as f:
+        with open(path, "r") as f:
             reader = csv.reader(f, delimiter=" ")
             line_count = 0
             for row in reader:
