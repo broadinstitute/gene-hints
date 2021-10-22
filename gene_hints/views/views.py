@@ -151,7 +151,7 @@ class Views:
         path = self.get_times_and_path(day, hour)[1]
         print(f"\tProcessing pageview file contents at {path}")
         with gzip.open(path, "rt") as f:
-            reader = csv.reader(f.read().splitlines(), delimiter=" ")
+            reader = csv.reader(f, delimiter=" ")
             line_count = 0
             for row in reader:
                 line_count += 1

@@ -121,8 +121,8 @@ class Citations():
 
         for fp in glob.glob(daily_pmid_dir + "/*tsv"):
             with open(fp) as fd:
-                rd = csv.reader(fd, delimiter="\t")
-                for row in rd:
+                reader = csv.reader(fd, delimiter="\t")
+                for row in reader:
                     year = row[0] # TODO: Remove this column, use filename date
                     pmid = row[1] # PubMed ID, i.e. citation ID
                     pmids.append(year + "\t" + pmid)
