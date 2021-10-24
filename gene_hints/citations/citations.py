@@ -39,12 +39,14 @@ class Citations():
     def __init__(
         self,
         cache=0,
+        days=180,
         cites_dir="./pubmed_citations/"
     ):
         self.cites_dir = cites_dir
         self.data_dir = cites_dir + "data/"
         self.tmp_dir = self.data_dir + "tmp/"
         self.cache = cache
+        self.days = days
 
     def split_ncbi_file_by_org(self, input_path, output_filename, organisms):
         """Split a multi-organism file from NCBI into organism-specific files
@@ -181,9 +183,10 @@ class Citations():
         # TODO: Is data parsed from gene_info available in UCSC GTF files?
         self.fetch_gene_info(organisms)
 
-    def run(self, days, sort_by="count"):
+    def run(self, sort_by="count"):
         """Output TSV of gene citation counts and related metrics over `days`
         """
+        days = self.days
 
         pmid_dates_path = self.data_dir + "pmid_dates.tsv"
         prev_pmid_dates_path = self.data_dir + "prev_pmid_dates.tsv"
@@ -217,7 +220,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--cache",
         help=(
-            "Get fast but incomplete data.  Useful to develop.  Levels:" +
+            "Get fast but incomplete data.  Dev setting.  Levels:" +
                 "0: Don't cache.  " +
                 "1: Cache download but not compute.  " +
                 "2: like debug=1, and cache intermediate compute.  " +
@@ -231,4 +234,4 @@ if __name__ == "__main__":
     sort_by = args.sort_by
     cache = args.cache
 
-    Citations(cache).run(days, sort_by)
+    Citations(cache, days).run(sort_by)

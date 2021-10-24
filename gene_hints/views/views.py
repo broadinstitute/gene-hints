@@ -30,6 +30,7 @@ class Views:
     def __init__(
             self,
             cache=0,
+            hours_per_day=24,
             output_dir="./data/",
         ):
         """Define relevant URLs and directories, do other setup
@@ -38,6 +39,8 @@ class Views:
         self.name_map_tsv_path =  downloads_dir + "gene_page_map.tsv"
         self.pageviews_path = downloads_dir + "pageviews_{time}_{count}.gz"
         self.cache = cache
+        self.hours_per_day = hours_per_day
+
 
         # Ensure needed directory exist
         if not os.path.exists(downloads_dir):
@@ -101,11 +104,13 @@ class Views:
         # human PTEN are correct, compare time shown in Gene Hints UI with:
         # https://pageviews.toolforge.org/?pages=PTEN_(gene)
         today = datetime.utcnow().date()
-        yday = today - timedelta(days=1)
-        yesterday_first_hour = datetime(yday.year, yday.month, yday.day, 0)
+        start = today - timedelta(days=2) # two days ago
 
-        # Using 23:00 yesterday as the baseline, iterate back in time hourly
-        views_datetime = yesterday_first_hour + timedelta(hours=hours)
+        # First hour of day before yesterday
+        start_datetime = datetime(start.year, start.month, start.day, 0)
+
+        # With 00:00 day before last as start, iterate forward in time hourly
+        views_datetime = start_datetime + timedelta(hours=hours)
 
         times = {
             # E.g. 20211014-130000
@@ -168,6 +173,12 @@ class Views:
                 if line_count % 1000000 == 0:
                     million_lines = str(int(line_count / 1000000))
                     print("\t* Processed " + million_lines + " million lines")
+
+                    # # Short-circuit processing.  Useful when developing.
+                    # limit = 1_000_000
+                    # if limit and line_count >= limit:
+                    #     return views_by_gene
+
         return views_by_gene
 
     def save_to_file(self, views_by_gene, days_ago):
@@ -235,19 +246,16 @@ class Views:
 
         print(f"Wrote Wikipedia views output file to {path}")
 
-    def run(self, sort_by="count", debug=False):
+    def run(self, sort_by="count"):
         """Output TSV of recent Wikipedia page views for all human genes
         """
         start_time = perf_counter()
-
-        # Get fast but incomplete data if debugging / developing
-        num_hours = 24 if not debug else 2
 
         genes_by_page = self.load_page_to_gene_map()
 
         for days_ago in range(2):
             views_by_gene = self.init_views_by_gene(genes_by_page)
-            for hour in range(num_hours):
+            for hour in range(self.hours_per_day):
                 self.download_views_file(days_ago, hour)
                 views_by_gene = self.process_views_file(
                     views_by_gene, genes_by_page, days_ago, hour
@@ -272,13 +280,29 @@ if __name__ == "__main__":
         default="count"
     )
     parser.add_argument(
-        "--debug",
-        help="Get fast but incomplete data.  Useful when developing.",
-        action="store_true"
+        "--cache",
+        help=(
+            "Get fast but incomplete data.  Dev setting.  Levels:" +
+                "0: Don't cache.  " +
+                "1: Cache download.  " +
+                "(default: %(default)i)"
+        ),
+        choices=[0, 1],
+        default=0
     )
+    parser.add_argument(
+        "--hours-per-day",
+        help=(
+            "Number of hours per day to analyze.  Dev setting.  " +
+            "(default: %(default)i)"
+        ),
+        default=24
+    )
+
     args = parser.parse_args()
     sort_by = args.sort_by
-    debug = args.debug
+    cache = args.cache
+    hours_per_day = args.hours_per_day
 
     # Run everything!
-    Views().run(sort_by, debug)
+    Views(cache, hours_per_day).run(sort_by)
