@@ -9,9 +9,7 @@ to the gene symbol TNF.  The map is made by `generate_gene_page_map.py`.
 import argparse
 import csv
 from datetime import datetime, timedelta
-import gzip
 import os
-import requests
 import sys
 from time import perf_counter
 
@@ -36,11 +34,9 @@ class Views:
         """Define relevant URLs and directories, do other setup
         """
         downloads_dir = output_dir + "tmp/views/"
-        self.name_map_tsv_path =  downloads_dir + "gene_page_map.tsv"
-        self.pageviews_path = downloads_dir + "pageviews_{time}_{count}.gz"
+        self.name_map_tsv_path =  output_dir + "gene_page_map.tsv"
         self.cache = cache
         self.hours_per_day = hours_per_day
-
 
         # Ensure needed directory exist
         if not os.path.exists(downloads_dir):
@@ -53,6 +49,8 @@ class Views:
             self.output_dir + "homo-sapiens-wikipedia-views.tsv"
         self.prev_output_path =\
             self.output_dir + "homo-sapiens-wikipedia-views-prev.tsv"
+
+        self.downloads_dir = downloads_dir
 
         # Override CSV field limits, to handle errors in wiki pageviews files
         # (which breaks module otherwise)
@@ -80,7 +78,7 @@ class Views:
             print("Processing file contents...")
             for row in reader:
                 if line_count > 0:
-                    name_map[row[0].lower()]= row[1]
+                    name_map[row[0]] = row[1]
                 line_count += 1
         return name_map
 
@@ -92,7 +90,6 @@ class Views:
         return base_url + directory + filename
 
     def get_times_and_path(self, day, hour):
-        times = {}
         # Compute hourly views filename and URL
         hours = hour + (day * 24)
 
@@ -110,25 +107,22 @@ class Views:
         start_datetime = datetime(start.year, start.month, start.day, 0)
 
         # With 00:00 day before last as start, iterate forward in time hourly
-        views_datetime = start_datetime + timedelta(hours=hours)
+        views_datetime = start_datetime + timedelta(hours=hours + 1)
 
-        times = {
-            # E.g. 20211014-130000
-            "machine": views_datetime.strftime("%Y%m%d-%H0000"),
+        # E.g. 10/14/2021 13:00
+        time = views_datetime.strftime("%m/%d/%Y, %H:00")
 
-            # E.g. 10/14/2021 13:00
-            "human": views_datetime.strftime("%m/%d/%Y, %H:00")
-        }
+        # E.g. 20211014-130000
+        machine_time = views_datetime.strftime("%Y%m%d-%H0000")
+        path = f"{self.downloads_dir}pageviews_{machine_time}.gz"
 
-        path = self.pageviews_path.format(time=times["machine"], count=hours)
-
-        return times, path, views_datetime
+        return time, path, views_datetime
 
     def download_views_file(self, day, hour):
         """Download and save Wikipedia views dump file
         """
-        times, path, views_datetime = self.get_times_and_path(day, hour)
-        print("Processing the views file from", times["human"])
+        time, path, views_datetime = self.get_times_and_path(day, hour)
+        print(f"Processing views file {hour} from {time}")
 
         # Download the file
         url = self.get_pageviews_download_url(views_datetime)
@@ -148,7 +142,7 @@ class Views:
             print("\tEncountered malformed row:", row)
         # process the row
         else:
-            page = row[1].lower()
+            page = row[1]
             page_in_en_wp = row[0] in ["en", "en.m"] # Desktop or mobile
             if page_in_en_wp and page in genes_by_page:
                 gene = genes_by_page[page]
@@ -181,7 +175,7 @@ class Views:
 
         return views_by_gene
 
-    def save_to_file(self, views_by_gene, days_ago):
+    def save_to_file(self, views_by_gene, days):
         """Read the existing TSV file, and update the gene counts
         The file rows should be of the format:
         ["gene", "views", "prev_views"]
@@ -197,7 +191,7 @@ class Views:
         prev_gene_views = {}
         prev_gene_ranks = {}
 
-        if days_ago == 0:
+        if days == 1:
             with open(self.prev_output_path, "rt") as f:
                 reader = csv.reader(f, delimiter="\t")
                 line_count = 0
@@ -209,14 +203,14 @@ class Views:
                         prev_gene_ranks[gene] = line_count
                     line_count += 1
 
-        if days_ago == 1:
+        if days == 0:
             path = self.prev_output_path
         else:
             path = self.output_path
 
         # Overwrite the file with new data
         with open(path, "w") as f:
-            if days_ago == 1:
+            if days == 0:
                 headers = [
                     "# gene",
                     "views",
@@ -233,7 +227,7 @@ class Views:
             f.write("\t".join(headers) + "\n")
             rank = 1
             for gene, views in ordered_counts:
-                if days_ago == 1:
+                if days == 0:
                     columns = [gene, views, rank]
                 else:
                     view_delta = views - prev_gene_views.get(gene, 0)
@@ -253,15 +247,15 @@ class Views:
 
         genes_by_page = self.load_page_to_gene_map()
 
-        for days_ago in range(2):
+        for days in range(2):
             views_by_gene = self.init_views_by_gene(genes_by_page)
             for hour in range(self.hours_per_day):
-                self.download_views_file(days_ago, hour)
+                self.download_views_file(days, hour)
                 views_by_gene = self.process_views_file(
-                    views_by_gene, genes_by_page, days_ago, hour
+                    views_by_gene, genes_by_page, days, hour
                 )
 
-            self.save_to_file(views_by_gene, days_ago)
+            self.save_to_file(views_by_gene, days)
 
         print("Finished in", int(perf_counter() - start_time), "seconds.")
 
