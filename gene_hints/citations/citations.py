@@ -12,16 +12,16 @@ applications, like the gene hints ideogram at https://broad.io/gene-hints.
 import argparse
 import csv
 from datetime import datetime, timedelta, timezone
-import gzip
 import os
-import requests
 import glob
 import sys
 
+# Enable importing local modules when directly calling as script
 if __name__ == "__main__":
-    sys.path.append('../..')
+    cur_dir = os.path.join(os.path.dirname(__file__))
+    sys.path.append(cur_dir + "/..")
 
-from lib import read_organisms, is_cached
+from lib import read_organisms, is_cached, download_gzip
 from enrich_citations import EnrichCitations
 from pmids_by_date import pmids_by_date
 
@@ -34,36 +34,19 @@ def format_date(days_before=None):
     else:
         return now.strftime("%Y/%m/%d")
 
-def download_gzip(url, output_path, cache=0):
-    """Download remote gzip file, decompress, write to output path
-    """
-    if is_cached(output_path, cache, 1):
-        return
-
-    response = requests.get(url)
-
-    try:
-        # Human-readable text, to ease debugging
-        content = gzip.decompress(response.content).decode()
-    except gzip.BadGzipFile as e:
-        print("URL did not respond with a gzipped file: " + url)
-        raise(e)
-
-    with open(output_path, "w") as f:
-        f.write(content)
-
 class Citations():
 
     def __init__(
         self,
         cache=0,
+        days=180,
         cites_dir="./pubmed_citations/"
     ):
         self.cites_dir = cites_dir
         self.data_dir = cites_dir + "data/"
         self.tmp_dir = self.data_dir + "tmp/"
-        print('in init, cache:', cache)
         self.cache = cache
+        self.days = days
 
     def split_ncbi_file_by_org(self, input_path, output_filename, organisms):
         """Split a multi-organism file from NCBI into organism-specific files
@@ -121,8 +104,8 @@ class Citations():
 
         for fp in glob.glob(daily_pmid_dir + "/*tsv"):
             with open(fp) as fd:
-                rd = csv.reader(fd, delimiter="\t")
-                for row in rd:
+                reader = csv.reader(fd, delimiter="\t")
+                for row in reader:
                     year = row[0] # TODO: Remove this column, use filename date
                     pmid = row[1] # PubMed ID, i.e. citation ID
                     pmids.append(year + "\t" + pmid)
@@ -200,9 +183,10 @@ class Citations():
         # TODO: Is data parsed from gene_info available in UCSC GTF files?
         self.fetch_gene_info(organisms)
 
-    def run(self, days, sort_by="count"):
+    def run(self, sort_by="count"):
         """Output TSV of gene citation counts and related metrics over `days`
         """
+        days = self.days
 
         pmid_dates_path = self.data_dir + "pmid_dates.tsv"
         prev_pmid_dates_path = self.data_dir + "prev_pmid_dates.tsv"
@@ -236,7 +220,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--cache",
         help=(
-            "Get fast but incomplete data.  Useful to develop.  Levels:" +
+            "Get fast but incomplete data.  Dev setting.  Levels:" +
                 "0: Don't cache.  " +
                 "1: Cache download but not compute.  " +
                 "2: like debug=1, and cache intermediate compute.  " +
@@ -250,4 +234,4 @@ if __name__ == "__main__":
     sort_by = args.sort_by
     cache = args.cache
 
-    Citations(cache).run(days, sort_by)
+    Citations(cache, days).run(sort_by)

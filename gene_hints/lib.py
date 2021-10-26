@@ -3,6 +3,8 @@
 
 import csv
 import os
+import gzip
+import requests
 
 def read_organisms():
     """Read organisms TSV and parse taxon / species data
@@ -17,14 +19,14 @@ def read_organisms():
     organisms = []
 
     with open("./organisms.tsv") as f:
-        rd = csv.reader(f, delimiter="\t")
-        for row in rd:
-            if len(row) == 0 or row[0][0] == '#':
+        reader = csv.reader(f, delimiter="\t")
+        for row in reader:
+            if len(row) == 0 or row[0][0] == "#":
                 continue
 
             # Convert e.g. "Homo sapiens" to machine-friendlier "homo-sapiens"
             name = row[1]
-            name = name.lower().replace(' ', '-')
+            name = name.lower().replace(" ", "-")
 
             organism = {
                 "common_name": row[0], # e.g. human
@@ -57,3 +59,26 @@ def is_cached(path, cache, threshold):
             print(f"No cached copy exists, so {action}ing {path}")
             return False
     return False
+
+def download_gzip(url, output_path, cache=0):
+    """Download gzip file, decompress, write to output path; use optional cache
+
+    Cached files can help speed development iterations by > 2x, and some
+    development scenarios (e.g. on a train or otherwise without an Internet
+    connection) can be impossible without it.
+    """
+
+    if is_cached(output_path, cache, 1):
+        return
+
+    response = requests.get(url)
+
+    try:
+        # Human-readable text, to ease debugging
+        content = gzip.decompress(response.content).decode()
+    except gzip.BadGzipFile as e:
+        print("URL did not respond with a gzipped file: " + url)
+        raise(e)
+
+    with open(output_path, "w") as f:
+        f.write(content)
