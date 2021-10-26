@@ -18,9 +18,9 @@ def get_pmids_with_genes_in_timeframe(genes_by_pmid, pmid_dates_path):
     # This file has no headers so here's an example instead:
     # 2021 34185482
     with open(pmid_dates_path) as fd:
-        rd = csv.reader(fd, delimiter='\t')
-        for row in rd:
-            if row[0][0] == '#':
+        reader = csv.reader(fd, delimiter="\t")
+        for row in reader:
+            if row[0][0] == "#":
                 continue
             pmid = str(row[1])
             if pmid in genes_by_pmid:
@@ -113,9 +113,9 @@ class EnrichCitations():
             # 9606    9       9173883
         # print(gene2pubmed_path)
         with open(gene2pubmed_path) as f:
-            rd = csv.reader(f, delimiter="\t", quotechar='"')
-            for row in rd:
-                if row[0][0] == '#':
+            reader = csv.reader(f, delimiter="\t", quotechar='"')
+            for row in reader:
+                if row[0][0] == "#":
                     continue
                 gene_id = row[1]
                 pmid = row[2]
@@ -197,9 +197,9 @@ class EnrichCitations():
             # #tax_id GeneID  Symbol  LocusTag        Synonyms        dbXrefs chromosome      map_location    description     type_of_gene    Symbol_from_nomenclature_authority      Full_name_from_nomenclature_authority   Nomenclature_status     Other_designations      Modification_date       Feature_type
             # 9606    59272   ACE2    -       ACEH    MIM:300335|HGNC:HGNC:13557|Ensembl:ENSG00000130234      X       Xp22.2  angiotensin converting enzyme 2 protein-coding  ACE2    angiotensin converting enzyme 2 O       angiotensin-converting enzyme 2|ACE-related carboxypeptidase|angiotensin I converting enzyme (peptidyl-dipeptidase A) 2|angiotensin I converting enzyme 2|angiotensin-converting enzyme homolog|angiotensin-converting enzyme-related carboxypeptidase|metalloprotease MPROT15|peptidyl-dipeptidase A|truncated angiotensin converting enzyme 2 20210711        -
         with open(gene_info_path) as fd:
-            rd = csv.reader(fd, delimiter='\t')
-            for row in rd:
-                if row[0][0] == '#':
+            reader = csv.reader(fd, delimiter="\t")
+            for row in reader:
+                if row[0][0] == "#":
                     continue
 
                 # Genomic data, from gene_info_file

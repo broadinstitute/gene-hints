@@ -11,7 +11,7 @@ import sys
 
 # Ensures `gene_hints` packages (and subpackages, like `views`) can be imported
 # TODO: Find way to avoid this kludge
-sys.path.append('..')
+sys.path += ['..', '../gene_hints']
 
 from gene_hints.views.views import Views
 

@@ -13,8 +13,8 @@ def tsv_to_dict(tsv_path):
     meta = []
     headers = []
     with open(tsv_path) as fd:
-        rd = csv.reader(fd, delimiter="\t")
-        for row in rd:
+        reader = csv.reader(fd, delimiter="\t")
+        for row in reader:
             if row[0][0] == "#":
                 if len(row[0]) > 1 and row[0][1] == "#":
                     # save meta-information to be used later

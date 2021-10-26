@@ -13,7 +13,7 @@ genes symbols.  The output TSV is used by `views.py`.
 from SPARQLWrapper import SPARQLWrapper, JSON
 from pandas import json_normalize
 
-output_path = "./gene_hints/views/gene_page_map.tsv"
+output_path = "./data/gene_page_map.tsv"
 
 def query_wikidata(sparql_query, sparql_service_url):
     """Query endpoint with given query string and return the results as a

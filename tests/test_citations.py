@@ -11,9 +11,9 @@ import sys
 
 # Ensures `gene_hints` packages (and subpackages, like `views`) can be imported
 # TODO: Find way to avoid this kludge
-sys.path.append('..')
+sys.path += ['..', '../gene_hints']
 
-from gene_hints.citations.enrich_citations import EnrichCitations, rank_counts
+from gene_hints.citations.enrich_citations import rank_counts
 
 def test_rank_counts():
     counts_by_key = {
