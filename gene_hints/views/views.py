@@ -156,6 +156,7 @@ class Views:
         """
         path = self.get_times_and_path(day, hour)[1]
         print(f"\tProcessing pageview file contents at {path}")
+        start_time = perf_counter()
         with open(path, "r") as f:
             reader = csv.reader(f, delimiter=" ")
             line_count = 0
@@ -164,14 +165,16 @@ class Views:
                 views_by_gene = self.update_views(
                     views_by_gene, row, genes_by_page
                 )
-                if line_count % 1000000 == 0:
-                    million_lines = str(int(line_count / 1000000))
-                    print("\t* Processed " + million_lines + " million lines")
-
+                # if line_count % 1000000 == 0:
                     # # Short-circuit processing.  Useful when developing.
                     # limit = 1_000_000
                     # if limit and line_count >= limit:
                     #     return views_by_gene
+
+            raw_perf_time = perf_counter() - start_time
+            perf_time = round(raw_perf_time, 2)
+            lps = f"{round(line_count / raw_perf_time):,} line/s"
+            print(f"\t* Processed {line_count:,} lines in {perf_time} seconds ({lps})")
 
         return views_by_gene
 
@@ -185,7 +188,8 @@ class Views:
         ordered_counts = sorted(
             views_by_gene.items(), key=lambda x: x[1], reverse=True
         )
-        print("Top viewed gene pages:", dict(ordered_counts[:10]))
+        print("\nTop viewed gene pages:", dict(ordered_counts[:10]))
+        print()
 
         # Read existing data
         prev_gene_views = {}
@@ -257,7 +261,8 @@ class Views:
 
             self.save_to_file(views_by_gene, days)
 
-        print("Finished in", int(perf_counter() - start_time), "seconds.")
+        perf_time = round(perf_counter() - start_time, 2) # E.g. 230.71
+        print(f"Finished in {perf_time} seconds.\n\n")
 
 # Command-line handler
 if __name__ == "__main__":
