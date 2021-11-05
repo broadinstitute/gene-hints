@@ -74,9 +74,10 @@ def sort_genes(gene_dict, key):
 def pretty_print_table(raw_rows, num_rows):
     """Print rows with left-justified columns, for easy reading
     """
-    print(f"First {num_rows} rows:")
-    rows = raw_rows[:num_rows]
+    print(f"First {num_rows} rows")
+    rows = raw_rows[1: num_rows] # Offset accounts for meta-information
 
+    print(raw_rows[0][0])
     # From https://stackoverflow.com/a/12065663
     widths = [max(map(len, col)) for col in zip(*rows)]
     for row in rows:
