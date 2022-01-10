@@ -1,15 +1,19 @@
 ## cite_days=180
 # gene	cites	cite_delta	cite_rank	cite_rank_delta
-FGF5	6	6	1	9
-TRPV4	5	5	2	8
-APOBEC3Z3	0	-7	3	-2
-KISS1	0	-5	3	3
-C5	0	-4	3	6
-P2RY1	0	-5	3	3
-IGIP	0	-4	3	6
-MYBPC3	0	-7	3	-2
-SAMHD1	0	-6	3	1
-RGN	0	-6	3	1
-MYH7	0	-7	3	-2
-ALMS1	0	-4	3	6
-KISS1R	0	-5	3	3
+FGF5	6	6	1	10
+DPP9	6	6	1	10
+TMEM18	6	6	1	10
+ACP1	6	6	1	10
+TRPV4	5	5	5	6
+APOBEC3Z3	0	-7	6	-5
+KISS1	0	-5	6	1
+C5	0	-4	6	4
+P2RY1	0	-5	6	1
+IGIP	0	-4	6	4
+MYBPC3	0	-7	6	-5
+FCMR	0	-7	6	-5
+SAMHD1	0	-6	6	-1
+RGN	0	-6	6	-1
+MYH7	0	-7	6	-5
+ALMS1	0	-4	6	4
+KISS1R	0	-5	6	1
