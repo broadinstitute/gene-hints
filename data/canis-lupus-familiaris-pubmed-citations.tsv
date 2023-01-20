@@ -1,15 +1,15 @@
 ## cite_days=180
 # gene	cites	cite_delta	cite_rank	cite_rank_delta
-PLK1	7	7	1	8
-PNPLA8	6	6	2	7
-EPHA1	6	6	2	7
-GNAS	5	5	4	5
-ACTB	0	-4	5	3
-RPL27	0	-4	5	3
-TP53	0	-6	5	-3
-XPO1	0	-5	5	1
-NEDD4L	0	-6	5	-3
-F11R	0	-7	5	-4
-SDC1	0	-6	5	-3
-GOPC	0	-6	5	-3
-GPR173	0	-5	5	1
+PLK1	7	7	1	9
+EPHA1	6	6	2	8
+GNAS	5	5	3	7
+ACTB	0	-4	4	5
+RPL27	0	-4	4	5
+TP53	0	-6	4	-2
+XPO1	0	-5	4	3
+PNPLA8	0	-6	4	-2
+NEDD4L	0	-6	4	-2
+F11R	0	-7	4	-3
+SDC1	0	-6	4	-2
+GOPC	0	-6	4	-2
+GPR173	0	-5	4	3
